@@ -10,7 +10,7 @@ import CarEdit from './components/CarEdit'
 
 function App() {
   return (
-    <Admin dataProvider={restProvider('http://77.105.28.121:8080')}>
+    <Admin dataProvider={restProvider('http://localhost:8080')}>
       <Resource
         name='customer'
         list={CustomerList}
