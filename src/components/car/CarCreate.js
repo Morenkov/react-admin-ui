@@ -3,7 +3,7 @@ import {Create, NumberInput, SimpleForm, TextInput} from 'react-admin'
 
 const CarCreate = (props) => {
   return (
-    <Create title='Create a Car' {...props}>
+    <Create title='Create a Car' redirect="list" {...props}>
       <SimpleForm>
           <TextInput source='registrationNumber' />
           <TextInput source='model' />
