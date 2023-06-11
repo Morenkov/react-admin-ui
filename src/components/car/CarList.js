@@ -1,9 +1,15 @@
 import React from 'react'
-import {Datagrid, DeleteButton, EditButton, List, NumberField, TextField,} from 'react-admin'
+import {Datagrid, DeleteButton, EditButton, Filter, List, NumberField, TextField, TextInput,} from 'react-admin'
+
+const ListFilter = (props) => (
+    <Filter {...props}>
+        <TextInput label="Filter by year" source="year" alwaysOn />
+    </Filter>
+);
 
 const CarList = (props) => {
   return (
-    <List {...props}>
+    <List filters={<ListFilter />} {...props}>
       <Datagrid>
         <NumberField source='id' />
         <TextField source='registrationNumber' />

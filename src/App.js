@@ -1,6 +1,5 @@
 import React from 'react'
 import {Admin, Resource} from 'react-admin'
-import restProvider from 'ra-data-simple-rest'
 import CustomerList from './components/customer/CustomerList'
 import CustomerCreate from './components/customer/CustomerCreate'
 import CustomerEdit from './components/customer/CustomerEdit'
@@ -22,10 +21,11 @@ import PaymentEdit from "./components/payment/PaymentEdit";
 import ReviewList from "./components/review/ReviewList";
 import ReviewCreate from "./components/review/ReviewCreate";
 import ReviewEdit from "./components/review/ReviewEdit";
+import myDataProvider from "./DataProvider";
 
 function App() {
     return (
-        <Admin dataProvider={restProvider('http://localhost:8080')}>
+        <Admin dataProvider={myDataProvider}>
             <Resource
                 name='customer'
                 list={CustomerList}
