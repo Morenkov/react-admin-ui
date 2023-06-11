@@ -1,0 +1,835 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<head>
+    <title>React-admin - Querying the API</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link rel="stylesheet" href="/css/style-v6.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+    <!-- You won't find analytics tags in this page. React-admin protects your privacy! -->
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <div class="nav-wrapper" style="background: linear-gradient(145deg,#027be3 11%,#1a237e 75%)">
+                <div class="left">
+                    <form action="#" onsubmit="return false;">
+                        <div class="input-field" style="position:absolute">
+                            <input type="search" name="q" id="query" size="31" maxlength="255" value=""
+                                style="vertical-align:inherit!important" />
+                            <label class="label-icon" for="test"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                        <span id="search"></span>
+                    </form>
+                </div>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li class="active"><a href="https://marmelab.com/react-admin/Readme.html">Documentation</a></li>
+                    <li><a href="https://marmelab.com/react-admin-demo">Demo</a></li>
+                    <li><a href="https://marmelab.com/en/blog/#react-admin">Blog</a></li>
+                    <li><a href="https://github.com/marmelab/react-admin">GitHub</a></li>
+                </ul>
+            </div>
+        </nav>
+        <ul id="slide-out" class="sidenav sidenav-fixed">
+            <li class="logo">
+                <a href="http://localhost:4000"><img src="http://localhost:4000/assets/logo_white.png" /></a>
+            </li>
+            <li class="version">
+                
+            </li>
+            <li ><a href="./Readme.html">Read Me</a></li>
+<li ><a href="./Tutorial.html">Tutorial</a>
+</li>
+<li ><a href="./DataProviders.html">Data
+                Providers</a></li>
+<li ><a
+                href="./Admin.html"><code>&lt;Admin&gt;</code></a>
+</li>
+<li ><a href="./Resource.html">
+                <code>&lt;Resource&gt;</code>
+        </a></li>
+<li ><a href="./List.html"><code>&lt;List&gt;</code>
+                View</a></li>
+<li ><a
+                href="./CreateEdit.html"><code>&lt;Create&gt;</code>
+                and <code>&lt;Edit&gt;</code> Views</a>
+</li>
+<li ><a href="./Show.html"><code>&lt;Show&gt;</code>
+    View</a></li>
+<li ><a
+    href="./Fields.html"><code>&lt;Field&gt;</code>
+    Components</a></li>
+<li ><a
+                href="./Inputs.html"><code>&lt;Input&gt;</code>
+                Components</a></li>
+<li ><a
+                href="./Authentication.html">Authentication</a></li>
+<li ><a
+                href="./Authorization.html">Authorization</a></li>
+<li  class="active" ><a href="./Actions.html">Querying the
+                API</a></li>
+<li ><a href="./Theming.html">Theming</a></li>
+<li ><a href="./Translation.html">Translation</a>
+</li>
+<li ><a href="./Caching.html">Caching</a>
+</li>
+<li ><a href="./CustomApp.html">Including in
+                Another App</a>
+</li>
+<li ><a href="./Reference.html">Reference</a>
+</li>
+<li ><a href="./Ecosystem.html">Ecosystem</a>
+</li>
+<li ><a href="./UnitTesting.html">Unit
+    Testing</a></li>
+<li ><a
+        href="./AdvancedTutorials.html">Advanced
+        tutorials</a></li>
+<li ><a href="./FAQ.html">FAQ</a></li>
+
+        </ul>
+
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m8 offset-m1 xl7 offset-xl1 markdown-section DocSearch-content">
+                    <h1 id="querying-the-api">Querying the API</h1>
+
+<p>Admin interfaces often have to query the API beyond CRUD requests. For instance, a user profile page may need to get the User object based on a user id. Or, users may want to “Approve” a comment by pressing a button, and this action should update the <code class="language-plaintext highlighter-rouge">is_approved</code> property and save the updated record in one click.</p>
+
+<p>React-admin provides special hooks to emit read and write queries to the <a href="./DataProviders.md"><code class="language-plaintext highlighter-rouge">dataProvider</code></a>, which in turn sends requests to your API.</p>
+
+<h2 id="usedataprovider-hook"><code class="language-plaintext highlighter-rouge">useDataProvider</code> Hook</h2>
+
+<p>React-admin stores the <code class="language-plaintext highlighter-rouge">dataProvider</code> object in a React context, so it’s available from anywhere in your application code. The <code class="language-plaintext highlighter-rouge">useDataProvider</code> hook exposes the Data Provider to let you call it directly.</p>
+
+<p>For instance, here is how to query the Data Provider for the current user profile:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useState</span><span class="p">,</span> <span class="nx">useEffect</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useDataProvider</span><span class="p">,</span> <span class="nx">Loading</span><span class="p">,</span> <span class="nb">Error</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">UserProfile</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">userId</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">dataProvider</span> <span class="o">=</span> <span class="nf">useDataProvider</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="p">[</span><span class="nx">user</span><span class="p">,</span> <span class="nx">setUser</span><span class="p">]</span> <span class="o">=</span> <span class="nf">useState</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="p">[</span><span class="nx">loading</span><span class="p">,</span> <span class="nx">setLoading</span><span class="p">]</span> <span class="o">=</span> <span class="nf">useState</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="p">[</span><span class="nx">error</span><span class="p">,</span> <span class="nx">setError</span><span class="p">]</span> <span class="o">=</span> <span class="nf">useState</span><span class="p">();</span>
+    <span class="nf">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">dataProvider</span><span class="p">.</span><span class="nf">getOne</span><span class="p">(</span><span class="dl">'</span><span class="s1">users</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="nx">userId</span> <span class="p">})</span>
+            <span class="p">.</span><span class="nf">then</span><span class="p">(({</span> <span class="nx">data</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="nf">setUser</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+                <span class="nf">setLoading</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+            <span class="p">})</span>
+            <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="nf">setError</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+                <span class="nf">setLoading</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+            <span class="p">})</span>
+    <span class="p">},</span> <span class="p">[]);</span>
+
+    <span class="k">if </span><span class="p">(</span><span class="nx">loading</span><span class="p">)</span> <span class="k">return</span> <span class="p">&lt;</span><span class="nc">Loading</span> <span class="p">/&gt;;</span>
+    <span class="k">if </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="k">return</span> <span class="p">&lt;</span><span class="nc">Error</span> <span class="p">/&gt;;</span>
+    <span class="k">if </span><span class="p">(</span><span class="o">!</span><span class="nx">user</span><span class="p">)</span> <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>Name: <span class="si">{</span><span class="nx">user</span><span class="p">.</span><span class="nx">name</span><span class="si">}</span><span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>Email: <span class="si">{</span><span class="nx">user</span><span class="p">.</span><span class="nx">email</span><span class="si">}</span><span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+    <span class="p">)</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p><strong>Tip</strong>: The <code class="language-plaintext highlighter-rouge">dataProvider</code> returned by the hook is actually a <em>wrapper</em> around your Data Provider. This wrapper dispatches Redux actions on load, success and failure, which keeps track of the loading state.</p>
+
+<h2 id="usequery-hook"><code class="language-plaintext highlighter-rouge">useQuery</code> Hook</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">useQuery</code> hook calls the Data Provider on mount, and returns an object that updates as the response arrives. It reduces the boilerplate code for calling the Data Provider.</p>
+
+<p>For instance, the previous code snippet can be rewritten with <code class="language-plaintext highlighter-rouge">useQuery</code> as follows:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useQuery</span><span class="p">,</span> <span class="nx">Loading</span><span class="p">,</span> <span class="nb">Error</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">UserProfile</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">userId</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="p">{</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">loading</span><span class="p">,</span> <span class="nx">error</span> <span class="p">}</span> <span class="o">=</span> <span class="nf">useQuery</span><span class="p">({</span> 
+        <span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">getOne</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">resource</span><span class="p">:</span> <span class="dl">'</span><span class="s1">users</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">payload</span><span class="p">:</span> <span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="nx">userId</span> <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="k">if </span><span class="p">(</span><span class="nx">loading</span><span class="p">)</span> <span class="k">return</span> <span class="p">&lt;</span><span class="nc">Loading</span> <span class="p">/&gt;;</span>
+    <span class="k">if </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="k">return</span> <span class="p">&lt;</span><span class="nc">Error</span> <span class="p">/&gt;;</span>
+    <span class="k">if </span><span class="p">(</span><span class="o">!</span><span class="nx">data</span><span class="p">)</span> <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>Name: <span class="si">{</span><span class="nx">data</span><span class="p">.</span><span class="nx">name</span><span class="si">}</span><span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>Email: <span class="si">{</span><span class="nx">data</span><span class="p">.</span><span class="nx">email</span><span class="si">}</span><span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+    <span class="p">)</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">useQuery</code> expects a Query argument with the following keys:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">type</code>: The method to call on the Data Provider, e.g. <code class="language-plaintext highlighter-rouge">getList</code></li>
+  <li><code class="language-plaintext highlighter-rouge">resource</code>: The Resource name, e.g. “posts”</li>
+  <li><code class="language-plaintext highlighter-rouge">payload</code>: The query parameters. Depends on the query type.</li>
+</ul>
+
+<p>The return value of <code class="language-plaintext highlighter-rouge">useQuery</code> is an object representing the query state, using the following keys:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">data</code>: <code class="language-plaintext highlighter-rouge">undefined</code> until the response arrives, then contains the <code class="language-plaintext highlighter-rouge">data</code> key in the <code class="language-plaintext highlighter-rouge">dataProvider</code> response</li>
+  <li><code class="language-plaintext highlighter-rouge">total</code>: <code class="language-plaintext highlighter-rouge">null</code> until the response arrives, then contains the <code class="language-plaintext highlighter-rouge">total</code> key in the <code class="language-plaintext highlighter-rouge">dataProvider</code> response (only for <code class="language-plaintext highlighter-rouge">getList</code> and <code class="language-plaintext highlighter-rouge">getManyReference</code> types)</li>
+  <li><code class="language-plaintext highlighter-rouge">error</code>: <code class="language-plaintext highlighter-rouge">null</code> unless the <code class="language-plaintext highlighter-rouge">dataProvider</code> threw an error, in which case it contains that error.</li>
+  <li><code class="language-plaintext highlighter-rouge">loading</code>: A boolean updating according to the request state</li>
+  <li><code class="language-plaintext highlighter-rouge">loaded</code>: A boolean updating according to the request state</li>
+</ul>
+
+<p>This object updates according to the request state:</p>
+
+<ul>
+  <li>start: <code class="language-plaintext highlighter-rouge">{ loading: true, loaded: false }</code></li>
+  <li>success: <code class="language-plaintext highlighter-rouge">{ data: [data from response], total: [total from response], loading: false, loaded: true }</code></li>
+  <li>error: <code class="language-plaintext highlighter-rouge">{ error: [error from response], loading: false, loaded: true }</code></li>
+</ul>
+
+<p>As a reminder, here are the read query types handled by Data Providers:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Usage</th>
+      <th>Params format</th>
+      <th>Response format</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">getList</code></td>
+      <td>Search for resources</td>
+      <td><code class="language-plaintext highlighter-rouge">{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }</code></td>
+      <td><code class="language-plaintext highlighter-rouge">{ data: {Record[]}, total: {int} }</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">getOne</code></td>
+      <td>Read a single resource, by id</td>
+      <td><code class="language-plaintext highlighter-rouge">{ id: {mixed} }</code></td>
+      <td><code class="language-plaintext highlighter-rouge">{ data: {Record} }</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">getMany</code></td>
+      <td>Read a list of resource, by ids</td>
+      <td><code class="language-plaintext highlighter-rouge">{ ids: {mixed[]} }</code></td>
+      <td><code class="language-plaintext highlighter-rouge">{ data: {Record[]} }</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">getManyReference</code></td>
+      <td>Read a list of resources related to another one</td>
+      <td><code class="language-plaintext highlighter-rouge">{ target: {string}, id: {mixed}, pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }</code></td>
+      <td><code class="language-plaintext highlighter-rouge">{ data: {Record[]} }</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="usequerywithstore-hook"><code class="language-plaintext highlighter-rouge">useQueryWithStore</code> Hook</h2>
+
+<p>React-admin exposes a more powerful version of <code class="language-plaintext highlighter-rouge">useQuery</code>. <code class="language-plaintext highlighter-rouge">useQueryWithStore</code> persist the response from the <code class="language-plaintext highlighter-rouge">dataProvider</code> in the internal react-admin Redux store, so that result remains available if the hook is called again in the future.</p>
+
+<p>You can use this hook to show the cached result immediately on mount, while the updated result is fetched from the API. This is called optimistic rendering.</p>
+
+<div class="language-diff highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">import * as React from "react";
+</span><span class="gd">-import { useQuery, Loading, Error } from 'react-admin';
+</span><span class="gi">+import { useQueryWithStore, Loading, Error } from 'react-admin';
+</span><span class="err">
+</span><span class="p">const UserProfile = ({ record }) =&gt; {
+</span><span class="gd">-   const { loaded, error, data } = useQuery({
+</span><span class="gi">+   const { loaded, error, data } = useQueryWithStore({
+</span>        type: 'getOne',
+        resource: 'users',
+        payload: { id: record.id }
+    });
+    if (!loaded) { return &lt;Loading /&gt;; }
+    if (error) { return &lt;Error /&gt;; }
+    return &lt;div&gt;User {data.username}&lt;/div&gt;;
+};
+</code></pre></div></div>
+
+<p>In practice, react-admin uses <code class="language-plaintext highlighter-rouge">useQueryWithStore</code> instead of <code class="language-plaintext highlighter-rouge">useQuery</code> everywhere, and you should probably do the same in your components. It really improves the User Experience, with only one little drawback: if the data changed on the backend side between two calls for the same query, the user may briefly see outdated data before the screen updates with the up-to-date data.</p>
+
+<h2 id="usemutation-hook"><code class="language-plaintext highlighter-rouge">useMutation</code> Hook</h2>
+
+<p><code class="language-plaintext highlighter-rouge">useQuery</code> emits the request to the <code class="language-plaintext highlighter-rouge">dataProvider</code> as soon as the component mounts. To emit the request based on a user action, use the <code class="language-plaintext highlighter-rouge">useMutation</code> hook instead. This hook takes the same arguments as <code class="language-plaintext highlighter-rouge">useQuery</code>, but returns a callback that emits the request when executed.</p>
+
+<p>Here is an implementation of an “Approve” button:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useMutation</span><span class="p">,</span> <span class="nx">Button</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">ApproveButton</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">record</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="p">[</span><span class="nx">approve</span><span class="p">,</span> <span class="p">{</span> <span class="nx">loading</span> <span class="p">}]</span> <span class="o">=</span> <span class="nf">useMutation</span><span class="p">({</span>
+        <span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">update</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">resource</span><span class="p">:</span> <span class="dl">'</span><span class="s1">comments</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">payload</span><span class="p">:</span> <span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="nx">record</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="na">data</span><span class="p">:</span> <span class="p">{</span> <span class="na">isApproved</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}</span> <span class="p">}</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="p">&lt;</span><span class="nc">Button</span> <span class="na">label</span><span class="p">=</span><span class="s">"Approve"</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">approve</span><span class="si">}</span> <span class="na">disabled</span><span class="p">=</span><span class="si">{</span><span class="nx">loading</span><span class="si">}</span> <span class="p">/&gt;;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">useMutation</code> expects a Query argument with the following keys:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">type</code>: The method to call on the Data Provider, e.g. <code class="language-plaintext highlighter-rouge">update</code></li>
+  <li><code class="language-plaintext highlighter-rouge">resource</code>: The Resource name, e.g. “posts”</li>
+  <li><code class="language-plaintext highlighter-rouge">payload</code>: The query parameters. Depends on the query type.</li>
+</ul>
+
+<p>The return value of <code class="language-plaintext highlighter-rouge">useMutation</code> is an array with the following items:</p>
+
+<ul>
+  <li>A callback function</li>
+  <li>An object representing the query state, using the following keys
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">data</code>: <code class="language-plaintext highlighter-rouge">undefined</code> until the response arrives, then contains the <code class="language-plaintext highlighter-rouge">data</code> key in the <code class="language-plaintext highlighter-rouge">dataProvider</code> response</li>
+      <li><code class="language-plaintext highlighter-rouge">error</code>: <code class="language-plaintext highlighter-rouge">null</code> unless the <code class="language-plaintext highlighter-rouge">dataProvider</code> threw an error, in which case it contains that error.</li>
+      <li><code class="language-plaintext highlighter-rouge">loading</code>: A boolean updating according to the request state</li>
+      <li><code class="language-plaintext highlighter-rouge">loaded</code>: A boolean updating according to the request state</li>
+    </ul>
+  </li>
+</ul>
+
+<p>This object updates according to the request state:</p>
+
+<ul>
+  <li>mount: <code class="language-plaintext highlighter-rouge">{ loading: false, loaded: false }</code></li>
+  <li>mutate called: <code class="language-plaintext highlighter-rouge">{ loading: true, loaded: false }</code></li>
+  <li>success: <code class="language-plaintext highlighter-rouge">{ data: [data from response], total: [total from response], loading: false, loaded: true }</code></li>
+  <li>error: <code class="language-plaintext highlighter-rouge">{ error: [error from response], loading: false, loaded: true }</code></li>
+</ul>
+
+<p>You can destructure the return value of the <code class="language-plaintext highlighter-rouge">useMutation</code> hook as <code class="language-plaintext highlighter-rouge">[mutate,  { data, total, error, loading, loaded }]</code>.</p>
+
+<p>As a reminder, here are the write query types handled by data providers:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Usage</th>
+      <th>Params format</th>
+      <th>Response format</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">create</code></td>
+      <td>Create a single resource</td>
+      <td><code class="language-plaintext highlighter-rouge">{ data: {Object} }</code></td>
+      <td><code class="language-plaintext highlighter-rouge">{ data: {Record} }</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">update</code></td>
+      <td>Update a single resource</td>
+      <td><code class="language-plaintext highlighter-rouge">{ id: {mixed}, data: {Object}, previousData: {Object} }</code></td>
+      <td><code class="language-plaintext highlighter-rouge">{ data: {Record} }</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">updateMany</code></td>
+      <td>Update multiple resources</td>
+      <td><code class="language-plaintext highlighter-rouge">{ ids: {mixed[]}, data: {Object} }</code></td>
+      <td><code class="language-plaintext highlighter-rouge">{ data: {mixed[]} }</code> The ids which have been updated</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">delete</code></td>
+      <td>Delete a single resource</td>
+      <td><code class="language-plaintext highlighter-rouge">{ id: {mixed}, previousData: {Object} }</code></td>
+      <td><code class="language-plaintext highlighter-rouge">{ data: {Record} }</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">deleteMany</code></td>
+      <td>Delete multiple resources</td>
+      <td><code class="language-plaintext highlighter-rouge">{ ids: {mixed[]} }</code></td>
+      <td><code class="language-plaintext highlighter-rouge">{ data: {mixed[]} }</code> The ids which have been deleted</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">useMutation</code> accepts a variant call where the parameters are passed to the callback instead of when calling the hook. Use this variant when some parameters are only known at call time.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useMutation</span><span class="p">,</span> <span class="nx">Button</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">ApproveButton</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">record</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="p">[</span><span class="nx">mutate</span><span class="p">,</span> <span class="p">{</span> <span class="nx">loading</span> <span class="p">}]</span> <span class="o">=</span> <span class="nf">useMutation</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">approve</span> <span class="o">=</span> <span class="nx">event</span> <span class="o">=&gt;</span> <span class="nf">mutate</span><span class="p">({</span>
+        <span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">update</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">resource</span><span class="p">:</span> <span class="dl">'</span><span class="s1">comments</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">payload</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">id</span><span class="p">:</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">dataset</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
+            <span class="na">data</span><span class="p">:</span> <span class="p">{</span> <span class="na">isApproved</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">updatedAt</span><span class="p">:</span> <span class="k">new</span> <span class="nc">Date</span><span class="p">()</span> <span class="p">}</span>
+        <span class="p">},</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="p">&lt;</span><span class="nc">Button</span>
+        <span class="na">label</span><span class="p">=</span><span class="s">"Approve"</span>
+        <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">approve</span><span class="si">}</span>
+        <span class="na">disabled</span><span class="p">=</span><span class="si">{</span><span class="nx">loading</span><span class="si">}</span>
+    <span class="p">/&gt;;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p><strong>Tip</strong>: In the example above, the callback returned by <code class="language-plaintext highlighter-rouge">useMutation</code> accepts a Query parameter. But in the previous example, it was called with a DOM Event as parameter (because it was passed directly as <code class="language-plaintext highlighter-rouge">onClick</code> handler). <code class="language-plaintext highlighter-rouge">useMutation</code> is smart enough to ignore a call time argument if it’s an instance of <code class="language-plaintext highlighter-rouge">Event</code>.</p>
+
+<p><strong>Tip</strong>: User actions usually trigger write queries - that’s why this hook is called <code class="language-plaintext highlighter-rouge">useMutation</code>.</p>
+
+<h2 id="specialized-hooks">Specialized Hooks</h2>
+
+<p>React-admin provides one hook for each of the Data Provider methods. Based on <code class="language-plaintext highlighter-rouge">useQuery</code> and <code class="language-plaintext highlighter-rouge">useMutation</code>, they are useful shortcuts that make your code more readable and more robust (no more method name passed as string).</p>
+
+<p>For instance, here is an example using <code class="language-plaintext highlighter-rouge">useUpdate()</code>:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useUpdate</span><span class="p">,</span> <span class="nx">Button</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">ApproveButton</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">record</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="p">[</span><span class="nx">approve</span><span class="p">,</span> <span class="p">{</span> <span class="nx">loading</span> <span class="p">}]</span> <span class="o">=</span> <span class="nf">useUpdate</span><span class="p">(</span><span class="dl">'</span><span class="s1">comments</span><span class="dl">'</span><span class="p">,</span> <span class="nx">record</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="p">{</span> <span class="na">isApproved</span><span class="p">:</span> <span class="kc">true</span> <span class="p">},</span> <span class="nx">record</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">&lt;</span><span class="nc">Button</span> <span class="na">label</span><span class="p">=</span><span class="s">"Approve"</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">approve</span><span class="si">}</span> <span class="na">disabled</span><span class="p">=</span><span class="si">{</span><span class="nx">loading</span><span class="si">}</span> <span class="p">/&gt;;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>The specialized hooks based on <code class="language-plaintext highlighter-rouge">useQuery</code> execute on mount:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">useGetList(resource, pagination, sort, filter, options)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">useGetOne(resource, id, options)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">useGetMany(resource, ids, options)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">useGetManyReference(resource, target, id, pagination, sort, filter, referencingResource, options)</code></li>
+</ul>
+
+<p>The specialized hooks based on <code class="language-plaintext highlighter-rouge">useMutation</code> return a callback:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">useCreate(resource, data, options)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">useUpdate(resource, id, data, previousData, options)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">useUpdateMany(resource, ids, data, options)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">useDelete(resource, id, previousData, options)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">useDeleteMany(resource, ids, options)</code></li>
+</ul>
+
+<h2 id="handling-side-effects-in-usedataprovider">Handling Side Effects In <code class="language-plaintext highlighter-rouge">useDataProvider</code></h2>
+
+<p><code class="language-plaintext highlighter-rouge">useDataProvider</code> returns a <code class="language-plaintext highlighter-rouge">dataProvider</code> object. Each call to its method return a Promise, allowing adding business logic on success in <code class="language-plaintext highlighter-rouge">then()</code>, and on failure in <code class="language-plaintext highlighter-rouge">catch()</code>.</p>
+
+<p>For instance, here is another version of the <code class="language-plaintext highlighter-rouge">&lt;ApproveButton&gt;</code>  based on <code class="language-plaintext highlighter-rouge">useDataProvider</code> that notifies the user of success or failure using the bottom notification banner:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useDataProvider</span><span class="p">,</span> <span class="nx">useNotify</span><span class="p">,</span> <span class="nx">useRedirect</span><span class="p">,</span> <span class="nx">Button</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">ApproveButton</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">record</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">notify</span> <span class="o">=</span> <span class="nf">useNotify</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">redirect</span> <span class="o">=</span> <span class="nf">useRedirect</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">dataProvider</span> <span class="o">=</span> <span class="nf">useDataProvider</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">approve</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">dataProvider</span>
+        <span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="dl">'</span><span class="s1">comments</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="nx">record</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="na">data</span><span class="p">:</span> <span class="p">{</span> <span class="na">isApproved</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}</span> <span class="p">})</span>
+        <span class="p">.</span><span class="nf">then</span><span class="p">(</span><span class="nx">response</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="c1">// success side effects go here</span>
+            <span class="nf">redirect</span><span class="p">(</span><span class="dl">'</span><span class="s1">/comments</span><span class="dl">'</span><span class="p">);</span>
+            <span class="nf">notify</span><span class="p">(</span><span class="dl">'</span><span class="s1">Comment approved</span><span class="dl">'</span><span class="p">);</span>
+        <span class="p">})</span>
+        <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="c1">// failure side effects go here </span>
+            <span class="nf">notify</span><span class="p">(</span><span class="s2">`Comment approval error: </span><span class="p">${</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">}</span><span class="s2">`</span><span class="p">,</span> <span class="dl">'</span><span class="s1">warning</span><span class="dl">'</span><span class="p">);</span>
+        <span class="p">});</span>
+    
+    <span class="k">return</span> <span class="p">&lt;</span><span class="nc">Button</span> <span class="na">label</span><span class="p">=</span><span class="s">"Approve"</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">approve</span><span class="si">}</span> <span class="na">disabled</span><span class="p">=</span><span class="si">{</span><span class="nx">loading</span><span class="si">}</span> <span class="p">/&gt;;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Fetching data is called a <em>side effect</em>, since it calls the outside world, and is asynchronous. Usual actions may have other side effects, like showing a notification, or redirecting the user to another page. React-admin provides the following hooks to handle most common side effects:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">useNotify</code>: Return a function to display a notification. The arguments should be a message (it can be a translation key), a level (either <code class="language-plaintext highlighter-rouge">info</code> or <code class="language-plaintext highlighter-rouge">warning</code>), an <code class="language-plaintext highlighter-rouge">options</code> object to pass to the <code class="language-plaintext highlighter-rouge">translate</code> function (in the case of the default i18n provider, using Polyglot.js, it will be the interpolation options used for passing variables), a boolean to set to <code class="language-plaintext highlighter-rouge">true</code> if the notification should contain an “undo” button and a number corresponding to the notification duration.</li>
+  <li><code class="language-plaintext highlighter-rouge">useRedirect</code>: Return a function to redirect the user to another page. The arguments should be the path to redirect the user to, and the current <code class="language-plaintext highlighter-rouge">basePath</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">useRefresh</code>: Return a function to force a rerender of the current view (equivalent to pressing the Refresh button).</li>
+  <li><code class="language-plaintext highlighter-rouge">useUnselectAll</code>: Return a function to unselect all lines in the current <code class="language-plaintext highlighter-rouge">Datagrid</code>. Pass the name of the resource as argument.</li>
+</ul>
+
+<h2 id="handling-side-effects-in-other-hooks">Handling Side Effects In Other Hooks</h2>
+
+<p>But the other hooks presented in this chapter, starting with <code class="language-plaintext highlighter-rouge">useMutation</code>, don’t expose the <code class="language-plaintext highlighter-rouge">dataProvider</code> Promise. To allow for side effects with these hooks, they all accept an additional <code class="language-plaintext highlighter-rouge">options</code> argument. It’s an object with <code class="language-plaintext highlighter-rouge">onSuccess</code> and <code class="language-plaintext highlighter-rouge">onFailure</code> functions, that react-admin executes on success… or on failure.</p>
+
+<p>So the <code class="language-plaintext highlighter-rouge">&lt;ApproveButton&gt;</code> written with <code class="language-plaintext highlighter-rouge">useMutation</code> instead of <code class="language-plaintext highlighter-rouge">useDataProvider</code> can specify side effects as follows:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useMutation</span><span class="p">,</span> <span class="nx">useNotify</span><span class="p">,</span> <span class="nx">useRedirect</span><span class="p">,</span> <span class="nx">Button</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">ApproveButton</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">record</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">notify</span> <span class="o">=</span> <span class="nf">useNotify</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">redirect</span> <span class="o">=</span> <span class="nf">useRedirect</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="p">[</span><span class="nx">approve</span><span class="p">,</span> <span class="p">{</span> <span class="nx">loading</span> <span class="p">}]</span> <span class="o">=</span> <span class="nf">useMutation</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">update</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">resource</span><span class="p">:</span> <span class="dl">'</span><span class="s1">comments</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">payload</span><span class="p">:</span> <span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="nx">record</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="na">data</span><span class="p">:</span> <span class="p">{</span> <span class="na">isApproved</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}</span> <span class="p">},</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="na">onSuccess</span><span class="p">:</span> <span class="p">({</span> <span class="nx">data</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="nf">redirect</span><span class="p">(</span><span class="dl">'</span><span class="s1">/comments</span><span class="dl">'</span><span class="p">);</span>
+                <span class="nf">notify</span><span class="p">(</span><span class="dl">'</span><span class="s1">Comment approved</span><span class="dl">'</span><span class="p">);</span>
+            <span class="p">},</span>
+            <span class="na">onFailure</span><span class="p">:</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nf">notify</span><span class="p">(</span><span class="s2">`Comment approval error: </span><span class="p">${</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">}</span><span class="s2">`</span><span class="p">,</span> <span class="dl">'</span><span class="s1">warning</span><span class="dl">'</span><span class="p">),</span>
+        <span class="p">}</span>
+    <span class="p">);</span>
+    <span class="k">return</span> <span class="p">&lt;</span><span class="nc">Button</span> <span class="na">label</span><span class="p">=</span><span class="s">"Approve"</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">approve</span><span class="si">}</span> <span class="na">disabled</span><span class="p">=</span><span class="si">{</span><span class="nx">loading</span><span class="si">}</span> <span class="p">/&gt;;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h2 id="optimistic-rendering-and-undo">Optimistic Rendering and Undo</h2>
+
+<p>In the previous example, after clicking on the “Approve” button, a loading spinner appears while the data provider is fetched. Then, users are redirected to the comments list. But in most cases, the server returns a success response, so the user waits for this response for nothing.</p>
+
+<p>For its own fetch actions, react-admin uses an approach called <em>optimistic rendering</em>. The idea is to handle the calls to the <code class="language-plaintext highlighter-rouge">dataProvider</code> on the client side first (i.e. updating entities in the Redux store), and re-render the screen immediately. The user sees the effect of their action with no delay. Then, react-admin applies the success side effects, and only after that, it triggers the call to the data provider. If the fetch ends with a success, react-admin does nothing more than a refresh to grab the latest data from the server. In most cases, the user sees no difference (the data in the Redux store and the data from the data provider are the same). If the fetch fails, react-admin shows an error notification, and forces a refresh, too.</p>
+
+<p>As a bonus, while the success notification is displayed, users have the ability to cancel the action <em>before</em> the data provider is even called.</p>
+
+<p>You can benefit from optimistic rendering when you call the <code class="language-plaintext highlighter-rouge">useMutation</code> hook, too. You just need to pass <code class="language-plaintext highlighter-rouge">undoable: true</code> in the <code class="language-plaintext highlighter-rouge">options</code> parameter:</p>
+
+<div class="language-diff highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">import * as React from "react";
+import { useMutation, useNotify, useRedirect, Button } from 'react-admin';
+</span><span class="err">
+</span><span class="p">const ApproveButton = ({ record }) =&gt; {
+</span>    const notify = useNotify();
+    const redirect = useRedirect();
+    const [approve, { loading }] = useMutation(
+        {
+            type: 'update',
+            resource: 'comments',
+            payload: { id: record.id, data: { isApproved: true } },
+        },
+        {
+<span class="gi">+           undoable: true,
+</span>            onSuccess: ({ data }) =&gt; {
+                redirect('/comments');
+<span class="gd">-               notify('Comment approved');
+</span><span class="gi">+               notify('Comment approved', 'info', {}, true);
+</span>            },
+            onFailure: (error) =&gt; notify(`Error: ${error.message}`, 'warning'),
+        }
+    );
+    return &lt;Button label="Approve" onClick={approve} disabled={loading} /&gt;;
+};
+</code></pre></div></div>
+
+<p>As you can see in this example, you need to tweak the notification for undoable actions: passing <code class="language-plaintext highlighter-rouge">true</code> as fourth parameter of <code class="language-plaintext highlighter-rouge">notify</code> displays the ‘Undo’ button in the notification.</p>
+
+<p>You can pass the <code class="language-plaintext highlighter-rouge">{ undoable: true }</code> options parameter to specialized hooks, too. they all accept an optional last argument with side effects.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useUpdate</span><span class="p">,</span> <span class="nx">useNotify</span><span class="p">,</span> <span class="nx">useRedirect</span><span class="p">,</span> <span class="nx">Button</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">ApproveButton</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">record</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">notify</span> <span class="o">=</span> <span class="nf">useNotify</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">redirect</span> <span class="o">=</span> <span class="nf">useRedirect</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="p">[</span><span class="nx">approve</span><span class="p">,</span> <span class="p">{</span> <span class="nx">loading</span> <span class="p">}]</span> <span class="o">=</span> <span class="nf">useUpdate</span><span class="p">(</span>
+        <span class="dl">'</span><span class="s1">comments</span><span class="dl">'</span><span class="p">,</span>
+        <span class="nx">record</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
+        <span class="p">{</span> <span class="na">isApproved</span><span class="p">:</span> <span class="kc">true</span> <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="na">undoable</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="na">onSuccess</span><span class="p">:</span> <span class="p">({</span> <span class="nx">data</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="nf">redirect</span><span class="p">(</span><span class="dl">'</span><span class="s1">/comments</span><span class="dl">'</span><span class="p">);</span>
+                <span class="nf">notify</span><span class="p">(</span><span class="dl">'</span><span class="s1">Comment approved</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">info</span><span class="dl">'</span><span class="p">,</span> <span class="p">{},</span> <span class="kc">true</span><span class="p">);</span>
+            <span class="p">},</span>
+            <span class="na">onFailure</span><span class="p">:</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nf">notify</span><span class="p">(</span><span class="s2">`Error: </span><span class="p">${</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">}</span><span class="s2">`</span><span class="p">,</span> <span class="dl">'</span><span class="s1">warning</span><span class="dl">'</span><span class="p">),</span>
+        <span class="p">}</span>
+    <span class="p">);</span>
+    <span class="k">return</span> <span class="p">&lt;</span><span class="nc">Button</span> <span class="na">label</span><span class="p">=</span><span class="s">"Approve"</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">approve</span><span class="si">}</span> <span class="na">disabled</span><span class="p">=</span><span class="si">{</span><span class="nx">loading</span><span class="si">}</span> <span class="p">/&gt;;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h2 id="customizing-the-redux-action">Customizing the Redux Action</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">useDataProvider</code> hook dispatches redux actions on load, on success, and on error. By default, these actions are called:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">CUSTOM_FETCH_LOAD</code></li>
+  <li><code class="language-plaintext highlighter-rouge">CUSTOM_FETCH_SUCCESS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">CUSTOM_FETCH_FAILURE</code></li>
+</ul>
+
+<p>React-admin doesn’t have any reducer watching these actions. You can write a custom reducer for these actions to store the return of the Data Provider in Redux. But the best way to do so is to set the hooks dispatch a custom action instead of <code class="language-plaintext highlighter-rouge">CUSTOM_FETCH</code>. Use the <code class="language-plaintext highlighter-rouge">action</code> option for that purpose:</p>
+
+<div class="language-diff highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">import * as React from "react";
+import { useUpdate, useNotify, useRedirect, Button } from 'react-admin';
+</span><span class="err">
+</span><span class="p">const ApproveButton = ({ record }) =&gt; {
+</span>    const notify = useNotify();
+    const redirect = useRedirect();
+    const [approve, { loading }] = useUpdate(
+        'comments',
+        record.id,
+        { isApproved: true },
+        {
+<span class="gi">+           action: 'MY_CUSTOM_ACTION',
+</span>            undoable: true,
+            onSuccess: ({ data }) =&gt; {
+                redirect('/comments');
+                notify('Comment approved', 'info', {}, true);
+            },
+            onFailure: (error) =&gt; notify(`Error: ${error.message}`, 'warning'),
+        }
+    );
+    return &lt;Button label="Approve" onClick={approve} disabled={loading} /&gt;;
+};
+</code></pre></div></div>
+
+<p><strong>Tip</strong>: When using the Data Provider hooks for regular pages (List, Edit, etc), react-admin always specifies a custom action name, related to the component asking for the data. For instance, in the <code class="language-plaintext highlighter-rouge">&lt;List&gt;</code> page, the action is called <code class="language-plaintext highlighter-rouge">CRUD_GET_LIST</code>. So unless you call the Data Provider hooks yourself, no <code class="language-plaintext highlighter-rouge">CUSTOM_FETCH</code> action should be dispatched.</p>
+
+<h2 id="legacy-components-query-mutation-and-withdataprovider">Legacy Components: <code class="language-plaintext highlighter-rouge">&lt;Query&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;Mutation&gt;</code>, and <code class="language-plaintext highlighter-rouge">withDataProvider</code></h2>
+
+<p>Before react had hooks, react-admin used render props and higher order components to provide the same functionality. Legacy code will likely contain instances of <code class="language-plaintext highlighter-rouge">&lt;Query&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;Mutation&gt;</code>, and <code class="language-plaintext highlighter-rouge">withDataProvider</code>. Their syntax, which is identical to their hook counterpart, is illustrated below.</p>
+
+<p>You can fetch and display a user profile using the <code class="language-plaintext highlighter-rouge">&lt;Query&gt;</code> component, which uses render props:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Query</span><span class="p">,</span> <span class="nx">Loading</span><span class="p">,</span> <span class="nb">Error</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">UserProfile</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">record</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Query</span> <span class="na">type</span><span class="p">=</span><span class="s">'getOne'</span> <span class="na">resource</span><span class="p">=</span><span class="s">'users'</span> <span class="na">payload</span><span class="p">=</span><span class="si">{</span><span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="nx">record</span><span class="p">.</span><span class="nx">id</span> <span class="p">}</span><span class="si">}</span><span class="p">&gt;</span>
+        <span class="si">{</span><span class="p">({</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">loading</span><span class="p">,</span> <span class="nx">error</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">if </span><span class="p">(</span><span class="nx">loading</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">&lt;</span><span class="nc">Loading</span> <span class="p">/&gt;;</span> <span class="p">}</span>
+            <span class="k">if </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">&lt;</span><span class="nc">Error</span> <span class="p">/&gt;;</span> <span class="p">}</span>
+            <span class="k">return</span> <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>User <span class="si">{</span><span class="nx">data</span><span class="p">.</span><span class="nx">username</span><span class="si">}</span><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;;</span>
+        <span class="p">}</span><span class="si">}</span>
+    <span class="p">&lt;/</span><span class="nc">Query</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>Or, query a user list on the dashboard with the same <code class="language-plaintext highlighter-rouge">&lt;Query&gt;</code> component:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Query</span><span class="p">,</span> <span class="nx">Loading</span><span class="p">,</span> <span class="nb">Error</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">payload</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="na">pagination</span><span class="p">:</span> <span class="p">{</span> <span class="na">page</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">perPage</span><span class="p">:</span> <span class="mi">10</span> <span class="p">},</span>
+   <span class="na">sort</span><span class="p">:</span> <span class="p">{</span> <span class="na">field</span><span class="p">:</span> <span class="dl">'</span><span class="s1">username</span><span class="dl">'</span><span class="p">,</span> <span class="na">order</span><span class="p">:</span> <span class="dl">'</span><span class="s1">ASC</span><span class="dl">'</span> <span class="p">},</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">UserList</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Query</span> <span class="na">type</span><span class="p">=</span><span class="s">'getList'</span> <span class="na">resource</span><span class="p">=</span><span class="s">'users'</span> <span class="na">payload</span><span class="p">=</span><span class="si">{</span><span class="nx">payload</span><span class="si">}</span><span class="p">&gt;</span>
+        <span class="si">{</span><span class="p">({</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">total</span><span class="p">,</span> <span class="nx">loading</span><span class="p">,</span> <span class="nx">error</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">if </span><span class="p">(</span><span class="nx">loading</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">&lt;</span><span class="nc">Loading</span> <span class="p">/&gt;;</span> <span class="p">}</span>
+            <span class="k">if </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">&lt;</span><span class="nc">Error</span> <span class="p">/&gt;;</span> <span class="p">}</span>
+            <span class="k">return </span><span class="p">(</span>
+                <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Total users: <span class="si">{</span><span class="nx">total</span><span class="si">}</span><span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+                        <span class="si">{</span><span class="nx">data</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">user</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nt">li</span> <span class="na">key</span><span class="p">=</span><span class="si">{</span><span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="si">}</span><span class="p">&gt;</span><span class="si">{</span><span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="si">}</span><span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;)</span><span class="si">}</span>
+                    <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+                <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+            <span class="p">);</span>
+        <span class="p">}</span><span class="si">}</span>
+    <span class="p">&lt;/</span><span class="nc">Query</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>Just like <code class="language-plaintext highlighter-rouge">useQuery</code>, the <code class="language-plaintext highlighter-rouge">&lt;Query&gt;</code> component expects three parameters: <code class="language-plaintext highlighter-rouge">type</code>, <code class="language-plaintext highlighter-rouge">resource</code>, and <code class="language-plaintext highlighter-rouge">payload</code>. It fetches the data provider on mount, and passes the data to its child component once the response from the API arrives.</p>
+
+<p>And if you need to chain API calls, don’t hesitate to nest <code class="language-plaintext highlighter-rouge">&lt;Query&gt;</code> components.</p>
+
+<p>When calling the API to update (“mutate”) data, use the <code class="language-plaintext highlighter-rouge">&lt;Mutation&gt;</code> component instead. It passes a callback to trigger the API call to its child function.</p>
+
+<p>Here is a version of the <code class="language-plaintext highlighter-rouge">&lt;ApproveButton&gt;</code> component demonstrating <code class="language-plaintext highlighter-rouge">&lt;Mutation&gt;</code>:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Mutation</span><span class="p">,</span> <span class="nx">useNotify</span><span class="p">,</span> <span class="nx">useRedirect</span><span class="p">,</span> <span class="nx">Button</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">ApproveButton</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">record</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">notify</span> <span class="o">=</span> <span class="nf">useNotify</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">redirect</span> <span class="o">=</span> <span class="nf">useRedirect</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">payload</span> <span class="o">=</span> <span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="nx">record</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="na">data</span><span class="p">:</span> <span class="p">{</span> <span class="p">...</span><span class="nx">record</span><span class="p">,</span> <span class="na">is_approved</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}</span> <span class="p">};</span>
+    <span class="kd">const</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="na">undoable</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="na">onSuccess</span><span class="p">:</span> <span class="p">({</span> <span class="nx">data</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nf">notify</span><span class="p">(</span><span class="dl">'</span><span class="s1">Comment approved</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">info</span><span class="dl">'</span><span class="p">,</span> <span class="p">{},</span> <span class="kc">true</span><span class="p">);</span>
+            <span class="nf">redirect</span><span class="p">(</span><span class="dl">'</span><span class="s1">/comments</span><span class="dl">'</span><span class="p">);</span>
+        <span class="p">},</span>
+        <span class="na">onFailure</span><span class="p">:</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nf">notify</span><span class="p">(</span><span class="s2">`Error: </span><span class="p">${</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">}</span><span class="s2">`</span><span class="p">,</span> <span class="dl">'</span><span class="s1">warning</span><span class="dl">'</span><span class="p">),</span>
+    <span class="p">};</span>
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">Mutation</span>
+            <span class="na">type</span><span class="p">=</span><span class="s">'update'</span>
+            <span class="na">resource</span><span class="p">=</span><span class="s">'comments'</span>
+            <span class="na">payload</span><span class="p">=</span><span class="si">{</span><span class="nx">payload</span><span class="si">}</span>
+            <span class="na">options</span><span class="p">=</span><span class="si">{</span><span class="nx">options</span><span class="si">}</span>
+        <span class="p">&gt;</span>
+            <span class="si">{</span><span class="p">(</span><span class="nx">approve</span><span class="p">,</span> <span class="p">{</span> <span class="nx">loading</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">(</span>
+                <span class="p">&lt;</span><span class="nc">Button</span> <span class="na">label</span><span class="p">=</span><span class="s">'Approve'</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">approve</span><span class="si">}</span> <span class="na">disabled</span><span class="p">=</span><span class="si">{</span><span class="nx">loading</span><span class="si">}</span> <span class="p">/&gt;</span>
+            <span class="p">)</span><span class="si">}</span>
+        <span class="p">&lt;/</span><span class="nc">Mutation</span><span class="p">&gt;</span>
+    <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">ApproveButton</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>And here is the <code class="language-plaintext highlighter-rouge">&lt;UserProfile&gt;</code> component using the <code class="language-plaintext highlighter-rouge">withDataProvider</code> HOC instead of the <code class="language-plaintext highlighter-rouge">useProvider</code> hook:</p>
+
+<div class="language-diff highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">import { useState, useEffect } from 'react';
+</span><span class="gd">-import { useDataProvider } from 'react-admin';
+</span><span class="gi">+import { withDataProvider } from 'react-admin';
+</span><span class="err">
+</span><span class="gd">-const UserProfile = ({ userId }) =&gt; {
+</span><span class="gi">+const UserProfile = ({ userId, dataProvider }) =&gt; {
+</span><span class="gd">-   const dataProvider = useDataProvider();
+</span>    const [user, setUser] = useState();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState();
+    useEffect(() =&gt; {
+        dataProvider.getOne('users', { id: userId })
+            .then(({ data }) =&gt; {
+                setUser(data);
+                setLoading(false);
+            })
+            .catch(error =&gt; {
+                setError(error);
+                setLoading(false);
+            })
+    }, []);
+<span class="err">
+</span>    if (loading) return &lt;Loading /&gt;;
+    if (error) return &lt;Error /&gt;;
+    if (!user) return null;
+<span class="err">
+</span>    return (
+        &lt;ul&gt;
+            &lt;li&gt;Name: {user.name}&lt;/li&gt;
+            &lt;li&gt;Email: {user.email}&lt;/li&gt;
+        &lt;/ul&gt;
+    )
+};
+<span class="err">
+</span><span class="gd">-export default UserProfile;
+</span><span class="gi">+export default withDataProvider(UserProfile);
+</span></code></pre></div></div>
+
+<p>Note that these components are implemented in react-admin using the hooks described earlier. If you’re writing new components, prefer the hooks, which are faster, and do not pollute the component tree.</p>
+
+<h2 id="querying-the-api-with-fetch">Querying The API With <code class="language-plaintext highlighter-rouge">fetch</code></h2>
+
+<p><code class="language-plaintext highlighter-rouge">useQuery</code>, <code class="language-plaintext highlighter-rouge">useMutation</code> and <code class="language-plaintext highlighter-rouge">useDataProvider</code> are “the react-admin way” to query the API, but nothing prevents you from using <code class="language-plaintext highlighter-rouge">fetch</code> if you want. For instance, when you don’t want to add some routing logic to the data provider for an RPC method on your API, that makes perfect sense.</p>
+
+<p>There is no special react-admin sauce in that case. Here is an example implementation of calling <code class="language-plaintext highlighter-rouge">fetch</code> in a component:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/comments/ApproveButton.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useState</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useDispatch</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-redux</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useNotify</span><span class="p">,</span> <span class="nx">useRedirect</span><span class="p">,</span> <span class="nx">fetchStart</span><span class="p">,</span> <span class="nx">fetchEnd</span><span class="p">,</span> <span class="nx">Button</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">ApproveButton</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">record</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">dispatch</span> <span class="o">=</span> <span class="nf">useDispatch</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">redirect</span> <span class="o">=</span> <span class="nf">useRedirect</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">notify</span> <span class="o">=</span> <span class="nf">useNotify</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="p">[</span><span class="nx">loading</span><span class="p">,</span> <span class="nx">setLoading</span><span class="p">]</span> <span class="o">=</span> <span class="nf">useState</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">handleClick</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nf">setLoading</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="nf">dispatch</span><span class="p">(</span><span class="nf">fetchStart</span><span class="p">());</span> <span class="c1">// start the global loading indicator </span>
+        <span class="kd">const</span> <span class="nx">updatedRecord</span> <span class="o">=</span> <span class="p">{</span> <span class="p">...</span><span class="nx">record</span><span class="p">,</span> <span class="na">is_approved</span><span class="p">:</span> <span class="kc">true</span> <span class="p">};</span>
+        <span class="nf">fetch</span><span class="p">(</span><span class="s2">`/comments/</span><span class="p">${</span><span class="nx">record</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2">`</span><span class="p">,</span> <span class="p">{</span> <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">PUT</span><span class="dl">'</span><span class="p">,</span> <span class="na">body</span><span class="p">:</span> <span class="nx">updatedRecord</span> <span class="p">})</span>
+            <span class="p">.</span><span class="nf">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="nf">notify</span><span class="p">(</span><span class="dl">'</span><span class="s1">Comment approved</span><span class="dl">'</span><span class="p">);</span>
+                <span class="nf">redirect</span><span class="p">(</span><span class="dl">'</span><span class="s1">/comments</span><span class="dl">'</span><span class="p">);</span>
+            <span class="p">})</span>
+            <span class="p">.</span><span class="k">catch</span><span class="p">((</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="nf">notify</span><span class="p">(</span><span class="dl">'</span><span class="s1">Error: comment not approved</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">warning</span><span class="dl">'</span><span class="p">)</span>
+            <span class="p">})</span>
+            <span class="p">.</span><span class="k">finally</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="nf">setLoading</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+                <span class="nf">dispatch</span><span class="p">(</span><span class="nf">fetchEnd</span><span class="p">());</span> <span class="c1">// stop the global loading indicator</span>
+            <span class="p">});</span>
+    <span class="p">};</span>
+    <span class="k">return</span> <span class="p">&lt;</span><span class="nc">Button</span> <span class="na">label</span><span class="p">=</span><span class="s">"Approve"</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">handleClick</span><span class="si">}</span> <span class="na">disabled</span><span class="p">=</span><span class="si">{</span><span class="nx">loading</span><span class="si">}</span> <span class="p">/&gt;;</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">ApproveButton</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><strong>TIP</strong>: APIs often require a bit of HTTP plumbing to deal with authentication, query parameters, encoding, headers, etc. It turns out you probably already have a function that maps from a REST request to an HTTP request: your <a href="./DataProviders.md">Data Provider</a>. So it’s often better to use <code class="language-plaintext highlighter-rouge">useDataProvider</code> instead of <code class="language-plaintext highlighter-rouge">fetch</code>.</p>
+
+                </div>
+                <div class="col hide-on-small-only m3 xl3 offset-xl1">
+                    <div class="toc-wrapper">
+                        <div style="height: 1px;">
+                            <ul class="section table-of-contents pushpin">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/materialize.min.js"></script>
+    <script src="/js/prism.js"></script>
+    <script>
+        function slugify(text) {
+            return text.toString().toLowerCase()
+                .replace(/\s+/g, '-')           // Replace spaces with -
+                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+                .replace(/^-+/, '')             // Trim - from start of text
+                .replace(/-+$/, '');            // Trim - from end of text
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            /* Generate table of contents */
+            document.querySelectorAll('.markdown-section h2').forEach(element => {
+                element.classList.add('scrollspy');
+                var a = document.createElement('a');
+                a.href = "#" + slugify(element.innerText);
+                a.innerText = element.innerText;
+                var li = document.createElement('li');
+                li.appendChild(a);
+                document.querySelector('.table-of-contents').appendChild(li)
+            })
+            M.Sidenav.init(document.querySelectorAll('.sidenav'));
+            M.Pushpin.init(document.querySelector('.pushpin'), { offset: 75, top: 75 });
+            M.ScrollSpy.init(document.querySelectorAll('.scrollspy'));
+            M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+        });
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    <script type="text/javascript">
+        docsearch({
+            apiKey: '32f254b1de6a25a96665d1229b6eb8f7',
+            indexName: 'marmelab-react-admin',
+            inputSelector: '#query',
+            debug: false, // Set debug to true if you want to inspect the dropdown 
+            autocompleteOptions: {
+                appendTo: '#search',
+                hint: false,
+            }
+        }); 
+    </script>
+</body>
+
+</html>

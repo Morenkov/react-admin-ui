@@ -1,0 +1,407 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<head>
+    <title>React-admin - Authorization</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link rel="stylesheet" href="/css/style-v6.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+    <!-- You won't find analytics tags in this page. React-admin protects your privacy! -->
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <div class="nav-wrapper" style="background: linear-gradient(145deg,#027be3 11%,#1a237e 75%)">
+                <div class="left">
+                    <form action="#" onsubmit="return false;">
+                        <div class="input-field" style="position:absolute">
+                            <input type="search" name="q" id="query" size="31" maxlength="255" value=""
+                                style="vertical-align:inherit!important" />
+                            <label class="label-icon" for="test"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                        <span id="search"></span>
+                    </form>
+                </div>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li class="active"><a href="https://marmelab.com/react-admin/Readme.html">Documentation</a></li>
+                    <li><a href="https://marmelab.com/react-admin-demo">Demo</a></li>
+                    <li><a href="https://marmelab.com/en/blog/#react-admin">Blog</a></li>
+                    <li><a href="https://github.com/marmelab/react-admin">GitHub</a></li>
+                </ul>
+            </div>
+        </nav>
+        <ul id="slide-out" class="sidenav sidenav-fixed">
+            <li class="logo">
+                <a href="http://localhost:4000"><img src="http://localhost:4000/assets/logo_white.png" /></a>
+            </li>
+            <li class="version">
+                
+            </li>
+            <li ><a href="./Readme.html">Read Me</a></li>
+<li ><a href="./Tutorial.html">Tutorial</a>
+</li>
+<li ><a href="./DataProviders.html">Data
+                Providers</a></li>
+<li ><a
+                href="./Admin.html"><code>&lt;Admin&gt;</code></a>
+</li>
+<li ><a href="./Resource.html">
+                <code>&lt;Resource&gt;</code>
+        </a></li>
+<li ><a href="./List.html"><code>&lt;List&gt;</code>
+                View</a></li>
+<li ><a
+                href="./CreateEdit.html"><code>&lt;Create&gt;</code>
+                and <code>&lt;Edit&gt;</code> Views</a>
+</li>
+<li ><a href="./Show.html"><code>&lt;Show&gt;</code>
+    View</a></li>
+<li ><a
+    href="./Fields.html"><code>&lt;Field&gt;</code>
+    Components</a></li>
+<li ><a
+                href="./Inputs.html"><code>&lt;Input&gt;</code>
+                Components</a></li>
+<li ><a
+                href="./Authentication.html">Authentication</a></li>
+<li  class="active" ><a
+                href="./Authorization.html">Authorization</a></li>
+<li ><a href="./Actions.html">Querying the
+                API</a></li>
+<li ><a href="./Theming.html">Theming</a></li>
+<li ><a href="./Translation.html">Translation</a>
+</li>
+<li ><a href="./Caching.html">Caching</a>
+</li>
+<li ><a href="./CustomApp.html">Including in
+                Another App</a>
+</li>
+<li ><a href="./Reference.html">Reference</a>
+</li>
+<li ><a href="./Ecosystem.html">Ecosystem</a>
+</li>
+<li ><a href="./UnitTesting.html">Unit
+    Testing</a></li>
+<li ><a
+        href="./AdvancedTutorials.html">Advanced
+        tutorials</a></li>
+<li ><a href="./FAQ.html">FAQ</a></li>
+
+        </ul>
+
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m8 offset-m1 xl7 offset-xl1 markdown-section DocSearch-content">
+                    <h1 id="authorization">Authorization</h1>
+
+<p>Some applications may require fine-grained permissions to enable or disable access to certain features. Since there are many possible strategies (single role, multiple roles or rights, ACLs, etc.), react-admin simply provides hooks to execute your own authorization code.</p>
+
+<p>By default, a react-admin app doesn’t check authorization. However, if needed, it will rely on the <code class="language-plaintext highlighter-rouge">authProvider</code> introduced in the <a href="./Authentication.md">Authentication documentation</a> to do so. You should read that chapter first.</p>
+
+<h2 id="configuring-the-auth-provider">Configuring the Auth Provider</h2>
+
+<p>Each time react-admin needs to determine the user permissions, it calls the <code class="language-plaintext highlighter-rouge">authProvider.getPermissions()</code> method. It’s up to you to return the user permissions, be it a string (e.g. <code class="language-plaintext highlighter-rouge">'admin'</code>) or an array of roles (e.g. <code class="language-plaintext highlighter-rouge">['post_editor', 'comment_moderator', 'super_admin']</code>).</p>
+
+<p>Following is an example where the <code class="language-plaintext highlighter-rouge">authProvider</code> stores the user’s permissions in <code class="language-plaintext highlighter-rouge">localStorage</code> upon authentication, and returns these permissions when called with <code class="language-plaintext highlighter-rouge">getPermissions</code>:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/authProvider.js</span>
+<span class="k">import</span> <span class="nx">decodeJwt</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">jwt-decode</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+    <span class="na">login</span><span class="p">:</span> <span class="p">({</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">request</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Request</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://mydomain.com/authenticate</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+            <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nf">stringify</span><span class="p">({</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span> <span class="p">}),</span>
+            <span class="na">headers</span><span class="p">:</span> <span class="k">new</span> <span class="nc">Headers</span><span class="p">({</span> <span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span> <span class="p">}),</span>
+        <span class="p">});</span>
+        <span class="k">return</span> <span class="nf">fetch</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">then</span><span class="p">(</span><span class="nx">response</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="k">if </span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">status</span> <span class="o">&lt;</span> <span class="mi">200</span> <span class="o">||</span> <span class="nx">response</span><span class="p">.</span><span class="nx">status</span> <span class="o">&gt;=</span> <span class="mi">300</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">throw</span> <span class="k">new</span> <span class="nc">Error</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">statusText</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nf">json</span><span class="p">();</span>
+            <span class="p">})</span>
+            <span class="p">.</span><span class="nf">then</span><span class="p">(({</span> <span class="nx">token</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="kd">const</span> <span class="nx">decodedToken</span> <span class="o">=</span> <span class="nf">decodeJwt</span><span class="p">(</span><span class="nx">token</span><span class="p">);</span>
+                <span class="nx">localStorage</span><span class="p">.</span><span class="nf">setItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">token</span><span class="dl">'</span><span class="p">,</span> <span class="nx">token</span><span class="p">);</span>
+                <span class="nx">localStorage</span><span class="p">.</span><span class="nf">setItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">permissions</span><span class="dl">'</span><span class="p">,</span> <span class="nx">decodedToken</span><span class="p">.</span><span class="nx">permissions</span><span class="p">);</span>
+            <span class="p">});</span>
+    <span class="p">},</span>
+    <span class="na">logout</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">localStorage</span><span class="p">.</span><span class="nf">removeItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">token</span><span class="dl">'</span><span class="p">);</span>
+        <span class="nx">localStorage</span><span class="p">.</span><span class="nf">removeItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">permissions</span><span class="dl">'</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">resolve</span><span class="p">();</span>
+    <span class="p">},</span>
+    <span class="na">checkError</span><span class="p">:</span> <span class="nx">error</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="c1">// ...</span>
+    <span class="p">},</span>
+    <span class="na">checkAuth</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">localStorage</span><span class="p">.</span><span class="nf">getItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">token</span><span class="dl">'</span><span class="p">)</span> <span class="p">?</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">resolve</span><span class="p">()</span> <span class="p">:</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">reject</span><span class="p">();</span>
+    <span class="p">},</span>
+    <span class="na">getPermissions</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">role</span> <span class="o">=</span> <span class="nx">localStorage</span><span class="p">.</span><span class="nf">getItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">permissions</span><span class="dl">'</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nx">role</span> <span class="p">?</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nx">role</span><span class="p">)</span> <span class="p">:</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">reject</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h2 id="restricting-access-to-resources-or-views">Restricting Access to Resources or Views</h2>
+
+<p>Permissions can be useful to restrict access to resources or their views. To do so, you must use a function as the <code class="language-plaintext highlighter-rouge">&lt;Admin&gt;</code> only child. React-admin will call this function with the permissions returned by the <code class="language-plaintext highlighter-rouge">authProvider</code>.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">&lt;</span><span class="nc">Admin</span>
+    <span class="na">dataProvider</span><span class="p">=</span><span class="si">{</span><span class="nx">dataProvider</span><span class="si">}</span>
+    <span class="na">authProvider</span><span class="p">=</span><span class="si">{</span><span class="nx">authProvider</span><span class="si">}</span>
+<span class="p">&gt;</span>
+    <span class="si">{</span><span class="nx">permissions</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="c1">// Restrict access to the edit and remove views to admin only</span>
+        <span class="p">&lt;</span><span class="nc">Resource</span>
+            <span class="na">name</span><span class="p">=</span><span class="s">"customers"</span>
+            <span class="na">list</span><span class="p">=</span><span class="si">{</span><span class="nx">VisitorList</span><span class="si">}</span>
+            <span class="na">edit</span><span class="p">=</span><span class="si">{</span><span class="nx">permissions</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span> <span class="p">?</span> <span class="nx">VisitorEdit</span> <span class="p">:</span> <span class="kc">null</span><span class="si">}</span>
+            <span class="na">icon</span><span class="p">=</span><span class="si">{</span><span class="nx">VisitorIcon</span><span class="si">}</span>
+        <span class="p">/&gt;,</span>
+        <span class="c1">// Only include the categories resource for admin users</span>
+        <span class="nx">permissions</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span>
+            <span class="p">?</span> <span class="p">&lt;</span><span class="nc">Resource</span> <span class="na">name</span><span class="p">=</span><span class="s">"categories"</span> <span class="na">list</span><span class="p">=</span><span class="si">{</span><span class="nx">CategoryList</span><span class="si">}</span> <span class="na">edit</span><span class="p">=</span><span class="si">{</span><span class="nx">CategoryEdit</span><span class="si">}</span> <span class="na">icon</span><span class="p">=</span><span class="si">{</span><span class="nx">CategoryIcon</span><span class="si">}</span> <span class="p">/&gt;</span>
+            <span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="p">]</span><span class="si">}</span>
+<span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+</code></pre></div></div>
+
+<p>Note that the function returns an array of React elements. This is required to avoid having to wrap them in a container element which would prevent the <code class="language-plaintext highlighter-rouge">Admin</code> from working.</p>
+
+<p><strong>Tip</strong>: Even if that’s possible, be careful when completely excluding a resource (like with the <code class="language-plaintext highlighter-rouge">categories</code> resource in this example) as it will prevent you to reference this resource in the other resource views, too.</p>
+
+<h2 id="restricting-access-to-fields-and-inputs">Restricting Access to Fields and Inputs</h2>
+
+<p>You might want to display some fields or inputs only to users with specific permissions. By default, react-admin calls the <code class="language-plaintext highlighter-rouge">authProvider</code> for permissions for each resource routes, and passes them to the <code class="language-plaintext highlighter-rouge">list</code>, <code class="language-plaintext highlighter-rouge">edit</code>, <code class="language-plaintext highlighter-rouge">create</code>, and <code class="language-plaintext highlighter-rouge">show</code> components.</p>
+
+<p>Here is an example of a <code class="language-plaintext highlighter-rouge">Create</code> view with a conditional Input based on permissions:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">const</span> <span class="nx">UserCreate</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">permissions</span><span class="p">,</span> <span class="p">...</span><span class="nx">props</span> <span class="p">})</span> <span class="o">=&gt;</span>
+    <span class="p">&lt;</span><span class="nc">Create</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nc">SimpleForm</span>
+            <span class="na">defaultValue</span><span class="p">=</span><span class="si">{</span><span class="p">{</span> <span class="na">role</span><span class="p">:</span> <span class="dl">'</span><span class="s1">user</span><span class="dl">'</span> <span class="p">}</span><span class="si">}</span>
+        <span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">TextInput</span> <span class="na">source</span><span class="p">=</span><span class="s">"name"</span> <span class="na">validate</span><span class="p">=</span><span class="si">{</span><span class="p">[</span><span class="nf">required</span><span class="p">()]</span><span class="si">}</span> <span class="p">/&gt;</span>
+            <span class="si">{</span><span class="nx">permissions</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span> <span class="o">&amp;&amp;</span>
+                <span class="p">&lt;</span><span class="nc">TextInput</span> <span class="na">source</span><span class="p">=</span><span class="s">"role"</span> <span class="na">validate</span><span class="p">=</span><span class="si">{</span><span class="p">[</span><span class="nf">required</span><span class="p">()]</span><span class="si">}</span> <span class="p">/&gt;</span><span class="si">}</span>
+        <span class="p">&lt;/</span><span class="nc">SimpleForm</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nc">Create</span><span class="p">&gt;;</span>
+</code></pre></div></div>
+
+<p>This also works inside an <code class="language-plaintext highlighter-rouge">Edition</code> view with a <code class="language-plaintext highlighter-rouge">TabbedForm</code>, and you can even hide a <code class="language-plaintext highlighter-rouge">FormTab</code> completely:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">const</span> <span class="nx">UserEdit</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">permissions</span><span class="p">,</span> <span class="p">...</span><span class="nx">props</span> <span class="p">})</span> <span class="o">=&gt;</span>
+    <span class="p">&lt;</span><span class="nc">Edit</span> <span class="na">title</span><span class="p">=</span><span class="si">{</span><span class="p">&lt;</span><span class="nc">UserTitle</span> <span class="p">/&gt;</span><span class="si">}</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nc">TabbedForm</span> <span class="na">defaultValue</span><span class="p">=</span><span class="si">{</span><span class="p">{</span> <span class="na">role</span><span class="p">:</span> <span class="dl">'</span><span class="s1">user</span><span class="dl">'</span> <span class="p">}</span><span class="si">}</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">FormTab</span> <span class="na">label</span><span class="p">=</span><span class="s">"user.form.summary"</span><span class="p">&gt;</span>
+                <span class="si">{</span><span class="nx">permissions</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span> <span class="o">&amp;&amp;</span> <span class="p">&lt;</span><span class="nc">TextInput</span> <span class="na">disabled</span> <span class="na">source</span><span class="p">=</span><span class="s">"id"</span> <span class="p">/&gt;</span><span class="si">}</span>
+                <span class="p">&lt;</span><span class="nc">TextInput</span> <span class="na">source</span><span class="p">=</span><span class="s">"name"</span> <span class="na">validate</span><span class="p">=</span><span class="si">{</span><span class="nf">required</span><span class="p">()</span><span class="si">}</span> <span class="p">/&gt;</span>
+            <span class="p">&lt;/</span><span class="nc">FormTab</span><span class="p">&gt;</span>
+            <span class="si">{</span><span class="nx">permissions</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span> <span class="o">&amp;&amp;</span>
+                <span class="p">&lt;</span><span class="nc">FormTab</span> <span class="na">label</span><span class="p">=</span><span class="s">"user.form.security"</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nc">TextInput</span> <span class="na">source</span><span class="p">=</span><span class="s">"role"</span> <span class="na">validate</span><span class="p">=</span><span class="si">{</span><span class="nf">required</span><span class="p">()</span><span class="si">}</span> <span class="p">/&gt;</span>
+                <span class="p">&lt;/</span><span class="nc">FormTab</span><span class="p">&gt;</span><span class="si">}</span>
+        <span class="p">&lt;/</span><span class="nc">TabbedForm</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nc">Edit</span><span class="p">&gt;;</span>
+</code></pre></div></div>
+
+<p>What about the <code class="language-plaintext highlighter-rouge">List</code> view, the <code class="language-plaintext highlighter-rouge">DataGrid</code>, <code class="language-plaintext highlighter-rouge">SimpleList</code> and <code class="language-plaintext highlighter-rouge">Filter</code> components? It works there, too. And in the next example, the <code class="language-plaintext highlighter-rouge">permissions</code> prop is passed down to a custom <code class="language-plaintext highlighter-rouge">filters</code> component.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">UserFilter</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">permissions</span><span class="p">,</span> <span class="p">...</span><span class="nx">props</span> <span class="p">})</span> <span class="o">=&gt;</span>
+    <span class="p">&lt;</span><span class="nc">Filter</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nc">TextInput</span>
+            <span class="na">label</span><span class="p">=</span><span class="s">"user.list.search"</span>
+            <span class="na">source</span><span class="p">=</span><span class="s">"q"</span>
+            <span class="na">alwaysOn</span>
+        <span class="p">/&gt;</span>
+        <span class="p">&lt;</span><span class="nc">TextInput</span> <span class="na">source</span><span class="p">=</span><span class="s">"name"</span> <span class="p">/&gt;</span>
+        <span class="si">{</span><span class="nx">permissions</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span> <span class="o">&amp;&amp;</span> <span class="p">&lt;</span><span class="nc">TextInput</span> <span class="na">source</span><span class="p">=</span><span class="s">"role"</span> <span class="p">/&gt;</span><span class="si">}</span>
+    <span class="p">&lt;/</span><span class="nc">Filter</span><span class="p">&gt;;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">UserList</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">permissions</span><span class="p">,</span> <span class="p">...</span><span class="nx">props</span> <span class="p">})</span> <span class="o">=&gt;</span>
+    <span class="p">&lt;</span><span class="nc">List</span>
+        <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span>
+        <span class="na">filters</span><span class="p">=</span><span class="si">{</span><span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nc">UserFilter</span> <span class="na">permissions</span><span class="p">=</span><span class="si">{</span><span class="nx">permissions</span><span class="si">}</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span> <span class="p">/&gt;</span><span class="si">}</span>
+    <span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nc">Datagrid</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">TextField</span> <span class="na">source</span><span class="p">=</span><span class="s">"id"</span> <span class="p">/&gt;</span>
+            <span class="p">&lt;</span><span class="nc">TextField</span> <span class="na">source</span><span class="p">=</span><span class="s">"name"</span> <span class="p">/&gt;</span>
+            <span class="si">{</span><span class="nx">permissions</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span> <span class="o">&amp;&amp;</span> <span class="p">&lt;</span><span class="nc">TextField</span> <span class="na">source</span><span class="p">=</span><span class="s">"role"</span> <span class="p">/&gt;</span><span class="si">}</span>
+            <span class="si">{</span><span class="nx">permissions</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span> <span class="o">&amp;&amp;</span> <span class="p">&lt;</span><span class="nc">EditButton</span> <span class="p">/&gt;</span><span class="si">}</span>
+            <span class="p">&lt;</span><span class="nc">ShowButton</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;/</span><span class="nc">Datagrid</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nc">List</span><span class="p">&gt;;</span>
+</code></pre></div></div>
+
+<h2 id="restricting-access-to-the-dashboard">Restricting Access to the Dashboard</h2>
+
+<p>React-admin injects the permissions into the component provided as a <a href="./Admin.md#dashboard"><code class="language-plaintext highlighter-rouge">dashboard</code></a>, too:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/Dashboard.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Card</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/Card</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">CardContent</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/CardContent</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Title</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="k">default </span><span class="p">({</span> <span class="nx">permissions</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Card</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nc">Title</span> <span class="na">title</span><span class="p">=</span><span class="s">"Dashboard"</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;</span><span class="nc">CardContent</span><span class="p">&gt;</span>Lorem ipsum sic dolor amet...<span class="p">&lt;/</span><span class="nc">CardContent</span><span class="p">&gt;</span>
+        <span class="si">{</span><span class="nx">permissions</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span>
+            <span class="p">?</span> <span class="p">&lt;</span><span class="nc">CardContent</span><span class="p">&gt;</span>Sensitive data<span class="p">&lt;/</span><span class="nc">CardContent</span><span class="p">&gt;</span>
+            <span class="p">:</span> <span class="kc">null</span>
+        <span class="si">}</span>
+    <span class="p">&lt;/</span><span class="nc">Card</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="usepermissions-hook"><code class="language-plaintext highlighter-rouge">usePermissions()</code> Hook</h2>
+
+<p>You might want to check user permissions inside a <a href="./Admin.md#customroutes">custom page</a>. That’s the purpose of the <code class="language-plaintext highlighter-rouge">usePermissions()</code> hook, which calls the <code class="language-plaintext highlighter-rouge">authProvider.getPermissions()</code> method on mount, and returns the result when available:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/MyPage.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Card</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/Card</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">CardContent</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/CardContent</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">usePermissions</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">MyPage</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="p">{</span> <span class="nx">permissions</span> <span class="p">}</span> <span class="o">=</span> <span class="nf">usePermissions</span><span class="p">();</span>
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">Card</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">CardContent</span><span class="p">&gt;</span>Lorem ipsum sic dolor amet...<span class="p">&lt;/</span><span class="nc">CardContent</span><span class="p">&gt;</span>
+            <span class="si">{</span><span class="nx">permissions</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span> <span class="o">&amp;&amp;</span>
+                <span class="p">&lt;</span><span class="nc">CardContent</span><span class="p">&gt;</span>Sensitive data<span class="p">&lt;/</span><span class="nc">CardContent</span><span class="p">&gt;</span>
+            <span class="si">}</span>
+        <span class="p">&lt;/</span><span class="nc">Card</span><span class="p">&gt;</span>
+    <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">MyPage</span><span class="p">;</span>
+
+<span class="c1">// in src/customRoutes.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Route</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-router-dom</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">MyPage</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./MyPage</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="p">[</span>
+    <span class="p">&lt;</span><span class="nc">Route</span> <span class="na">exact</span> <span class="na">path</span><span class="p">=</span><span class="s">"/baz"</span> <span class="na">component</span><span class="p">=</span><span class="si">{</span><span class="nx">MyPage</span><span class="si">}</span> <span class="p">/&gt;,</span>
+<span class="p">];</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">usePermissions</code> hook is optimistic: it doesn’t block rendering during the <code class="language-plaintext highlighter-rouge">authProvider</code> call. In the above example, the <code class="language-plaintext highlighter-rouge">MyPage</code> component renders even before getting the response from the <code class="language-plaintext highlighter-rouge">authProvider</code>. To avoid a blink in the interface while the <code class="language-plaintext highlighter-rouge">authProvider</code> is answering, use the <code class="language-plaintext highlighter-rouge">loaded</code> return value of <code class="language-plaintext highlighter-rouge">usePermissions()</code>:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">MyPage</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="p">{</span> <span class="nx">loaded</span><span class="p">,</span> <span class="nx">permissions</span> <span class="p">}</span> <span class="o">=</span> <span class="nf">usePermissions</span><span class="p">();</span>
+    <span class="k">return</span> <span class="nx">loaded</span> <span class="p">?</span> <span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">Card</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">CardContent</span><span class="p">&gt;</span>Lorem ipsum sic dolor amet...<span class="p">&lt;/</span><span class="nc">CardContent</span><span class="p">&gt;</span>
+            <span class="si">{</span><span class="nx">permissions</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span> <span class="o">&amp;&amp;</span>
+                <span class="p">&lt;</span><span class="nc">CardContent</span><span class="p">&gt;</span>Sensitive data<span class="p">&lt;/</span><span class="nc">CardContent</span><span class="p">&gt;</span>
+            <span class="si">}</span>
+        <span class="p">&lt;/</span><span class="nc">Card</span><span class="p">&gt;</span>
+    <span class="p">)</span> <span class="p">:</span> <span class="kc">null</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="restricting-access-to-a-menu">Restricting Access to a Menu</h2>
+
+<p>What if you want to check the permissions inside a <a href="./Admin.md#menu">custom menu</a>? Much like getting permissions inside a custom page, you’ll have to use the <code class="language-plaintext highlighter-rouge">usePermissions</code> hook:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/myMenu.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">MenuItemLink</span><span class="p">,</span> <span class="nx">usePermissions</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">Menu</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">onMenuClick</span><span class="p">,</span> <span class="nx">logout</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="p">{</span> <span class="nx">permissions</span> <span class="p">}</span> <span class="o">=</span> <span class="nf">usePermissions</span><span class="p">();</span>
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">MenuItemLink</span> <span class="na">to</span><span class="p">=</span><span class="s">"/posts"</span> <span class="na">primaryText</span><span class="p">=</span><span class="s">"Posts"</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">onMenuClick</span><span class="si">}</span> <span class="p">/&gt;</span>
+            <span class="p">&lt;</span><span class="nc">MenuItemLink</span> <span class="na">to</span><span class="p">=</span><span class="s">"/comments"</span> <span class="na">primaryText</span><span class="p">=</span><span class="s">"Comments"</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">onMenuClick</span><span class="si">}</span> <span class="p">/&gt;</span>
+            <span class="si">{</span><span class="nx">permissions</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span> <span class="o">&amp;&amp;</span>
+                <span class="p">&lt;</span><span class="nc">MenuItemLink</span> <span class="na">to</span><span class="p">=</span><span class="s">"/custom-route"</span> <span class="na">primaryText</span><span class="p">=</span><span class="s">"Miscellaneous"</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">onMenuClick</span><span class="si">}</span> <span class="p">/&gt;</span>
+            <span class="si">}</span>
+            <span class="si">{</span><span class="nx">logout</span><span class="si">}</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+                </div>
+                <div class="col hide-on-small-only m3 xl3 offset-xl1">
+                    <div class="toc-wrapper">
+                        <div style="height: 1px;">
+                            <ul class="section table-of-contents pushpin">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/materialize.min.js"></script>
+    <script src="/js/prism.js"></script>
+    <script>
+        function slugify(text) {
+            return text.toString().toLowerCase()
+                .replace(/\s+/g, '-')           // Replace spaces with -
+                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+                .replace(/^-+/, '')             // Trim - from start of text
+                .replace(/-+$/, '');            // Trim - from end of text
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            /* Generate table of contents */
+            document.querySelectorAll('.markdown-section h2').forEach(element => {
+                element.classList.add('scrollspy');
+                var a = document.createElement('a');
+                a.href = "#" + slugify(element.innerText);
+                a.innerText = element.innerText;
+                var li = document.createElement('li');
+                li.appendChild(a);
+                document.querySelector('.table-of-contents').appendChild(li)
+            })
+            M.Sidenav.init(document.querySelectorAll('.sidenav'));
+            M.Pushpin.init(document.querySelector('.pushpin'), { offset: 75, top: 75 });
+            M.ScrollSpy.init(document.querySelectorAll('.scrollspy'));
+            M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+        });
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    <script type="text/javascript">
+        docsearch({
+            apiKey: '32f254b1de6a25a96665d1229b6eb8f7',
+            indexName: 'marmelab-react-admin',
+            inputSelector: '#query',
+            debug: false, // Set debug to true if you want to inspect the dropdown 
+            autocompleteOptions: {
+                appendTo: '#search',
+                hint: false,
+            }
+        }); 
+    </script>
+</body>
+
+</html>

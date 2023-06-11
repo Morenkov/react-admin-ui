@@ -1,0 +1,286 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<head>
+    <title>React-admin - The Resource Component</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link rel="stylesheet" href="/css/style-v6.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+    <!-- You won't find analytics tags in this page. React-admin protects your privacy! -->
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <div class="nav-wrapper" style="background: linear-gradient(145deg,#027be3 11%,#1a237e 75%)">
+                <div class="left">
+                    <form action="#" onsubmit="return false;">
+                        <div class="input-field" style="position:absolute">
+                            <input type="search" name="q" id="query" size="31" maxlength="255" value=""
+                                style="vertical-align:inherit!important" />
+                            <label class="label-icon" for="test"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                        <span id="search"></span>
+                    </form>
+                </div>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li class="active"><a href="https://marmelab.com/react-admin/Readme.html">Documentation</a></li>
+                    <li><a href="https://marmelab.com/react-admin-demo">Demo</a></li>
+                    <li><a href="https://marmelab.com/en/blog/#react-admin">Blog</a></li>
+                    <li><a href="https://github.com/marmelab/react-admin">GitHub</a></li>
+                </ul>
+            </div>
+        </nav>
+        <ul id="slide-out" class="sidenav sidenav-fixed">
+            <li class="logo">
+                <a href="http://localhost:4000"><img src="http://localhost:4000/assets/logo_white.png" /></a>
+            </li>
+            <li class="version">
+                
+            </li>
+            <li ><a href="./Readme.html">Read Me</a></li>
+<li ><a href="./Tutorial.html">Tutorial</a>
+</li>
+<li ><a href="./DataProviders.html">Data
+                Providers</a></li>
+<li ><a
+                href="./Admin.html"><code>&lt;Admin&gt;</code></a>
+</li>
+<li  class="active" ><a href="./Resource.html">
+                <code>&lt;Resource&gt;</code>
+        </a></li>
+<li ><a href="./List.html"><code>&lt;List&gt;</code>
+                View</a></li>
+<li ><a
+                href="./CreateEdit.html"><code>&lt;Create&gt;</code>
+                and <code>&lt;Edit&gt;</code> Views</a>
+</li>
+<li ><a href="./Show.html"><code>&lt;Show&gt;</code>
+    View</a></li>
+<li ><a
+    href="./Fields.html"><code>&lt;Field&gt;</code>
+    Components</a></li>
+<li ><a
+                href="./Inputs.html"><code>&lt;Input&gt;</code>
+                Components</a></li>
+<li ><a
+                href="./Authentication.html">Authentication</a></li>
+<li ><a
+                href="./Authorization.html">Authorization</a></li>
+<li ><a href="./Actions.html">Querying the
+                API</a></li>
+<li ><a href="./Theming.html">Theming</a></li>
+<li ><a href="./Translation.html">Translation</a>
+</li>
+<li ><a href="./Caching.html">Caching</a>
+</li>
+<li ><a href="./CustomApp.html">Including in
+                Another App</a>
+</li>
+<li ><a href="./Reference.html">Reference</a>
+</li>
+<li ><a href="./Ecosystem.html">Ecosystem</a>
+</li>
+<li ><a href="./UnitTesting.html">Unit
+    Testing</a></li>
+<li ><a
+        href="./AdvancedTutorials.html">Advanced
+        tutorials</a></li>
+<li ><a href="./FAQ.html">FAQ</a></li>
+
+        </ul>
+
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m8 offset-m1 xl7 offset-xl1 markdown-section DocSearch-content">
+                    <h1 id="the-resource-component">The <code class="language-plaintext highlighter-rouge">&lt;Resource&gt;</code> component</h1>
+
+<p>A <code class="language-plaintext highlighter-rouge">&lt;Resource&gt;</code> component maps one API endpoint to a CRUD interface. For instance, the following admin app offers a read-only interface to the resources exposed by the JSONPlaceholder API at <a href="https://jsonplaceholder.typicode.com/posts"><code class="language-plaintext highlighter-rouge">https://jsonplaceholder.typicode.com/posts</code></a> and <a href="https://jsonplaceholder.typicode.com/users"><code class="language-plaintext highlighter-rouge">https://jsonplaceholder.typicode.com/users</code></a>:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/App.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Admin</span><span class="p">,</span> <span class="nx">Resource</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">jsonServerProvider</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">ra-data-json-server</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="p">{</span> <span class="nx">PostList</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./posts</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">UserList</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./users</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Admin</span> <span class="na">dataProvider</span><span class="p">=</span><span class="si">{</span><span class="nf">jsonServerProvider</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://jsonplaceholder.typicode.com</span><span class="dl">'</span><span class="p">)</span><span class="si">}</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nc">Resource</span> <span class="na">name</span><span class="p">=</span><span class="s">"posts"</span> <span class="na">list</span><span class="p">=</span><span class="si">{</span><span class="nx">PostList</span><span class="si">}</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;</span><span class="nc">Resource</span> <span class="na">name</span><span class="p">=</span><span class="s">"users"</span> <span class="na">list</span><span class="p">=</span><span class="si">{</span><span class="nx">UserList</span><span class="si">}</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">&lt;Resource&gt;</code> allows you to define a component for each CRUD operation, using the following prop names:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">list</code> (if defined, the resource is displayed on the Menu)</li>
+  <li><code class="language-plaintext highlighter-rouge">create</code></li>
+  <li><code class="language-plaintext highlighter-rouge">edit</code></li>
+  <li><code class="language-plaintext highlighter-rouge">show</code></li>
+</ul>
+
+<p>Here is a more complete admin, with components for all the CRUD operations:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Admin</span><span class="p">,</span> <span class="nx">Resource</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">jsonServerProvider</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">ra-data-json-server</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="p">{</span> <span class="nx">PostList</span><span class="p">,</span> <span class="nx">PostCreate</span><span class="p">,</span> <span class="nx">PostEdit</span><span class="p">,</span> <span class="nx">PostShow</span><span class="p">,</span> <span class="nx">PostIcon</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./posts</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">UserList</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./posts</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">CommentList</span><span class="p">,</span> <span class="nx">CommentEdit</span><span class="p">,</span> <span class="nx">CommentCreate</span><span class="p">,</span> <span class="nx">CommentIcon</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./comments</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Admin</span> <span class="na">dataProvider</span><span class="p">=</span><span class="si">{</span><span class="nf">jsonServerProvider</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://jsonplaceholder.typicode.com</span><span class="dl">'</span><span class="p">)</span><span class="si">}</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nc">Resource</span> <span class="na">name</span><span class="p">=</span><span class="s">"posts"</span> <span class="na">list</span><span class="p">=</span><span class="si">{</span><span class="nx">PostList</span><span class="si">}</span> <span class="na">create</span><span class="p">=</span><span class="si">{</span><span class="nx">PostCreate</span><span class="si">}</span> <span class="na">edit</span><span class="p">=</span><span class="si">{</span><span class="nx">PostEdit</span><span class="si">}</span> <span class="na">show</span><span class="p">=</span><span class="si">{</span><span class="nx">PostShow</span><span class="si">}</span> <span class="na">icon</span><span class="p">=</span><span class="si">{</span><span class="nx">PostIcon</span><span class="si">}</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;</span><span class="nc">Resource</span> <span class="na">name</span><span class="p">=</span><span class="s">"users"</span> <span class="na">list</span><span class="p">=</span><span class="si">{</span><span class="nx">UserList</span><span class="si">}</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;</span><span class="nc">Resource</span> <span class="na">name</span><span class="p">=</span><span class="s">"comments"</span> <span class="na">list</span><span class="p">=</span><span class="si">{</span><span class="nx">CommentList</span><span class="si">}</span> <span class="na">create</span><span class="p">=</span><span class="si">{</span><span class="nx">CommentCreate</span><span class="si">}</span> <span class="na">edit</span><span class="p">=</span><span class="si">{</span><span class="nx">CommentEdit</span><span class="si">}</span> <span class="na">icon</span><span class="p">=</span><span class="si">{</span><span class="nx">CommentIcon</span><span class="si">}</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;</span><span class="nc">Resource</span> <span class="na">name</span><span class="p">=</span><span class="s">"tags"</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p><strong>Tip</strong>: Under the hood, the <code class="language-plaintext highlighter-rouge">&lt;Resource&gt;</code> component uses react-router to create several routes:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">/</code> maps to the <code class="language-plaintext highlighter-rouge">list</code> component</li>
+  <li><code class="language-plaintext highlighter-rouge">/create</code> maps to the <code class="language-plaintext highlighter-rouge">create</code> component</li>
+  <li><code class="language-plaintext highlighter-rouge">/:id</code> maps to the <code class="language-plaintext highlighter-rouge">edit</code> component</li>
+  <li><code class="language-plaintext highlighter-rouge">/:id/show</code> maps to the <code class="language-plaintext highlighter-rouge">show</code> component</li>
+</ul>
+
+<p><strong>Tip</strong>: You must add a <code class="language-plaintext highlighter-rouge">&lt;Resource&gt;</code> when you declare a reference (via <code class="language-plaintext highlighter-rouge">&lt;ReferenceField&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;ReferenceArrayField&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;ReferenceManyField&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;ReferenceInput&gt;</code> or <code class="language-plaintext highlighter-rouge">&lt;ReferenceArrayInput&gt;</code>), because react-admin uses resources to define the data store structure. That’s why there is an empty <code class="language-plaintext highlighter-rouge">tag</code> resource in the example above.</p>
+
+<p><code class="language-plaintext highlighter-rouge">&lt;Resource&gt;</code> also accepts additional props:</p>
+
+<ul>
+  <li><a href="#name"><code class="language-plaintext highlighter-rouge">name</code></a></li>
+  <li><a href="#icon"><code class="language-plaintext highlighter-rouge">icon</code></a></li>
+  <li><a href="#icon"><code class="language-plaintext highlighter-rouge">options</code></a></li>
+</ul>
+
+<h2 id="name"><code class="language-plaintext highlighter-rouge">name</code></h2>
+
+<p>React-admin uses the <code class="language-plaintext highlighter-rouge">name</code> prop both to determine the API endpoint (passed to the <code class="language-plaintext highlighter-rouge">dataProvider</code>), and to form the URL for the resource.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">&lt;</span><span class="nc">Resource</span> <span class="na">name</span><span class="p">=</span><span class="s">"posts"</span> <span class="na">list</span><span class="p">=</span><span class="si">{</span><span class="nx">PostList</span><span class="si">}</span> <span class="na">create</span><span class="p">=</span><span class="si">{</span><span class="nx">PostCreate</span><span class="si">}</span> <span class="na">edit</span><span class="p">=</span><span class="si">{</span><span class="nx">PostEdit</span><span class="si">}</span> <span class="na">show</span><span class="p">=</span><span class="si">{</span><span class="nx">PostShow</span><span class="si">}</span> <span class="p">/&gt;</span>
+</code></pre></div></div>
+
+<p>For this resource react-admin will fetch the <code class="language-plaintext highlighter-rouge">https://jsonplaceholder.typicode.com/posts</code> endpoint for data.</p>
+
+<p>The routing will map the component as follows:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">/posts/</code> maps to <code class="language-plaintext highlighter-rouge">PostList</code></li>
+  <li><code class="language-plaintext highlighter-rouge">/posts/create</code> maps to <code class="language-plaintext highlighter-rouge">PostCreate</code></li>
+  <li><code class="language-plaintext highlighter-rouge">/posts/:id</code> maps to <code class="language-plaintext highlighter-rouge">PostEdit</code></li>
+  <li><code class="language-plaintext highlighter-rouge">/posts/:id/show</code> maps to <code class="language-plaintext highlighter-rouge">PostShow</code></li>
+</ul>
+
+<p><strong>Tip</strong>: If you want to use a special API endpoint (e.g. ‘https://jsonplaceholder.typicode.com/my-custom-posts-endpoint’) without altering the URL in the react-admin application (so still use <code class="language-plaintext highlighter-rouge">/posts</code>), write the mapping from the resource <code class="language-plaintext highlighter-rouge">name</code> (<code class="language-plaintext highlighter-rouge">posts</code>) to the API endpoint (<code class="language-plaintext highlighter-rouge">my-custom-posts-endpoint</code>) in your own <a href="./Admin.md#dataprovider"><code class="language-plaintext highlighter-rouge">dataProvider</code></a></p>
+
+<h2 id="icon"><code class="language-plaintext highlighter-rouge">icon</code></h2>
+
+<p>React-admin will render the <code class="language-plaintext highlighter-rouge">icon</code> prop component in the menu:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/App.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">PostIcon</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/icons/Book</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">UserIcon</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/icons/People</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Admin</span><span class="p">,</span> <span class="nx">Resource</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">jsonServerProvider</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">ra-data-json-server</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="p">{</span> <span class="nx">PostList</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./posts</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Admin</span> <span class="na">dataProvider</span><span class="p">=</span><span class="si">{</span><span class="nf">jsonServerProvider</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://jsonplaceholder.typicode.com</span><span class="dl">'</span><span class="p">)</span><span class="si">}</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nc">Resource</span> <span class="na">name</span><span class="p">=</span><span class="s">"posts"</span> <span class="na">list</span><span class="p">=</span><span class="si">{</span><span class="nx">PostList</span><span class="si">}</span> <span class="na">icon</span><span class="p">=</span><span class="si">{</span><span class="nx">PostIcon</span><span class="si">}</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;</span><span class="nc">Resource</span> <span class="na">name</span><span class="p">=</span><span class="s">"users"</span> <span class="na">list</span><span class="p">=</span><span class="si">{</span><span class="nx">UserList</span><span class="si">}</span> <span class="na">icon</span><span class="p">=</span><span class="si">{</span><span class="nx">UserIcon</span><span class="si">}</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="options">options</h2>
+
+<p><code class="language-plaintext highlighter-rouge">options.label</code> allows to customize the display name of a given resource in the menu.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">&lt;</span><span class="nc">Resource</span> <span class="na">name</span><span class="p">=</span><span class="s">"v2/posts"</span> <span class="na">options</span><span class="p">=</span><span class="si">{</span><span class="p">{</span> <span class="na">label</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Posts</span><span class="dl">'</span> <span class="p">}</span><span class="si">}</span> <span class="na">list</span><span class="p">=</span><span class="si">{</span><span class="nx">PostList</span><span class="si">}</span> <span class="p">/&gt;</span>
+</code></pre></div></div>
+
+
+                </div>
+                <div class="col hide-on-small-only m3 xl3 offset-xl1">
+                    <div class="toc-wrapper">
+                        <div style="height: 1px;">
+                            <ul class="section table-of-contents pushpin">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/materialize.min.js"></script>
+    <script src="/js/prism.js"></script>
+    <script>
+        function slugify(text) {
+            return text.toString().toLowerCase()
+                .replace(/\s+/g, '-')           // Replace spaces with -
+                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+                .replace(/^-+/, '')             // Trim - from start of text
+                .replace(/-+$/, '');            // Trim - from end of text
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            /* Generate table of contents */
+            document.querySelectorAll('.markdown-section h2').forEach(element => {
+                element.classList.add('scrollspy');
+                var a = document.createElement('a');
+                a.href = "#" + slugify(element.innerText);
+                a.innerText = element.innerText;
+                var li = document.createElement('li');
+                li.appendChild(a);
+                document.querySelector('.table-of-contents').appendChild(li)
+            })
+            M.Sidenav.init(document.querySelectorAll('.sidenav'));
+            M.Pushpin.init(document.querySelector('.pushpin'), { offset: 75, top: 75 });
+            M.ScrollSpy.init(document.querySelectorAll('.scrollspy'));
+            M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+        });
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    <script type="text/javascript">
+        docsearch({
+            apiKey: '32f254b1de6a25a96665d1229b6eb8f7',
+            indexName: 'marmelab-react-admin',
+            inputSelector: '#query',
+            debug: false, // Set debug to true if you want to inspect the dropdown 
+            autocompleteOptions: {
+                appendTo: '#search',
+                hint: false,
+            }
+        }); 
+    </script>
+</body>
+
+</html>

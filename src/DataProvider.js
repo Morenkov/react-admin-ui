@@ -34,6 +34,11 @@ export default {
                     rating: params.filter.rating
                 })}`;
             }
+            if (resource === 'order') {
+                url = `${apiUrl}/${resource}/get-by-status?${stringify({
+                    status: params.filter.status
+                })}`;
+            }
         } else {
             url = `${apiUrl}/${resource}?${stringify(query)}`;
         }

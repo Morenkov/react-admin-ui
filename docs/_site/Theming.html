@@ -1,0 +1,1176 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<head>
+    <title>React-admin - Theming</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link rel="stylesheet" href="/css/style-v6.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+    <!-- You won't find analytics tags in this page. React-admin protects your privacy! -->
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <div class="nav-wrapper" style="background: linear-gradient(145deg,#027be3 11%,#1a237e 75%)">
+                <div class="left">
+                    <form action="#" onsubmit="return false;">
+                        <div class="input-field" style="position:absolute">
+                            <input type="search" name="q" id="query" size="31" maxlength="255" value=""
+                                style="vertical-align:inherit!important" />
+                            <label class="label-icon" for="test"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                        <span id="search"></span>
+                    </form>
+                </div>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li class="active"><a href="https://marmelab.com/react-admin/Readme.html">Documentation</a></li>
+                    <li><a href="https://marmelab.com/react-admin-demo">Demo</a></li>
+                    <li><a href="https://marmelab.com/en/blog/#react-admin">Blog</a></li>
+                    <li><a href="https://github.com/marmelab/react-admin">GitHub</a></li>
+                </ul>
+            </div>
+        </nav>
+        <ul id="slide-out" class="sidenav sidenav-fixed">
+            <li class="logo">
+                <a href="http://localhost:4000"><img src="http://localhost:4000/assets/logo_white.png" /></a>
+            </li>
+            <li class="version">
+                
+            </li>
+            <li ><a href="./Readme.html">Read Me</a></li>
+<li ><a href="./Tutorial.html">Tutorial</a>
+</li>
+<li ><a href="./DataProviders.html">Data
+                Providers</a></li>
+<li ><a
+                href="./Admin.html"><code>&lt;Admin&gt;</code></a>
+</li>
+<li ><a href="./Resource.html">
+                <code>&lt;Resource&gt;</code>
+        </a></li>
+<li ><a href="./List.html"><code>&lt;List&gt;</code>
+                View</a></li>
+<li ><a
+                href="./CreateEdit.html"><code>&lt;Create&gt;</code>
+                and <code>&lt;Edit&gt;</code> Views</a>
+</li>
+<li ><a href="./Show.html"><code>&lt;Show&gt;</code>
+    View</a></li>
+<li ><a
+    href="./Fields.html"><code>&lt;Field&gt;</code>
+    Components</a></li>
+<li ><a
+                href="./Inputs.html"><code>&lt;Input&gt;</code>
+                Components</a></li>
+<li ><a
+                href="./Authentication.html">Authentication</a></li>
+<li ><a
+                href="./Authorization.html">Authorization</a></li>
+<li ><a href="./Actions.html">Querying the
+                API</a></li>
+<li  class="active" ><a href="./Theming.html">Theming</a></li>
+<li ><a href="./Translation.html">Translation</a>
+</li>
+<li ><a href="./Caching.html">Caching</a>
+</li>
+<li ><a href="./CustomApp.html">Including in
+                Another App</a>
+</li>
+<li ><a href="./Reference.html">Reference</a>
+</li>
+<li ><a href="./Ecosystem.html">Ecosystem</a>
+</li>
+<li ><a href="./UnitTesting.html">Unit
+    Testing</a></li>
+<li ><a
+        href="./AdvancedTutorials.html">Advanced
+        tutorials</a></li>
+<li ><a href="./FAQ.html">FAQ</a></li>
+
+        </ul>
+
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m8 offset-m1 xl7 offset-xl1 markdown-section DocSearch-content">
+                    <h1 id="theming">Theming</h1>
+
+<p>Whether you need to adjust a CSS rule for a single component, or change the color of the labels in the entire app, you’re covered!</p>
+
+<h2 id="overriding-a-component-style">Overriding A Component Style</h2>
+
+<p>Every react-admin component provides a <code class="language-plaintext highlighter-rouge">className</code> property, which is always applied to the root element.</p>
+
+<p>Here is an example customizing an <code class="language-plaintext highlighter-rouge">EditButton</code> component inside a <code class="language-plaintext highlighter-rouge">Datagrid</code>, using its <code class="language-plaintext highlighter-rouge">className</code> property and the <code class="language-plaintext highlighter-rouge">makeStyle</code> hook from Material-UI:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">NumberField</span><span class="p">,</span> <span class="nx">List</span><span class="p">,</span> <span class="nx">Datagrid</span><span class="p">,</span> <span class="nx">TextField</span><span class="p">,</span> <span class="nx">EditButton</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">makeStyles</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/styles</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">useStyles</span> <span class="o">=</span> <span class="nf">makeStyles</span><span class="p">({</span>
+    <span class="na">button</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">fontWeight</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bold</span><span class="dl">'</span><span class="p">,</span>
+        <span class="c1">// This is JSS syntax to target a deeper element using css selector, here the svg icon for this button</span>
+        <span class="dl">'</span><span class="s1">&amp; svg</span><span class="dl">'</span><span class="p">:</span> <span class="p">{</span> <span class="na">color</span><span class="p">:</span> <span class="dl">'</span><span class="s1">orange</span><span class="dl">'</span> <span class="p">}</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+
+<span class="kd">const</span> <span class="nx">MyEditButton</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">classes</span> <span class="o">=</span> <span class="nf">useStyles</span><span class="p">();</span>
+    <span class="k">return</span> <span class="p">&lt;</span><span class="nc">EditButton</span> <span class="na">className</span><span class="p">=</span><span class="si">{</span><span class="nx">classes</span><span class="p">.</span><span class="nx">button</span><span class="si">}</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span> <span class="p">/&gt;;</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">ProductList</span> <span class="o">=</span> <span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">List</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nc">Datagrid</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">TextField</span> <span class="na">source</span><span class="p">=</span><span class="s">"sku"</span> <span class="p">/&gt;</span>
+            <span class="p">&lt;</span><span class="nc">TextField</span> <span class="na">source</span><span class="p">=</span><span class="s">"price"</span> <span class="p">/&gt;</span>
+            <span class="p">&lt;</span><span class="nc">MyEditButton</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;/</span><span class="nc">Datagrid</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nc">List</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>For some components, you may want to override not only the root component style, but also the style of components inside the root. In this case, the <code class="language-plaintext highlighter-rouge">className</code> property isn’t enough. You can take advantage of the <code class="language-plaintext highlighter-rouge">classes</code> property to customize the classes that the component uses internally.</p>
+
+<p>Here is an example using the <code class="language-plaintext highlighter-rouge">classes</code> property of the <code class="language-plaintext highlighter-rouge">Filter</code> and <code class="language-plaintext highlighter-rouge">List</code> components:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span>
+    <span class="nx">BooleanField</span><span class="p">,</span>
+    <span class="nx">Datagrid</span><span class="p">,</span>
+    <span class="nx">DateField</span><span class="p">,</span>
+    <span class="nx">DateInput</span><span class="p">,</span>
+    <span class="nx">EditButton</span><span class="p">,</span>
+    <span class="nx">Filter</span><span class="p">,</span>
+    <span class="nx">List</span><span class="p">,</span>
+    <span class="nx">NullableBooleanInput</span><span class="p">,</span>
+    <span class="nx">NumberField</span><span class="p">,</span>
+    <span class="nx">TextInput</span><span class="p">,</span>
+<span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Icon</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/icons/Person</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">makeStyles</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/styles</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">VisitorIcon</span> <span class="o">=</span> <span class="nx">Icon</span><span class="p">;</span>
+
+<span class="c1">// The Filter component supports the `form` and `button` CSS classes. Here we override the `form` class</span>
+<span class="kd">const</span> <span class="nx">useFilterStyles</span> <span class="o">=</span> <span class="nf">makeStyles</span><span class="p">({</span>
+    <span class="na">form</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">backgroundColor</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Lavender</span><span class="dl">'</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+
+<span class="kd">const</span> <span class="nx">VisitorFilter</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">classes</span> <span class="o">=</span> <span class="nf">useFilterStyles</span><span class="p">();</span>
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">Filter</span> <span class="na">classes</span><span class="p">=</span><span class="si">{</span><span class="nx">classes</span><span class="si">}</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">TextInput</span>
+                <span class="na">className</span><span class="p">=</span><span class="si">{</span><span class="nx">classes</span><span class="p">.</span><span class="nx">searchInput</span><span class="si">}</span>
+                <span class="na">label</span><span class="p">=</span><span class="s">"pos.search"</span>
+                <span class="na">source</span><span class="p">=</span><span class="s">"q"</span>
+                <span class="na">alwaysOn</span>
+            <span class="p">/&gt;</span>
+            <span class="p">&lt;</span><span class="nc">DateInput</span> <span class="na">source</span><span class="p">=</span><span class="s">"last_seen_gte"</span> <span class="p">/&gt;</span>
+            <span class="p">&lt;</span><span class="nc">NullableBooleanInput</span> <span class="na">source</span><span class="p">=</span><span class="s">"has_ordered"</span> <span class="p">/&gt;</span>
+            <span class="p">&lt;</span><span class="nc">NullableBooleanInput</span> <span class="na">source</span><span class="p">=</span><span class="s">"has_newsletter"</span> <span class="na">defaultValue</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;/</span><span class="nc">Filter</span><span class="p">&gt;</span>
+    <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="c1">// The `List` component supports the `root`, `header`, `actions` and `noResults` CSS classes. Here we override the `header` and `actions` classes</span>
+<span class="kd">const</span> <span class="nx">useListStyles</span> <span class="o">=</span> <span class="nf">makeStyles</span><span class="p">({</span>
+    <span class="na">actions</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">backgroundColor</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Lavender</span><span class="dl">'</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="na">header</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">backgroundColor</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Lavender</span><span class="dl">'</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">VisitorList</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">classes</span> <span class="o">=</span> <span class="nf">useListStyles</span><span class="p">();</span>
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">List</span>
+            <span class="na">classes</span><span class="p">=</span><span class="si">{</span><span class="nx">classes</span><span class="si">}</span>
+            <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span>
+            <span class="na">filters</span><span class="p">=</span><span class="si">{</span><span class="p">&lt;</span><span class="nc">VisitorFilter</span> <span class="p">/&gt;</span><span class="si">}</span>
+            <span class="na">sort</span><span class="p">=</span><span class="si">{</span><span class="p">{</span> <span class="na">field</span><span class="p">:</span> <span class="dl">'</span><span class="s1">last_seen</span><span class="dl">'</span><span class="p">,</span> <span class="na">order</span><span class="p">:</span> <span class="dl">'</span><span class="s1">DESC</span><span class="dl">'</span> <span class="p">}</span><span class="si">}</span>
+            <span class="na">perPage</span><span class="p">=</span><span class="si">{</span><span class="mi">25</span><span class="si">}</span>
+        <span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">Datagrid</span> <span class="na">classes</span><span class="p">=</span><span class="si">{</span><span class="nx">classes</span><span class="si">}</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nc">DateField</span> <span class="na">source</span><span class="p">=</span><span class="s">"last_seen"</span> <span class="na">type</span><span class="p">=</span><span class="s">"date"</span> <span class="p">/&gt;</span>
+                <span class="p">&lt;</span><span class="nc">NumberField</span>
+                    <span class="na">source</span><span class="p">=</span><span class="s">"nb_commands"</span>
+                    <span class="na">label</span><span class="p">=</span><span class="s">"resources.customers.fields.commands"</span>
+                <span class="p">/&gt;</span>
+                <span class="p">&lt;</span><span class="nc">NumberField</span>
+                    <span class="na">source</span><span class="p">=</span><span class="s">"total_spent"</span>
+                    <span class="na">options</span><span class="p">=</span><span class="si">{</span><span class="p">{</span> <span class="na">style</span><span class="p">:</span> <span class="dl">'</span><span class="s1">currency</span><span class="dl">'</span><span class="p">,</span> <span class="na">currency</span><span class="p">:</span> <span class="dl">'</span><span class="s1">USD</span><span class="dl">'</span> <span class="p">}</span><span class="si">}</span>
+                <span class="p">/&gt;</span>
+                <span class="p">&lt;</span><span class="nc">DateField</span> <span class="na">source</span><span class="p">=</span><span class="s">"latest_purchase"</span> <span class="na">showTime</span> <span class="p">/&gt;</span>
+                <span class="p">&lt;</span><span class="nc">BooleanField</span> <span class="na">source</span><span class="p">=</span><span class="s">"has_newsletter"</span> <span class="na">label</span><span class="p">=</span><span class="s">"News."</span> <span class="p">/&gt;</span>
+                <span class="p">&lt;</span><span class="nc">EditButton</span> <span class="p">/&gt;</span>
+            <span class="p">&lt;/</span><span class="nc">Datagrid</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nc">List</span><span class="p">&gt;</span>
+    <span class="p">)</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>This example results in:</p>
+
+<p><img src="./img/list_with_customized_css.png" alt="Visitor List with customized CSS classes" /></p>
+
+<p>Take a look at a component documentation and source code to know which classes are available for styling. For instance, you can have a look at the <a href="./List.md#the-datagrid-component">Datagrid CSS documentation</a>.</p>
+
+<p>If you need more control over the HTML code, you can also create your own <a href="./Fields.md#writing-your-own-field-component">Field</a> and <a href="./Inputs.md#writing-your-own-input-component">Input</a> components.</p>
+
+<h2 id="conditional-formatting">Conditional Formatting</h2>
+
+<p>Sometimes you want the format to depend on the value. The following example shows how to create a new custom <code class="language-plaintext highlighter-rouge">NumberField</code> component which highlight its text in red when its value is 100 or higher.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">NumberField</span><span class="p">,</span> <span class="nx">List</span><span class="p">,</span> <span class="nx">Datagrid</span><span class="p">,</span> <span class="nx">TextField</span><span class="p">,</span> <span class="nx">EditButton</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">makeStyles</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/styles</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">classnames</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">classnames</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">useStyles</span> <span class="o">=</span> <span class="nf">makeStyles</span><span class="p">({</span>
+    <span class="na">small</span><span class="p">:</span> <span class="p">{</span> <span class="na">color</span><span class="p">:</span> <span class="dl">'</span><span class="s1">black</span><span class="dl">'</span> <span class="p">},</span>
+    <span class="na">big</span><span class="p">:</span> <span class="p">{</span> <span class="na">color</span><span class="p">:</span> <span class="dl">'</span><span class="s1">red</span><span class="dl">'</span> <span class="p">},</span>
+<span class="p">});</span>
+
+<span class="kd">const</span> <span class="nx">ColoredNumberField</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">classes</span> <span class="o">=</span> <span class="nf">useStyles</span><span class="p">();</span>
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">NumberField</span>
+            <span class="na">className</span><span class="p">=</span><span class="si">{</span><span class="nf">classnames</span><span class="p">({</span>
+                <span class="p">[</span><span class="nx">classes</span><span class="p">.</span><span class="nx">small</span><span class="p">]:</span> <span class="nx">props</span><span class="p">.</span><span class="nx">record</span><span class="p">[</span><span class="nx">props</span><span class="p">.</span><span class="nx">source</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">,</span>
+                <span class="p">[</span><span class="nx">classes</span><span class="p">.</span><span class="nx">big</span><span class="p">]:</span> <span class="nx">props</span><span class="p">.</span><span class="nx">record</span><span class="p">[</span><span class="nx">props</span><span class="p">.</span><span class="nx">source</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">,</span>
+            <span class="p">})</span><span class="si">}</span>
+            <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span>
+        <span class="p">/&gt;</span>
+    <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="c1">// Ensure the original component defaultProps are still applied as they may be used by its parents (such as the `Show` component):</span>
+<span class="nx">ColoredNumberField</span><span class="p">.</span><span class="nx">defaultProps</span> <span class="o">=</span> <span class="nx">NumberField</span><span class="p">.</span><span class="nx">defaultProps</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">PostList</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">List</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nc">Datagrid</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">TextField</span> <span class="na">source</span><span class="p">=</span><span class="s">"id"</span> <span class="p">/&gt;</span>
+            ...
+            <span class="p">&lt;</span><span class="nc">ColoredNumberField</span> <span class="na">source</span><span class="p">=</span><span class="s">"nb_views"</span> <span class="p">/&gt;</span>
+            <span class="p">&lt;</span><span class="nc">EditButton</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;/</span><span class="nc">Datagrid</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nc">List</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>Furthermore, you may extract this highlighting strategy into a Higher Order Component if you’d like to reuse it for other components as well:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">NumberField</span><span class="p">,</span> <span class="nx">List</span><span class="p">,</span> <span class="nx">Datagrid</span><span class="p">,</span> <span class="nx">TextField</span><span class="p">,</span> <span class="nx">EditButton</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">makeStyles</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/styles</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">classnames</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">classnames</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">useStyles</span> <span class="o">=</span> <span class="nf">makeStyles</span><span class="p">({</span>
+    <span class="na">small</span><span class="p">:</span> <span class="p">{</span> <span class="na">color</span><span class="p">:</span> <span class="dl">'</span><span class="s1">black</span><span class="dl">'</span> <span class="p">},</span>
+    <span class="na">big</span><span class="p">:</span> <span class="p">{</span> <span class="na">color</span><span class="p">:</span> <span class="dl">'</span><span class="s1">red</span><span class="dl">'</span> <span class="p">},</span>
+<span class="p">});</span>
+
+<span class="kd">const</span> <span class="nx">colored</span> <span class="o">=</span> <span class="nx">WrappedComponent</span> <span class="o">=&gt;</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">classes</span> <span class="o">=</span> <span class="nf">useStyles</span><span class="p">();</span>
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">WrappedComponent</span>
+            <span class="na">className</span><span class="p">=</span><span class="si">{</span><span class="nf">classnames</span><span class="p">({</span>
+                <span class="p">[</span><span class="nx">classes</span><span class="p">.</span><span class="nx">small</span><span class="p">]:</span> <span class="nx">props</span><span class="p">.</span><span class="nx">record</span><span class="p">[</span><span class="nx">props</span><span class="p">.</span><span class="nx">source</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">500</span><span class="p">,</span>
+                <span class="p">[</span><span class="nx">classes</span><span class="p">.</span><span class="nx">big</span><span class="p">]:</span> <span class="nx">props</span><span class="p">.</span><span class="nx">record</span><span class="p">[</span><span class="nx">props</span><span class="p">.</span><span class="nx">source</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">500</span><span class="p">,</span>
+            <span class="p">})</span><span class="si">}</span>
+            <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span>
+        <span class="p">/&gt;</span>
+    <span class="p">)</span>
+<span class="p">};</span>
+
+
+<span class="kd">const</span> <span class="nx">ColoredNumberField</span> <span class="o">=</span> <span class="nf">colored</span><span class="p">(</span><span class="nx">NumberField</span><span class="p">);</span>
+<span class="c1">// Ensure the original component defaultProps are still applied as they may be used by its parents (such as the `Show` component):</span>
+<span class="nx">ColoredNumberField</span><span class="p">.</span><span class="nx">defaultProps</span> <span class="o">=</span> <span class="nx">NumberField</span><span class="p">.</span><span class="nx">defaultProps</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">PostList</span> <span class="o">=</span> <span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">List</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nc">Datagrid</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">TextField</span> <span class="na">source</span><span class="p">=</span><span class="s">"id"</span> <span class="p">/&gt;</span>
+            ...
+            <span class="p">&lt;</span><span class="nc">ColoredNumberField</span> <span class="na">source</span><span class="p">=</span><span class="s">"nb_views"</span> <span class="p">/&gt;</span>
+            <span class="p">&lt;</span><span class="nc">EditButton</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;/</span><span class="nc">Datagrid</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nc">List</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>If you want to read more about higher-order components, check out this SitePoint tutorial: <a href="https://www.sitepoint.com/react-higher-order-components/">Higher Order Components: A React Application Design Pattern</a></p>
+
+<h2 id="usemediaquery-hook">useMediaQuery Hook</h2>
+
+<p>To provide an optimized experience on mobile, tablet, and desktop devices, you often need to display different components depending on the screen size. Material-ui provides a hook dedicated to help such responsive layouts: <a href="https://material-ui.com/components/use-media-query/#usemediaquery"><code class="language-plaintext highlighter-rouge">useMediaQuery</code></a>.</p>
+
+<p>It expects a function receiving the material-ui theme as a parameter, and returning a media query. Use the theme breakpoints to check for common screen sizes. The hook returns a boolean indicating if the current screen matches the media query or not.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">isXSmall</span> <span class="o">=</span> <span class="nf">useMediaQuery</span><span class="p">(</span><span class="nx">theme</span> <span class="o">=&gt;</span> <span class="nx">theme</span><span class="p">.</span><span class="nx">breakpoints</span><span class="p">.</span><span class="nf">down</span><span class="p">(</span><span class="dl">'</span><span class="s1">xs</span><span class="dl">'</span><span class="p">));</span>
+<span class="kd">const</span> <span class="nx">isSmall</span> <span class="o">=</span> <span class="nf">useMediaQuery</span><span class="p">(</span><span class="nx">theme</span> <span class="o">=&gt;</span> <span class="nx">theme</span><span class="p">.</span><span class="nx">breakpoints</span><span class="p">.</span><span class="nf">down</span><span class="p">(</span><span class="dl">'</span><span class="s1">sm</span><span class="dl">'</span><span class="p">));</span>
+<span class="kd">const</span> <span class="nx">isDesktop</span> <span class="o">=</span> <span class="nf">useMediaQuery</span><span class="p">(</span><span class="nx">theme</span> <span class="o">=&gt;</span> <span class="nx">theme</span><span class="p">.</span><span class="nx">breakpoints</span><span class="p">.</span><span class="nf">up</span><span class="p">(</span><span class="dl">'</span><span class="s1">md</span><span class="dl">'</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>You can also pass a custom media query as a screen.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">isSmall</span> <span class="o">=</span> <span class="nf">useMediaQuery</span><span class="p">(</span><span class="dl">'</span><span class="s1">(min-width:600px)</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Here is an example for a responsive list of posts, displaying a <code class="language-plaintext highlighter-rouge">SimpleList</code> on mobile, and a <code class="language-plaintext highlighter-rouge">Datagrid</code> otherwise:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/posts.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useMediaQuery</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">List</span><span class="p">,</span> <span class="nx">SimpleList</span><span class="p">,</span> <span class="nx">Datagrid</span><span class="p">,</span> <span class="nx">TextField</span><span class="p">,</span> <span class="nx">ReferenceField</span><span class="p">,</span> <span class="nx">EditButton</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">PostList</span> <span class="o">=</span> <span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">isSmall</span> <span class="o">=</span> <span class="nf">useMediaQuery</span><span class="p">(</span><span class="nx">theme</span> <span class="o">=&gt;</span> <span class="nx">theme</span><span class="p">.</span><span class="nx">breakpoints</span><span class="p">.</span><span class="nf">down</span><span class="p">(</span><span class="dl">'</span><span class="s1">sm</span><span class="dl">'</span><span class="p">));</span>
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">List</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span><span class="p">&gt;</span>
+            <span class="si">{</span><span class="nx">isSmall</span> <span class="p">?</span> <span class="p">(</span>
+                <span class="p">&lt;</span><span class="nc">SimpleList</span>
+                    <span class="na">primaryText</span><span class="p">=</span><span class="si">{</span><span class="nx">record</span> <span class="o">=&gt;</span> <span class="nx">record</span><span class="p">.</span><span class="nx">title</span><span class="si">}</span>
+                    <span class="na">secondaryText</span><span class="p">=</span><span class="si">{</span><span class="nx">record</span> <span class="o">=&gt;</span> <span class="s2">`</span><span class="p">${</span><span class="nx">record</span><span class="p">.</span><span class="nx">views</span><span class="p">}</span><span class="s2"> views`</span><span class="si">}</span>
+                    <span class="na">tertiaryText</span><span class="p">=</span><span class="si">{</span><span class="nx">record</span> <span class="o">=&gt;</span> <span class="k">new</span> <span class="nc">Date</span><span class="p">(</span><span class="nx">record</span><span class="p">.</span><span class="nx">published_at</span><span class="p">).</span><span class="nf">toLocaleDateString</span><span class="p">()</span><span class="si">}</span>
+                <span class="p">/&gt;</span>
+            <span class="p">)</span> <span class="p">:</span> <span class="p">(</span>
+                <span class="p">&lt;</span><span class="nc">Datagrid</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nc">TextField</span> <span class="na">source</span><span class="p">=</span><span class="s">"id"</span> <span class="p">/&gt;</span>
+                    <span class="p">&lt;</span><span class="nc">ReferenceField</span> <span class="na">label</span><span class="p">=</span><span class="s">"User"</span> <span class="na">source</span><span class="p">=</span><span class="s">"userId"</span> <span class="na">reference</span><span class="p">=</span><span class="s">"users"</span><span class="p">&gt;</span>
+                        <span class="p">&lt;</span><span class="nc">TextField</span> <span class="na">source</span><span class="p">=</span><span class="s">"name"</span> <span class="p">/&gt;</span>
+                    <span class="p">&lt;/</span><span class="nc">ReferenceField</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nc">TextField</span> <span class="na">source</span><span class="p">=</span><span class="s">"title"</span> <span class="p">/&gt;</span>
+                    <span class="p">&lt;</span><span class="nc">TextField</span> <span class="na">source</span><span class="p">=</span><span class="s">"body"</span> <span class="p">/&gt;</span>
+                    <span class="p">&lt;</span><span class="nc">EditButton</span> <span class="p">/&gt;</span>
+                <span class="p">&lt;/</span><span class="nc">Datagrid</span><span class="p">&gt;</span>
+            <span class="p">)</span><span class="si">}</span>
+        <span class="p">&lt;/</span><span class="nc">List</span><span class="p">&gt;</span>
+    <span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p><strong>Tip</strong>: Previous versions of react-admin shipped a <code class="language-plaintext highlighter-rouge">&lt;Responsive&gt;</code> component to do media queries. This component is now deprecated. Use <code class="language-plaintext highlighter-rouge">useMediaQuery</code> instead.</p>
+
+<h2 id="using-a-predefined-theme">Using a Predefined Theme</h2>
+
+<p>Material UI also supports <a href="https://material-ui.com/customization/themes">complete theming</a> out of the box. Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the <code class="language-plaintext highlighter-rouge">&lt;Admin&gt;</code> component, in the <code class="language-plaintext highlighter-rouge">theme</code> prop (along with <code class="language-plaintext highlighter-rouge">createMuiTheme()</code>).</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">createMuiTheme</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/styles</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">theme</span> <span class="o">=</span> <span class="nf">createMuiTheme</span><span class="p">({</span>
+  <span class="na">palette</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">dark</span><span class="dl">'</span><span class="p">,</span> <span class="c1">// Switching the dark mode on is a single property value change.</span>
+  <span class="p">},</span>
+<span class="p">});</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Admin</span> <span class="na">theme</span><span class="p">=</span><span class="si">{</span><span class="nx">theme</span><span class="si">}</span> <span class="na">dataProvider</span><span class="p">=</span><span class="si">{</span><span class="nf">simpleRestProvider</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://path.to.my.api</span><span class="dl">'</span><span class="p">)</span><span class="si">}</span><span class="p">&gt;</span>
+        // ...
+    <span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p><img src="./img/dark-theme.png" alt="Dark theme" /></p>
+
+<h2 id="writing-a-custom-theme">Writing a Custom Theme</h2>
+
+<p>If you need more fine-tuning, you’ll need to write your own <code class="language-plaintext highlighter-rouge">theme</code> object, following <a href="https://material-ui.com/customization/themes/">Material UI themes documentation</a>. Material UI merges custom theme objects with the default theme.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">createMuiTheme</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/styles</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">indigo</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/colors/indigo</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">pink</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/colors/pink</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">red</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/colors/red</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">myTheme</span> <span class="o">=</span> <span class="nf">createMuiTheme</span><span class="p">({</span>
+    <span class="na">palette</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">primary</span><span class="p">:</span> <span class="nx">indigo</span><span class="p">,</span>
+        <span class="na">secondary</span><span class="p">:</span> <span class="nx">pink</span><span class="p">,</span>
+        <span class="na">error</span><span class="p">:</span> <span class="nx">red</span><span class="p">,</span>
+        <span class="na">contrastThreshold</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="na">tonalOffset</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="na">typography</span><span class="p">:</span> <span class="p">{</span>
+        <span class="c1">// Use the system font instead of the default Roboto font.</span>
+        <span class="na">fontFamily</span><span class="p">:</span> <span class="p">[</span>
+            <span class="dl">'</span><span class="s1">-apple-system</span><span class="dl">'</span><span class="p">,</span>
+            <span class="dl">'</span><span class="s1">BlinkMacSystemFont</span><span class="dl">'</span><span class="p">,</span>
+            <span class="dl">'</span><span class="s1">"Segoe UI"</span><span class="dl">'</span><span class="p">,</span>
+            <span class="dl">'</span><span class="s1">Arial</span><span class="dl">'</span><span class="p">,</span>
+            <span class="dl">'</span><span class="s1">sans-serif</span><span class="dl">'</span><span class="p">,</span>
+        <span class="p">].</span><span class="nf">join</span><span class="p">(</span><span class="dl">'</span><span class="s1">,</span><span class="dl">'</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="na">overrides</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">MuiButton</span><span class="p">:</span> <span class="p">{</span> <span class="c1">// override the styles of all instances of this component</span>
+            <span class="na">root</span><span class="p">:</span> <span class="p">{</span> <span class="c1">// Name of the rule</span>
+                <span class="na">color</span><span class="p">:</span> <span class="dl">'</span><span class="s1">white</span><span class="dl">'</span><span class="p">,</span> <span class="c1">// Some CSS</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">myTheme</code> object contains the following keys:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">breakpoints</code></li>
+  <li><code class="language-plaintext highlighter-rouge">direction</code></li>
+  <li><code class="language-plaintext highlighter-rouge">mixins</code></li>
+  <li><code class="language-plaintext highlighter-rouge">overrides</code></li>
+  <li><code class="language-plaintext highlighter-rouge">palette</code></li>
+  <li><code class="language-plaintext highlighter-rouge">props</code></li>
+  <li><code class="language-plaintext highlighter-rouge">shadows</code></li>
+  <li><code class="language-plaintext highlighter-rouge">typography</code></li>
+  <li><code class="language-plaintext highlighter-rouge">transitions</code></li>
+  <li><code class="language-plaintext highlighter-rouge">spacing</code></li>
+  <li><code class="language-plaintext highlighter-rouge">zIndex</code></li>
+</ul>
+
+<p><strong>Tip</strong>: Check <a href="https://material-ui.com/customization/default-theme/">Material UI default theme documentation</a> to see the default values and meaning for these keys.</p>
+
+<p>Once your theme is defined, pass it to the <code class="language-plaintext highlighter-rouge">&lt;Admin&gt;</code> component, in the <code class="language-plaintext highlighter-rouge">theme</code> prop.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Admin</span> <span class="na">theme</span><span class="p">=</span><span class="si">{</span><span class="nx">myTheme</span><span class="si">}</span> <span class="na">dataProvider</span><span class="p">=</span><span class="si">{</span><span class="nf">simpleRestProvider</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://path.to.my.api</span><span class="dl">'</span><span class="p">)</span><span class="si">}</span><span class="p">&gt;</span>
+        // ...
+    <span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="using-a-custom-layout">Using a Custom Layout</h2>
+
+<p>Instead of the default layout, you can use your own component as the admin layout. Just use the <code class="language-plaintext highlighter-rouge">layout</code> prop of the <code class="language-plaintext highlighter-rouge">&lt;Admin&gt;</code> component:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/App.js</span>
+<span class="k">import</span> <span class="nx">MyLayout</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./MyLayout</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Admin</span> <span class="na">layout</span><span class="p">=</span><span class="si">{</span><span class="nx">MyLayout</span><span class="si">}</span> <span class="na">dataProvider</span><span class="p">=</span><span class="si">{</span><span class="nf">simpleRestProvider</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://path.to.my.api</span><span class="dl">'</span><span class="p">)</span><span class="si">}</span><span class="p">&gt;</span>
+        // ...
+    <span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>Your custom layout can extend the default <code class="language-plaintext highlighter-rouge">&lt;Layout&gt;</code> component if you only want to override the sidebar, the appBar, the menu, the notification component, or the error page. For instance:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/MyLayout.js</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Layout</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">MyAppBar</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./MyAppBar</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">MySidebar</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./MySidebar</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">MyMenu</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./MyMenu</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">MyNotification</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./MyNotification</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">MyLayout</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nc">Layout</span>
+    <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span>
+    <span class="na">appBar</span><span class="p">=</span><span class="si">{</span><span class="nx">MyAppBar</span><span class="si">}</span>
+    <span class="na">sidebar</span><span class="p">=</span><span class="si">{</span><span class="nx">MySidebar</span><span class="si">}</span>
+    <span class="na">menu</span><span class="p">=</span><span class="si">{</span><span class="nx">MyMenu</span><span class="si">}</span>
+    <span class="na">notification</span><span class="p">=</span><span class="si">{</span><span class="nx">MyNotification</span><span class="si">}</span>
+<span class="p">/&gt;;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">MyLayout</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="usermenu-customization">UserMenu Customization</h3>
+
+<p>You can replace the default user menu by your own by setting the <code class="language-plaintext highlighter-rouge">userMenu</code> prop of the <code class="language-plaintext highlighter-rouge">&lt;AppBar&gt;</code> component. For instance, to add custom menu items, just decorate the default <code class="language-plaintext highlighter-rouge">&lt;UserMenu&gt;</code> by adding children to it:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">AppBar</span><span class="p">,</span> <span class="nx">UserMenu</span><span class="p">,</span> <span class="nx">MenuItemLink</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">SettingsIcon</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/icons/Settings</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">ConfigurationMenu</span> <span class="o">=</span> <span class="nf">forwardRef</span><span class="p">(({</span> <span class="nx">onClick</span> <span class="p">},</span> <span class="nx">ref</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">MenuItemLink</span>
+        <span class="na">ref</span><span class="p">=</span><span class="si">{</span><span class="nx">ref</span><span class="si">}</span>
+        <span class="na">to</span><span class="p">=</span><span class="s">"/configuration"</span>
+        <span class="na">primaryText</span><span class="p">=</span><span class="s">"Configuration"</span>
+        <span class="na">leftIcon</span><span class="p">=</span><span class="si">{</span><span class="p">&lt;</span><span class="nc">SettingsIcon</span> <span class="p">/&gt;</span><span class="si">}</span>
+        <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">onClick</span><span class="si">}</span> <span class="c1">// close the menu on click</span>
+    <span class="p">/&gt;</span>
+<span class="p">));</span>
+
+<span class="kd">const</span> <span class="nx">MyUserMenu</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">UserMenu</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nc">ConfigurationMenu</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;/</span><span class="nc">UserMenu</span><span class="p">&gt;</span>
+<span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">MyAppBar</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nc">AppBar</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span> <span class="na">userMenu</span><span class="p">=</span><span class="si">{</span><span class="p">&lt;</span><span class="nc">MyUserMenu</span> <span class="p">/&gt;</span><span class="si">}</span> <span class="p">/&gt;;</span>
+
+<span class="kd">const</span> <span class="nx">MyLayout</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nc">Layout</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span> <span class="na">appBar</span><span class="p">=</span><span class="si">{</span><span class="nx">MyAppBar</span><span class="si">}</span> <span class="p">/&gt;;</span>
+</code></pre></div></div>
+
+<p>You can also customize the default icon by setting the <code class="language-plaintext highlighter-rouge">icon</code> prop to the <code class="language-plaintext highlighter-rouge">&lt;UserMenu /&gt;</code> component.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">AppBar</span><span class="p">,</span> <span class="nx">UserMenu</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">makeStyles</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/styles</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Avatar</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/Avatar</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">useStyles</span> <span class="o">=</span> <span class="nf">makeStyles</span><span class="p">({</span>
+    <span class="na">avatar</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">height</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="na">width</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+
+<span class="kd">const</span> <span class="nx">MyCustomIcon</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">classes</span> <span class="o">=</span> <span class="nf">useStyles</span><span class="p">();</span>
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">Avatar</span>
+            <span class="na">className</span><span class="p">=</span><span class="si">{</span><span class="nx">classes</span><span class="p">.</span><span class="nx">avatar</span><span class="si">}</span>
+            <span class="na">src</span><span class="p">=</span><span class="s">"https://marmelab.com/images/avatars/adrien.jpg"</span>
+        <span class="p">/&gt;</span>
+    <span class="p">)</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">MyUserMenu</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">(&lt;</span><span class="nc">UserMenu</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span> <span class="na">icon</span><span class="p">=</span><span class="si">{</span><span class="p">&lt;</span><span class="nc">MyCustomIcon</span> <span class="p">/&gt;</span><span class="si">}</span> <span class="p">/&gt;);</span>
+
+<span class="kd">const</span> <span class="nx">MyAppBar</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nc">AppBar</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span> <span class="na">userMenu</span><span class="p">=</span><span class="si">{</span><span class="p">&lt;</span><span class="nc">MyUserMenu</span> <span class="p">/&gt;</span><span class="si">}</span> <span class="p">/&gt;;</span>
+</code></pre></div></div>
+
+<h3 id="sidebar-customization">Sidebar Customization</h3>
+
+<p>You can specify the <code class="language-plaintext highlighter-rouge">Sidebar</code> width by setting the <code class="language-plaintext highlighter-rouge">width</code> and <code class="language-plaintext highlighter-rouge">closedWidth</code> property on your custom material-ui theme:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">createMuiTheme</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/styles</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">theme</span> <span class="o">=</span> <span class="nf">createMuiTheme</span><span class="p">({</span>
+    <span class="na">sidebar</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">width</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span> <span class="c1">// The default value is 240</span>
+        <span class="na">closedWidth</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span> <span class="c1">// The default value is 55</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Admin</span> <span class="na">theme</span><span class="p">=</span><span class="si">{</span><span class="nx">theme</span><span class="si">}</span> <span class="na">dataProvider</span><span class="p">=</span><span class="si">{</span><span class="nf">simpleRestProvider</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://path.to.my.api</span><span class="dl">'</span><span class="p">)</span><span class="si">}</span><span class="p">&gt;</span>
+        // ...
+    <span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>For more advanced sidebar theming, pass your own <code class="language-plaintext highlighter-rouge">Sidebar</code> component to a custom <code class="language-plaintext highlighter-rouge">Layout</code>:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Sidebar</span><span class="p">,</span> <span class="nx">Layout</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">makeStyles</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/styles</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">useSidebarStyles</span> <span class="o">=</span> <span class="nf">makeStyles</span><span class="p">({</span>
+    <span class="na">drawerPaper</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">backgroundColor</span><span class="p">:</span> <span class="dl">'</span><span class="s1">red</span><span class="dl">'</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+
+<span class="kd">const</span> <span class="nx">MySidebar</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">classes</span> <span class="o">=</span> <span class="nf">useSidebarStyles</span><span class="p">();</span>
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">Sidebar</span> <span class="na">classes</span><span class="p">=</span><span class="si">{</span><span class="nx">classes</span><span class="si">}</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span> <span class="p">/&gt;</span>
+    <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">MyLayout</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nc">Layout</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span> <span class="na">sidebar</span><span class="p">=</span><span class="si">{</span><span class="nx">MySidebar</span><span class="si">}</span> <span class="p">/&gt;</span>
+</code></pre></div></div>
+
+<h3 id="layout-from-scratch">Layout From Scratch</h3>
+
+<p>For more custom layouts, write a component from scratch. It must contain a <code class="language-plaintext highlighter-rouge">{children}</code> placeholder, where react-admin will render the resources. Use the <a href="https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.js">default layout</a> as a starting point. Here is a simplified version (with no responsive support):</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/MyLayout.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useEffect</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">PropTypes</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">prop-types</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useSelector</span><span class="p">,</span> <span class="nx">useDispatch</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-redux</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">makeStyles</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/styles</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ThemeProvider</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/styles</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span>
+    <span class="nx">AppBar</span><span class="p">,</span>
+    <span class="nx">Menu</span><span class="p">,</span>
+    <span class="nx">Notification</span><span class="p">,</span>
+    <span class="nx">Sidebar</span><span class="p">,</span>
+    <span class="nx">setSidebarVisibility</span><span class="p">,</span>
+    <span class="nx">ComponentPropType</span><span class="p">,</span>
+<span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">useStyles</span> <span class="o">=</span> <span class="nf">makeStyles</span><span class="p">(</span><span class="nx">theme</span> <span class="o">=&gt;</span> <span class="p">({</span>
+    <span class="na">root</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">display</span><span class="p">:</span> <span class="dl">'</span><span class="s1">flex</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">flexDirection</span><span class="p">:</span> <span class="dl">'</span><span class="s1">column</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">zIndex</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="na">minHeight</span><span class="p">:</span> <span class="dl">'</span><span class="s1">100vh</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">backgroundColor</span><span class="p">:</span> <span class="nx">theme</span><span class="p">.</span><span class="nx">palette</span><span class="p">.</span><span class="nx">background</span><span class="p">.</span><span class="k">default</span><span class="p">,</span>
+        <span class="na">position</span><span class="p">:</span> <span class="dl">'</span><span class="s1">relative</span><span class="dl">'</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="na">appFrame</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">display</span><span class="p">:</span> <span class="dl">'</span><span class="s1">flex</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">flexDirection</span><span class="p">:</span> <span class="dl">'</span><span class="s1">column</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">overflowX</span><span class="p">:</span> <span class="dl">'</span><span class="s1">auto</span><span class="dl">'</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="na">contentWithSidebar</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">display</span><span class="p">:</span> <span class="dl">'</span><span class="s1">flex</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">flexGrow</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="na">content</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">display</span><span class="p">:</span> <span class="dl">'</span><span class="s1">flex</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">flexDirection</span><span class="p">:</span> <span class="dl">'</span><span class="s1">column</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">flexGrow</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="na">padding</span><span class="p">:</span> <span class="nx">theme</span><span class="p">.</span><span class="nf">spacing</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+        <span class="na">marginTop</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4em</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">paddingLeft</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}));</span>
+
+<span class="kd">const</span> <span class="nx">MyLayout</span> <span class="o">=</span> <span class="p">({</span> 
+    <span class="nx">children</span><span class="p">,</span>
+    <span class="nx">dashboard</span><span class="p">,</span>
+    <span class="nx">logout</span><span class="p">,</span>
+    <span class="nx">title</span><span class="p">,</span>
+<span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">classes</span> <span class="o">=</span> <span class="nf">useStyles</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">dispatch</span> <span class="o">=</span> <span class="nf">useDispatch</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">open</span> <span class="o">=</span> <span class="nf">useSelector</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">admin</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">sidebarOpen</span><span class="p">);</span>
+    
+    <span class="nf">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nf">dispatch</span><span class="p">(</span><span class="nf">setSidebarVisibility</span><span class="p">(</span><span class="kc">true</span><span class="p">));</span>
+    <span class="p">},</span> <span class="p">[</span><span class="nx">setSidebarVisibility</span><span class="p">]);</span>
+    
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">className</span><span class="p">=</span><span class="si">{</span><span class="nx">classes</span><span class="p">.</span><span class="nx">root</span><span class="si">}</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">div</span> <span class="na">className</span><span class="p">=</span><span class="si">{</span><span class="nx">classes</span><span class="p">.</span><span class="nx">appFrame</span><span class="si">}</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nc">AppBar</span> <span class="na">title</span><span class="p">=</span><span class="si">{</span><span class="nx">title</span><span class="si">}</span> <span class="na">open</span><span class="p">=</span><span class="si">{</span><span class="nx">open</span><span class="si">}</span> <span class="na">logout</span><span class="p">=</span><span class="si">{</span><span class="nx">logout</span><span class="si">}</span> <span class="p">/&gt;</span>
+                <span class="p">&lt;</span><span class="nt">main</span> <span class="na">className</span><span class="p">=</span><span class="si">{</span><span class="nx">classes</span><span class="p">.</span><span class="nx">contentWithSidebar</span><span class="si">}</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nc">Sidebar</span><span class="p">&gt;</span>
+                        <span class="p">&lt;</span><span class="nc">Menu</span> <span class="na">logout</span><span class="p">=</span><span class="si">{</span><span class="nx">logout</span><span class="si">}</span> <span class="na">hasDashboard</span><span class="p">=</span><span class="si">{</span><span class="o">!!</span><span class="nx">dashboard</span><span class="si">}</span> <span class="p">/&gt;</span>
+                    <span class="p">&lt;/</span><span class="nc">Sidebar</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">className</span><span class="p">=</span><span class="si">{</span><span class="nx">classes</span><span class="p">.</span><span class="nx">content</span><span class="si">}</span><span class="p">&gt;</span>
+                        <span class="si">{</span><span class="nx">children</span><span class="si">}</span>
+                    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+                <span class="p">&lt;/</span><span class="nt">main</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nc">Notification</span> <span class="p">/&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">MyLayout</span><span class="p">.</span><span class="nx">propTypes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">children</span><span class="p">:</span> <span class="nx">PropTypes</span><span class="p">.</span><span class="nf">oneOfType</span><span class="p">([</span><span class="nx">PropTypes</span><span class="p">.</span><span class="nx">func</span><span class="p">,</span> <span class="nx">PropTypes</span><span class="p">.</span><span class="nx">node</span><span class="p">]),</span>
+    <span class="na">dashboard</span><span class="p">:</span> <span class="nx">PropTypes</span><span class="p">.</span><span class="nf">oneOfType</span><span class="p">([</span>
+        <span class="nx">PropTypes</span><span class="p">.</span><span class="nx">func</span><span class="p">,</span>
+        <span class="nx">PropTypes</span><span class="p">.</span><span class="nx">string</span><span class="p">,</span>
+    <span class="p">]),</span>
+    <span class="na">logout</span><span class="p">:</span> <span class="nx">ComponentPropType</span><span class="p">,</span>
+    <span class="na">title</span><span class="p">:</span> <span class="nx">PropTypes</span><span class="p">.</span><span class="nx">string</span><span class="p">.</span><span class="nx">isRequired</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">MyLayout</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><strong>Tip</strong>: Don’t forget to render a <code class="language-plaintext highlighter-rouge">&lt;Notification&gt;</code> component in your custom layout, otherwise the undoable updates will never be sent to the server. That’s because part of the “undo” logic of react-admin lies in the <code class="language-plaintext highlighter-rouge">&lt;Notification&gt;</code> component.</p>
+
+<h2 id="customizing-the-appbar-content">Customizing the AppBar Content</h2>
+
+<p>By default, the react-admin <code class="language-plaintext highlighter-rouge">&lt;AppBar&gt;</code> component displays the page title. You can override this default by passing children to <code class="language-plaintext highlighter-rouge">&lt;AppBar&gt;</code> - they will replace the default title. And if you still want to include the page title, make sure you include an element with id <code class="language-plaintext highlighter-rouge">react-admin-title</code> in the top bar (this uses <a href="https://reactjs.org/docs/portals.html">React Portals</a>).</p>
+
+<p>Here is an example customization for <code class="language-plaintext highlighter-rouge">&lt;AppBar&gt;</code> to include a company logo in the center of the page header:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/MyAppBar.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">AppBar</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Typography</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/Typography</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">makeStyles</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/styles</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="nx">Logo</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./Logo</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">useStyles</span> <span class="o">=</span> <span class="nf">makeStyles</span><span class="p">({</span>
+    <span class="na">title</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">flex</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="na">textOverflow</span><span class="p">:</span> <span class="dl">'</span><span class="s1">ellipsis</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">whiteSpace</span><span class="p">:</span> <span class="dl">'</span><span class="s1">nowrap</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">overflow</span><span class="p">:</span> <span class="dl">'</span><span class="s1">hidden</span><span class="dl">'</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="na">spacer</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">flex</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+
+<span class="kd">const</span> <span class="nx">MyAppBar</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">classes</span> <span class="o">=</span> <span class="nf">useStyles</span><span class="p">();</span>
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">AppBar</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">Typography</span>
+                <span class="na">variant</span><span class="p">=</span><span class="s">"h6"</span>
+                <span class="na">color</span><span class="p">=</span><span class="s">"inherit"</span>
+                <span class="na">className</span><span class="p">=</span><span class="si">{</span><span class="nx">classes</span><span class="p">.</span><span class="nx">title</span><span class="si">}</span>
+                <span class="na">id</span><span class="p">=</span><span class="s">"react-admin-title"</span>
+            <span class="p">/&gt;</span>
+            <span class="p">&lt;</span><span class="nc">Logo</span> <span class="p">/&gt;</span>
+            <span class="p">&lt;</span><span class="nt">span</span> <span class="na">className</span><span class="p">=</span><span class="si">{</span><span class="nx">classes</span><span class="p">.</span><span class="nx">spacer</span><span class="si">}</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;/</span><span class="nc">AppBar</span><span class="p">&gt;</span>
+    <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">MyAppBar</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>To use this custom <code class="language-plaintext highlighter-rouge">MyAppBar</code> component, pass it as prop to a custom <code class="language-plaintext highlighter-rouge">Layout</code>, as shown below:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/MyLayout.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Layout</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">MyAppBar</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./MyAppBar</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">MyLayout</span> <span class="o">=</span> <span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nc">Layout</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span> <span class="na">appBar</span><span class="p">=</span><span class="si">{</span><span class="nx">MyAppBar</span><span class="si">}</span> <span class="p">/&gt;;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">MyLayout</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Then, use this layout in the <code class="language-plaintext highlighter-rouge">&lt;Admin&gt;</code> with the <code class="language-plaintext highlighter-rouge">layout</code> prop:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/App.js</span>
+<span class="k">import</span> <span class="nx">MyLayout</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./MyLayout</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Admin</span> <span class="na">layout</span><span class="p">=</span><span class="si">{</span><span class="nx">MyLayout</span><span class="si">}</span> <span class="na">dataProvider</span><span class="p">=</span><span class="si">{</span><span class="nf">simpleRestProvider</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://path.to.my.api</span><span class="dl">'</span><span class="p">)</span><span class="si">}</span><span class="p">&gt;</span>
+        // ...
+    <span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p><img src="./img/custom_appbar.png" alt="custom AppBar" /></p>
+
+<p><strong>Tip</strong>: You can change the color of the <code class="language-plaintext highlighter-rouge">&lt;AppBar&gt;</code> by setting the <code class="language-plaintext highlighter-rouge">color</code> prop to <code class="language-plaintext highlighter-rouge">default</code>, <code class="language-plaintext highlighter-rouge">inherit</code>, <code class="language-plaintext highlighter-rouge">primary</code>, <code class="language-plaintext highlighter-rouge">secondary</code> or <code class="language-plaintext highlighter-rouge">transparent</code>. The default value is <code class="language-plaintext highlighter-rouge">secondary</code>.</p>
+
+<h2 id="replacing-the-appbar">Replacing The AppBar</h2>
+
+<p>For more drastic changes of the top component, you will probably want to create an <code class="language-plaintext highlighter-rouge">&lt;AppBar&gt;</code> from scratch instead of just passing children to react-admin’s <code class="language-plaintext highlighter-rouge">&lt;AppBar&gt;</code>.</p>
+
+<p>By default, React-admin uses <a href="https://material-ui.com/api/app-bar/">Material-ui’s <code class="language-plaintext highlighter-rouge">&lt;AppBar&gt;</code> component</a> together with <a href="https://github.com/KyleAMathews/react-headroom">react-headroom</a> to hide the <code class="language-plaintext highlighter-rouge">AppBar</code> on scroll. Here is an example top bar rebuilt from scratch to remove the “headroom” effect:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/MyAppBar.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">AppBar</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/AppBar</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Toolbar</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/Toolbar</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Typography</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/Typography</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">MyAppBar</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">AppBar</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nc">Toolbar</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">Typography</span> <span class="na">variant</span><span class="p">=</span><span class="s">"h6"</span> <span class="na">id</span><span class="p">=</span><span class="s">"react-admin-title"</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;/</span><span class="nc">Toolbar</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nc">AppBar</span><span class="p">&gt;</span>
+<span class="p">);</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">MyAppBar</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Take note that this uses <em>material-ui’s <code class="language-plaintext highlighter-rouge">&lt;AppBar&gt;</code></em> instead of <em>react-admin’s <code class="language-plaintext highlighter-rouge">&lt;AppBar&gt;</code></em>. To use this custom <code class="language-plaintext highlighter-rouge">AppBar</code> component, pass it as prop to a custom <code class="language-plaintext highlighter-rouge">Layout</code>, as explained in the previous section.</p>
+
+<h2 id="using-a-custom-menu">Using a Custom Menu</h2>
+
+<p>By default, React-admin uses the list of <code class="language-plaintext highlighter-rouge">&lt;Resource&gt;</code> components passed as children of <code class="language-plaintext highlighter-rouge">&lt;Admin&gt;</code> to build a menu to each resource with a <code class="language-plaintext highlighter-rouge">list</code> component.</p>
+
+<p>If you want to add or remove menu items, for instance to link to non-resources pages, you can create your own menu component:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/Menu.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">createElement</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useSelector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-redux</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useMediaQuery</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">MenuItemLink</span><span class="p">,</span> <span class="nx">getResources</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">DefaultIcon</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/icons/ViewList</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">LabelIcon</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/icons/Label</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">Menu</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">onMenuClick</span><span class="p">,</span> <span class="nx">logout</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">isXSmall</span> <span class="o">=</span> <span class="nf">useMediaQuery</span><span class="p">(</span><span class="nx">theme</span> <span class="o">=&gt;</span> <span class="nx">theme</span><span class="p">.</span><span class="nx">breakpoints</span><span class="p">.</span><span class="nf">down</span><span class="p">(</span><span class="dl">'</span><span class="s1">xs</span><span class="dl">'</span><span class="p">));</span>
+    <span class="kd">const</span> <span class="nx">open</span> <span class="o">=</span> <span class="nf">useSelector</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">admin</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">sidebarOpen</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">resources</span> <span class="o">=</span> <span class="nf">useSelector</span><span class="p">(</span><span class="nx">getResources</span><span class="p">);</span>
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+            <span class="si">{</span><span class="nx">resources</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">resource</span> <span class="o">=&gt;</span> <span class="p">(</span>
+                <span class="p">&lt;</span><span class="nc">MenuItemLink</span>
+                    <span class="na">key</span><span class="p">=</span><span class="si">{</span><span class="nx">resource</span><span class="p">.</span><span class="nx">name</span><span class="si">}</span>
+                    <span class="na">to</span><span class="p">=</span><span class="si">{</span><span class="s2">`/</span><span class="p">${</span><span class="nx">resource</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="si">}</span>
+                    <span class="na">primaryText</span><span class="p">=</span><span class="si">{</span>
+                        <span class="p">(</span><span class="nx">resource</span><span class="p">.</span><span class="nx">options</span> <span class="o">&amp;&amp;</span> <span class="nx">resource</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">label</span><span class="p">)</span> <span class="o">||</span>
+                        <span class="nx">resource</span><span class="p">.</span><span class="nx">name</span>
+                    <span class="si">}</span>
+                    <span class="na">leftIcon</span><span class="p">=</span><span class="si">{</span>
+                        <span class="nx">resource</span><span class="p">.</span><span class="nx">icon</span> <span class="p">?</span> <span class="p">&lt;</span><span class="nt">resource</span><span class="p">.</span><span class="nt">icon</span> <span class="p">/&gt;</span> <span class="p">:</span> <span class="p">&lt;</span><span class="nc">DefaultIcon</span> <span class="p">/&gt;</span>
+                    <span class="si">}</span>
+                    <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">onMenuClick</span><span class="si">}</span>
+                    <span class="na">sidebarIsOpen</span><span class="p">=</span><span class="si">{</span><span class="nx">open</span><span class="si">}</span>
+                <span class="p">/&gt;</span>
+            <span class="p">))</span><span class="si">}</span>
+            <span class="p">&lt;</span><span class="nc">MenuItemLink</span>
+                <span class="na">to</span><span class="p">=</span><span class="s">"/custom-route"</span>
+                <span class="na">primaryText</span><span class="p">=</span><span class="s">"Miscellaneous"</span>
+                <span class="na">leftIcon</span><span class="p">=</span><span class="si">{</span><span class="p">&lt;</span><span class="nc">LabelIcon</span> <span class="p">/&gt;</span><span class="si">}</span>
+                <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">onMenuClick</span><span class="si">}</span>
+                <span class="na">sidebarIsOpen</span><span class="p">=</span><span class="si">{</span><span class="nx">open</span><span class="si">}</span>
+            <span class="p">/&gt;</span>
+            <span class="si">{</span><span class="nx">isXSmall</span> <span class="o">&amp;&amp;</span> <span class="nx">logout</span><span class="si">}</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">Menu</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><strong>Tip</strong>: Note the <code class="language-plaintext highlighter-rouge">MenuItemLink</code> component. It must be used to avoid unwanted side effects in mobile views.</p>
+
+<p><strong>Tip</strong>: Note that we include the <code class="language-plaintext highlighter-rouge">logout</code> item only on small devices. Indeed, the <code class="language-plaintext highlighter-rouge">logout</code> button is already displayed in the AppBar on larger devices.</p>
+
+<p><strong>Tip</strong>: The <code class="language-plaintext highlighter-rouge">primaryText</code> prop accepts a React node. You can pass a custom element in it. For example:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">import</span> <span class="nx">Badge</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/Badge</span><span class="dl">'</span><span class="p">;</span>
+
+    <span class="p">&lt;</span><span class="nc">MenuItemLink</span> <span class="na">to</span><span class="p">=</span><span class="s">"/custom-route"</span> <span class="na">primaryText</span><span class="p">=</span><span class="si">{</span>
+        <span class="p">&lt;</span><span class="nc">Badge</span> <span class="na">badgeContent</span><span class="p">=</span><span class="si">{</span><span class="mi">4</span><span class="si">}</span> <span class="na">color</span><span class="p">=</span><span class="s">"primary"</span><span class="p">&gt;</span>
+            Notifications
+        <span class="p">&lt;/</span><span class="nc">Badge</span><span class="p">&gt;</span>
+    <span class="si">}</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">onMenuClick</span><span class="si">}</span> <span class="p">/&gt;</span>
+</code></pre></div></div>
+
+<p>To use this custom menu component, pass it to a custom Layout, as explained above:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/MyLayout.js</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Layout</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">MyMenu</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./MyMenu</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">MyLayout</span> <span class="o">=</span> <span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nc">Layout</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span> <span class="na">menu</span><span class="p">=</span><span class="si">{</span><span class="nx">MyMenu</span><span class="si">}</span> <span class="p">/&gt;;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">MyLayout</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Then, use this layout in the <code class="language-plaintext highlighter-rouge">&lt;Admin&gt;</code> <code class="language-plaintext highlighter-rouge">layout</code> prop:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/App.js</span>
+<span class="k">import</span> <span class="nx">MyLayout</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./MyLayout</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Admin</span> <span class="na">layout</span><span class="p">=</span><span class="si">{</span><span class="nx">MyLayout</span><span class="si">}</span> <span class="na">dataProvider</span><span class="p">=</span><span class="si">{</span><span class="nf">simpleRestProvider</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://path.to.my.api</span><span class="dl">'</span><span class="p">)</span><span class="si">}</span><span class="p">&gt;</span>
+        // ...
+    <span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p><strong>Tip</strong>: If you use authentication, don’t forget to render the <code class="language-plaintext highlighter-rouge">logout</code> prop in your custom menu component. Also, the <code class="language-plaintext highlighter-rouge">onMenuClick</code> function passed as prop is used to close the sidebar on mobile.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">MenuItemLink</code> component make use of the React Router <a href="https://reacttraining.com/react-router/web/api/NavLink"><code class="language-plaintext highlighter-rouge">NavLink</code></a> component, hence allowing to customize its style when it targets the current page.</p>
+
+<p>If the default active style does not suit your tastes, you can override it by passing your own <code class="language-plaintext highlighter-rouge">classes</code>:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/Menu.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">createElement</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useSelector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-redux</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useMediaQuery</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">MenuItemLink</span><span class="p">,</span> <span class="nx">getResources</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">withRouter</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-router-dom</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">LabelIcon</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/icons/Label</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">Menu</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">onMenuClick</span><span class="p">,</span> <span class="nx">logout</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">isXSmall</span> <span class="o">=</span> <span class="nf">useMediaQuery</span><span class="p">(</span><span class="nx">theme</span> <span class="o">=&gt;</span> <span class="nx">theme</span><span class="p">.</span><span class="nx">breakpoints</span><span class="p">.</span><span class="nf">down</span><span class="p">(</span><span class="dl">'</span><span class="s1">xs</span><span class="dl">'</span><span class="p">));</span>
+    <span class="kd">const</span> <span class="nx">open</span> <span class="o">=</span> <span class="nf">useSelector</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">admin</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">sidebarOpen</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">resources</span> <span class="o">=</span> <span class="nf">useSelector</span><span class="p">(</span><span class="nx">getResources</span><span class="p">);</span>
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+            <span class="si">{</span><span class="nx">resources</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">resource</span> <span class="o">=&gt;</span> <span class="p">(</span>
+                <span class="p">&lt;</span><span class="nc">MenuItemLink</span>
+                    <span class="na">key</span><span class="p">=</span><span class="si">{</span><span class="nx">resource</span><span class="p">.</span><span class="nx">name</span><span class="si">}</span>
+                    <span class="na">to</span><span class="p">=</span><span class="si">{</span><span class="s2">`/</span><span class="p">${</span><span class="nx">resource</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="si">}</span>
+                    <span class="na">primaryText</span><span class="p">=</span><span class="si">{</span><span class="nx">resource</span><span class="p">.</span><span class="nx">options</span> <span class="o">&amp;&amp;</span> <span class="nx">resource</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">label</span> <span class="o">||</span> <span class="nx">resource</span><span class="p">.</span><span class="nx">name</span><span class="si">}</span>
+                    <span class="na">leftIcon</span><span class="p">=</span><span class="si">{</span><span class="nf">createElement</span><span class="p">(</span><span class="nx">resource</span><span class="p">.</span><span class="nx">icon</span><span class="p">)</span><span class="si">}</span>
+                    <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">onMenuClick</span><span class="si">}</span>
+                    <span class="na">sidebarIsOpen</span><span class="p">=</span><span class="si">{</span><span class="nx">open</span><span class="si">}</span>
+                <span class="p">/&gt;</span>
+            <span class="p">))</span><span class="si">}</span>
+            <span class="p">&lt;</span><span class="nc">MenuItemLink</span>
+                <span class="na">to</span><span class="p">=</span><span class="s">"/custom-route"</span>
+                <span class="na">primaryText</span><span class="p">=</span><span class="s">"Miscellaneous"</span>
+                <span class="na">leftIcon</span><span class="p">=</span><span class="si">{</span><span class="nx">LabelIcon</span><span class="si">}</span>
+                <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">onMenuClick</span><span class="si">}</span>
+                <span class="na">sidebarIsOpen</span><span class="p">=</span><span class="si">{</span><span class="nx">open</span><span class="si">}</span>
+            <span class="p">/&gt;</span>
+            <span class="si">{</span><span class="nx">isXSmall</span> <span class="o">&amp;&amp;</span> <span class="nx">logout</span><span class="si">}</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nf">withRouter</span><span class="p">(</span><span class="nx">Menu</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="using-a-custom-login-page">Using a Custom Login Page</h2>
+
+<h3 id="changing-the-background-image">Changing the Background Image</h3>
+
+<p>By default, the login page displays a gradient background. If you want to change the background, you can use the default Login page component and pass an image URL as the <code class="language-plaintext highlighter-rouge">backgroundImage</code> prop.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Admin</span><span class="p">,</span> <span class="nx">Login</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">MyLoginPage</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Login</span>
+        <span class="c1">// A random image that changes everyday</span>
+        <span class="na">backgroundImage</span><span class="p">=</span><span class="s">"https://source.unsplash.com/random/1600x900/daily"</span>
+    <span class="p">/&gt;</span>
+<span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Admin</span> <span class="na">loginPage</span><span class="p">=</span><span class="si">{</span><span class="nx">MyLoginPage</span><span class="si">}</span><span class="p">&gt;</span>
+        // ...
+    <span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="using-a-custom-logout-button">Using a Custom Logout Button</h2>
+
+<h3 id="changing-the-icon">Changing the Icon</h3>
+
+<p>It is possible to use a completely <a href="./Admin.md#logoutbutton">custom logout button</a> or you can simply override some properties of the default button. If you want to change the icon, you can use the default <code class="language-plaintext highlighter-rouge">&lt;Logout&gt;</code> component and pass a different icon as the <code class="language-plaintext highlighter-rouge">icon</code> prop.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Admin</span><span class="p">,</span> <span class="nx">Logout</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">ExitToAppIcon</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/icons/ExitToApp</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">MyLogoutButton</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nc">Logout</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span> <span class="na">icon</span><span class="p">=</span><span class="si">{</span><span class="p">&lt;</span><span class="nc">ExitToAppIcon</span><span class="p">/&gt;</span><span class="si">}</span> <span class="p">/&gt;;</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Admin</span> <span class="na">logoutButton</span><span class="p">=</span><span class="si">{</span><span class="nx">MyLogoutButton</span><span class="si">}</span><span class="p">&gt;</span>
+        // ...
+    <span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="notifications">Notifications</h2>
+
+<p>You can override the notification component, for instance to change the notification duration. It defaults to 4000, i.e. 4 seconds, and you can override it using the <code class="language-plaintext highlighter-rouge">autoHideDuration</code> prop. For instance, to create a custom Notification component with a 5 seconds default:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/MyNotification.js</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Notification</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">MyNotification</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nc">Notification</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span> <span class="na">autoHideDuration</span><span class="p">=</span><span class="si">{</span><span class="mi">5000</span><span class="si">}</span> <span class="p">/&gt;;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">MyNotification</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><strong>Tip</strong>: if you use the <code class="language-plaintext highlighter-rouge">showNotification</code> action, then you can define <code class="language-plaintext highlighter-rouge">autoHideDuration</code> per message as the third parameter of the <code class="language-plaintext highlighter-rouge">showNotification</code> action creator.</p>
+
+<p>To use this custom notification component, pass it to a custom Layout, as explained above:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/MyLayout.js</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Layout</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">MyNotification</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./MyNotification</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">MyLayout</span> <span class="o">=</span> <span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nc">Layout</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span> <span class="na">notification</span><span class="p">=</span><span class="si">{</span><span class="nx">MyNotification</span><span class="si">}</span> <span class="p">/&gt;;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">MyLayout</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Then, use this layout in the <code class="language-plaintext highlighter-rouge">&lt;Admin&gt;</code> <code class="language-plaintext highlighter-rouge">layout</code> prop:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/App.js</span>
+<span class="k">import</span> <span class="nx">MyLayout</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./MyLayout</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Admin</span> <span class="na">layout</span><span class="p">=</span><span class="si">{</span><span class="nx">MyLayout</span><span class="si">}</span> <span class="na">dataProvider</span><span class="p">=</span><span class="si">{</span><span class="nf">simpleRestProvider</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://path.to.my.api</span><span class="dl">'</span><span class="p">)</span><span class="si">}</span><span class="p">&gt;</span>
+        // ...
+    <span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="customizing-the-error-page">Customizing The Error Page</h2>
+
+<p>Whenever a client-side error happens in react-admin, the user sees a default error message. If you want to customize this page, or log the error to a third-party service, create your own <code class="language-plaintext highlighter-rouge">&lt;Error&gt;</code> component. The following snippet is a simplified version of the react-admin Error component, that you can use as a base for your own:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/MyError.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Button</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/Button</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">ErrorIcon</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/icons/Report</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">History</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/icons/History</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Title</span><span class="p">,</span> <span class="nx">useTranslate</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">MyError</span> <span class="o">=</span> <span class="p">({</span>
+    <span class="nx">error</span><span class="p">,</span>
+    <span class="nx">errorInfo</span><span class="p">,</span>
+    <span class="p">...</span><span class="nx">rest</span>
+<span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">translate</span> <span class="o">=</span> <span class="nf">useTranslate</span><span class="p">();</span>
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">Title</span> <span class="na">title</span><span class="p">=</span><span class="s">"Error"</span> <span class="p">/&gt;</span>
+            <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;&lt;</span><span class="nc">ErrorIcon</span> <span class="p">/&gt;</span> Something Went Wrong <span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>A client error occurred and your request couldn't be completed.<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+            <span class="si">{</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">production</span><span class="dl">'</span> <span class="o">&amp;&amp;</span> <span class="p">(</span>
+                <span class="p">&lt;</span><span class="nt">details</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span><span class="si">{</span><span class="nf">translate</span><span class="p">(</span><span class="nx">error</span><span class="p">.</span><span class="nf">toString</span><span class="p">())</span><span class="si">}</span><span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+                    <span class="si">{</span><span class="nx">errorInfo</span><span class="p">.</span><span class="nx">componentStack</span><span class="si">}</span>
+                <span class="p">&lt;/</span><span class="nt">details</span><span class="p">&gt;</span>
+            <span class="p">)</span><span class="si">}</span>
+            <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nc">Button</span>
+                    <span class="na">variant</span><span class="p">=</span><span class="s">"contained"</span>
+                    <span class="na">icon</span><span class="p">=</span><span class="si">{</span><span class="p">&lt;</span><span class="nc">History</span> <span class="p">/&gt;</span><span class="si">}</span>
+                    <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">history</span><span class="p">.</span><span class="nf">go</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span>
+                <span class="p">&gt;</span>
+                    Back
+                <span class="p">&lt;/</span><span class="nc">Button</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">MyError</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>To use this custom error component, pass it to a custom Layout, as explained above:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/MyLayout.js</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Layout</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">MyError</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./MyError</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">MyLayout</span> <span class="o">=</span> <span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nc">Layout</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span> <span class="na">error</span><span class="p">=</span><span class="si">{</span><span class="nx">MyError</span><span class="si">}</span> <span class="p">/&gt;;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">MyLayout</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Then, use this layout in the <code class="language-plaintext highlighter-rouge">&lt;Admin&gt;</code> <code class="language-plaintext highlighter-rouge">layout</code> prop:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/App.js</span>
+<span class="k">import</span> <span class="nx">MyLayout</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./MyLayout</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Admin</span> <span class="na">layout</span><span class="p">=</span><span class="si">{</span><span class="nx">MyLayout</span><span class="si">}</span> <span class="na">dataProvider</span><span class="p">=</span><span class="si">{</span><span class="nf">simpleRestProvider</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://path.to.my.api</span><span class="dl">'</span><span class="p">)</span><span class="si">}</span><span class="p">&gt;</span>
+        // ...
+    <span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="loading">Loading</h2>
+
+<p>Display a circular progress component with optional messages. Display the same loading component as <code class="language-plaintext highlighter-rouge">react-admin</code> on custom pages for consistency.</p>
+
+<p>Supported props:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Required</th>
+      <th>Type</th>
+      <th>Default</th>
+      <th>Descriptions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">loadingPrimary</code></td>
+      <td>Optional</td>
+      <td><code class="language-plaintext highlighter-rouge">string</code></td>
+      <td><code class="language-plaintext highlighter-rouge">ra.page.loading</code></td>
+      <td>Label to use for primary loading message</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">loadingSecondary</code></td>
+      <td>Optional</td>
+      <td><code class="language-plaintext highlighter-rouge">string</code></td>
+      <td><code class="language-plaintext highlighter-rouge">ra.message.loading</code></td>
+      <td>Label to use for secondary loading message</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Usage:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">&lt;</span><span class="nc">Loading</span> <span class="na">loadingPrimary</span><span class="p">=</span><span class="s">"app.page.loading"</span> <span class="na">loadingSecondary</span><span class="p">=</span><span class="s">"app.message.loading"</span> <span class="p">/&gt;</span>
+</code></pre></div></div>
+
+<h2 id="linearprogress">LinearProgress</h2>
+
+<p>Display a linear progress component. Display the same loading component as <code class="language-plaintext highlighter-rouge">react-admin</code> on custom inputs for consistency.</p>
+
+<p>Usage:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">({</span> <span class="nx">data</span><span class="p">,</span> <span class="p">...</span><span class="nx">props</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="o">!</span><span class="nx">data</span> <span class="p">?</span>
+        <span class="p">&lt;</span><span class="nc">LinearProgress</span> <span class="p">/&gt;</span> <span class="p">:</span>
+        <span class="p">&lt;</span><span class="nc">MyInput</span> <span class="na">data</span><span class="p">=</span><span class="si">{</span><span class="nx">data</span><span class="si">}</span> <span class="p">/&gt;;</span>
+</code></pre></div></div>
+
+                </div>
+                <div class="col hide-on-small-only m3 xl3 offset-xl1">
+                    <div class="toc-wrapper">
+                        <div style="height: 1px;">
+                            <ul class="section table-of-contents pushpin">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/materialize.min.js"></script>
+    <script src="/js/prism.js"></script>
+    <script>
+        function slugify(text) {
+            return text.toString().toLowerCase()
+                .replace(/\s+/g, '-')           // Replace spaces with -
+                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+                .replace(/^-+/, '')             // Trim - from start of text
+                .replace(/-+$/, '');            // Trim - from end of text
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            /* Generate table of contents */
+            document.querySelectorAll('.markdown-section h2').forEach(element => {
+                element.classList.add('scrollspy');
+                var a = document.createElement('a');
+                a.href = "#" + slugify(element.innerText);
+                a.innerText = element.innerText;
+                var li = document.createElement('li');
+                li.appendChild(a);
+                document.querySelector('.table-of-contents').appendChild(li)
+            })
+            M.Sidenav.init(document.querySelectorAll('.sidenav'));
+            M.Pushpin.init(document.querySelector('.pushpin'), { offset: 75, top: 75 });
+            M.ScrollSpy.init(document.querySelectorAll('.scrollspy'));
+            M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+        });
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    <script type="text/javascript">
+        docsearch({
+            apiKey: '32f254b1de6a25a96665d1229b6eb8f7',
+            indexName: 'marmelab-react-admin',
+            inputSelector: '#query',
+            debug: false, // Set debug to true if you want to inspect the dropdown 
+            autocompleteOptions: {
+                appendTo: '#search',
+                hint: false,
+            }
+        }); 
+    </script>
+</body>
+
+</html>

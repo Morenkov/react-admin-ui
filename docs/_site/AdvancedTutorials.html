@@ -1,0 +1,257 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<head>
+    <title>React-admin - Advanced Tutorials</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link rel="stylesheet" href="/css/style-v6.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+    <!-- You won't find analytics tags in this page. React-admin protects your privacy! -->
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <div class="nav-wrapper" style="background: linear-gradient(145deg,#027be3 11%,#1a237e 75%)">
+                <div class="left">
+                    <form action="#" onsubmit="return false;">
+                        <div class="input-field" style="position:absolute">
+                            <input type="search" name="q" id="query" size="31" maxlength="255" value=""
+                                style="vertical-align:inherit!important" />
+                            <label class="label-icon" for="test"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                        <span id="search"></span>
+                    </form>
+                </div>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li class="active"><a href="https://marmelab.com/react-admin/Readme.html">Documentation</a></li>
+                    <li><a href="https://marmelab.com/react-admin-demo">Demo</a></li>
+                    <li><a href="https://marmelab.com/en/blog/#react-admin">Blog</a></li>
+                    <li><a href="https://github.com/marmelab/react-admin">GitHub</a></li>
+                </ul>
+            </div>
+        </nav>
+        <ul id="slide-out" class="sidenav sidenav-fixed">
+            <li class="logo">
+                <a href="http://localhost:4000"><img src="http://localhost:4000/assets/logo_white.png" /></a>
+            </li>
+            <li class="version">
+                
+            </li>
+            <li ><a href="./Readme.html">Read Me</a></li>
+<li ><a href="./Tutorial.html">Tutorial</a>
+</li>
+<li ><a href="./DataProviders.html">Data
+                Providers</a></li>
+<li ><a
+                href="./Admin.html"><code>&lt;Admin&gt;</code></a>
+</li>
+<li ><a href="./Resource.html">
+                <code>&lt;Resource&gt;</code>
+        </a></li>
+<li ><a href="./List.html"><code>&lt;List&gt;</code>
+                View</a></li>
+<li ><a
+                href="./CreateEdit.html"><code>&lt;Create&gt;</code>
+                and <code>&lt;Edit&gt;</code> Views</a>
+</li>
+<li ><a href="./Show.html"><code>&lt;Show&gt;</code>
+    View</a></li>
+<li ><a
+    href="./Fields.html"><code>&lt;Field&gt;</code>
+    Components</a></li>
+<li ><a
+                href="./Inputs.html"><code>&lt;Input&gt;</code>
+                Components</a></li>
+<li ><a
+                href="./Authentication.html">Authentication</a></li>
+<li ><a
+                href="./Authorization.html">Authorization</a></li>
+<li ><a href="./Actions.html">Querying the
+                API</a></li>
+<li ><a href="./Theming.html">Theming</a></li>
+<li ><a href="./Translation.html">Translation</a>
+</li>
+<li ><a href="./Caching.html">Caching</a>
+</li>
+<li ><a href="./CustomApp.html">Including in
+                Another App</a>
+</li>
+<li ><a href="./Reference.html">Reference</a>
+</li>
+<li ><a href="./Ecosystem.html">Ecosystem</a>
+</li>
+<li ><a href="./UnitTesting.html">Unit
+    Testing</a></li>
+<li  class="active" ><a
+        href="./AdvancedTutorials.html">Advanced
+        tutorials</a></li>
+<li ><a href="./FAQ.html">FAQ</a></li>
+
+        </ul>
+
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m8 offset-m1 xl7 offset-xl1 markdown-section DocSearch-content">
+                    <h1 id="advanced-tutorials">Advanced Tutorials</h1>
+
+<h2 id="creating-a-record-related-to-the-current-one">Creating a Record Related to the Current One</h2>
+
+<p>This tutorial explains how to add a button on a show or edit page to create a new resource related to the one displayed.</p>
+
+<p><img src="https://marmelab.com/images/blog/react-admin/react-admin-tutorials-form-for-related-records.gif" alt="Screencast" /></p>
+
+<ul>
+  <li><a href="https://marmelab.com/blog/2018/07/09/react-admin-tutorials-form-for-related-records.html">Article</a></li>
+  <li><a href="https://codesandbox.io/s/2393m2k5rj">Codesandbox</a></li>
+</ul>
+
+<h2 id="custom-forms-and-ui-for-related-records">Custom Forms and UI for related records</h2>
+
+<p>This tutorial explains how to have a <code class="language-plaintext highlighter-rouge">create</code>, <code class="language-plaintext highlighter-rouge">show</code> or <code class="language-plaintext highlighter-rouge">edit</code> view of a referenced resource inside a modal or a sliding side panel.</p>
+
+<p><img src="https://marmelab.com/dd58004986d3bb98a32972ba8fd25fc8/screencast.gif" alt="Screencast" /></p>
+
+<ul>
+  <li><a href="https://marmelab.com/blog/2020/04/27/react-admin-tutorials-custom-forms-related-records.html">Article</a></li>
+  <li><a href="https://codesandbox.io/s/react-admin-v3-advanced-recipes-quick-createpreview-voyci">Codesandbox</a></li>
+</ul>
+
+<h2 id="build-a-timeline-as-a-replacement-for-a-list-component">Build a Timeline as a replacement for a List component</h2>
+
+<p>This tutorial shows how to use pure react to implement a custom component replacing react-admin default List.</p>
+
+<p><img src="https://marmelab.com/d9b4cf0e7faf3ed208c102f8b2334409/storybook_App5.gif" alt="Screencast" /></p>
+
+<ul>
+  <li><a href="https://marmelab.com/blog/2019/01/17/react-timeline.html">Article</a></li>
+  <li><a href="https://github.com/marmelab/timeline-react-admin">Repository</a></li>
+</ul>
+
+<h2 id="creating-and-editing-a-record-from-the-list-page">Creating and Editing a Record From the List Page</h2>
+
+<p>This tutorial shows how to display Creation and Edition forms in a drawer or a dialog from the List page.</p>
+
+<p><img src="https://marmelab.com/07b25da5494055c4306dd7e7a48fd010/end-result.gif" alt="Screencast" /></p>
+
+<ul>
+  <li><a href="https://marmelab.com/blog/2019/02/07/react-admin-advanced-recipes-creating-and-editing-a-record-from-the-list-page.html">Article</a></li>
+  <li><a href="https://codesandbox.io/s/lrm6kl00nl">Codesandbox</a></li>
+</ul>
+
+<h2 id="add-a-user-profile-page">Add a User Profile Page</h2>
+
+<p>This tutorial explains how to create a profile page based on an <code class="language-plaintext highlighter-rouge">&lt;Edit&gt;</code> component, and accessible as a standalone page.</p>
+
+<p><img src="https://marmelab.com/668056e9d8273ff5ce75dfc641151a90/end_result.gif" alt="Screencast" /></p>
+
+<ul>
+  <li><a href="https://marmelab.com/blog/2019/03/07/react-admin-advanced-recipes-user-profile.html">Article</a></li>
+  <li><a href="https://codesandbox.io/s/o1jmj4lwv9">Codesandbox</a></li>
+</ul>
+
+<h2 id="supplying-your-own-defaults-to-react-admin">Supplying your own Defaults to React Admin</h2>
+
+<p>This article shows how you can customize many parts of the framework without repeating yourself.</p>
+
+<p><img src="https://marmelab.com/54d42faced9043f7933df212cbda0f1b/react-admin-edit-defaults.gif" alt="Screencast" /></p>
+
+<ul>
+  <li><a href="https://marmelab.com/blog/2019/03/27/supplying-your-own-defaults-to-react-admin.html">Article</a></li>
+  <li><a href="https://codesandbox.io/s/qzxx4mjl59">Codesandbox</a></li>
+</ul>
+
+<h2 id="openid-connect-authentication-with-react-admin">OpenID Connect Authentication with React Admin</h2>
+
+<p><img src="./img/openid-connect-example.png" alt="OpenID Connect on React Admin with a button &quot;Login With Google&quot;" /></p>
+
+<ul>
+  <li><a href="https://marmelab.com/ra-example-oauth">Live Example</a></li>
+  <li><a href="https://github.com/marmelab/ra-example-oauth">Code Repository</a></li>
+</ul>
+
+<h2 id="changing-the-look-and-feel-of-react-admin-without-jsx">Changing The Look And Feel Of React-Admin Without JSX</h2>
+
+<p>This article shows how to customize react-admin look and feel using only the material-ui theme.</p>
+
+<p><img src="https://marmelab.com/097bee867a1d1dc55dec5456732fe94a/screencast.gif" alt="Screencast" /></p>
+
+<ul>
+  <li><a href="https://marmelab.com/blog/2020/09/11/react-admin-tutorials-build-your-own-theme.html">Article</a></li>
+  <li><a href="https://github.com/Luwangel/react-admin-tutorials-build-your-own-theme">Code Repository</a></li>
+</ul>
+
+                </div>
+                <div class="col hide-on-small-only m3 xl3 offset-xl1">
+                    <div class="toc-wrapper">
+                        <div style="height: 1px;">
+                            <ul class="section table-of-contents pushpin">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/materialize.min.js"></script>
+    <script src="/js/prism.js"></script>
+    <script>
+        function slugify(text) {
+            return text.toString().toLowerCase()
+                .replace(/\s+/g, '-')           // Replace spaces with -
+                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+                .replace(/^-+/, '')             // Trim - from start of text
+                .replace(/-+$/, '');            // Trim - from end of text
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            /* Generate table of contents */
+            document.querySelectorAll('.markdown-section h2').forEach(element => {
+                element.classList.add('scrollspy');
+                var a = document.createElement('a');
+                a.href = "#" + slugify(element.innerText);
+                a.innerText = element.innerText;
+                var li = document.createElement('li');
+                li.appendChild(a);
+                document.querySelector('.table-of-contents').appendChild(li)
+            })
+            M.Sidenav.init(document.querySelectorAll('.sidenav'));
+            M.Pushpin.init(document.querySelector('.pushpin'), { offset: 75, top: 75 });
+            M.ScrollSpy.init(document.querySelectorAll('.scrollspy'));
+            M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+        });
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    <script type="text/javascript">
+        docsearch({
+            apiKey: '32f254b1de6a25a96665d1229b6eb8f7',
+            indexName: 'marmelab-react-admin',
+            inputSelector: '#query',
+            debug: false, // Set debug to true if you want to inspect the dropdown 
+            autocompleteOptions: {
+                appendTo: '#search',
+                hint: false,
+            }
+        }); 
+    </script>
+</body>
+
+</html>

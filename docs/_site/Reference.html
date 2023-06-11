@@ -1,0 +1,333 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<head>
+    <title>React-admin - Reference</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link rel="stylesheet" href="/css/style-v6.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+    <!-- You won't find analytics tags in this page. React-admin protects your privacy! -->
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <div class="nav-wrapper" style="background: linear-gradient(145deg,#027be3 11%,#1a237e 75%)">
+                <div class="left">
+                    <form action="#" onsubmit="return false;">
+                        <div class="input-field" style="position:absolute">
+                            <input type="search" name="q" id="query" size="31" maxlength="255" value=""
+                                style="vertical-align:inherit!important" />
+                            <label class="label-icon" for="test"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                        <span id="search"></span>
+                    </form>
+                </div>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li class="active"><a href="https://marmelab.com/react-admin/Readme.html">Documentation</a></li>
+                    <li><a href="https://marmelab.com/react-admin-demo">Demo</a></li>
+                    <li><a href="https://marmelab.com/en/blog/#react-admin">Blog</a></li>
+                    <li><a href="https://github.com/marmelab/react-admin">GitHub</a></li>
+                </ul>
+            </div>
+        </nav>
+        <ul id="slide-out" class="sidenav sidenav-fixed">
+            <li class="logo">
+                <a href="http://localhost:4000"><img src="http://localhost:4000/assets/logo_white.png" /></a>
+            </li>
+            <li class="version">
+                
+            </li>
+            <li ><a href="./Readme.html">Read Me</a></li>
+<li ><a href="./Tutorial.html">Tutorial</a>
+</li>
+<li ><a href="./DataProviders.html">Data
+                Providers</a></li>
+<li ><a
+                href="./Admin.html"><code>&lt;Admin&gt;</code></a>
+</li>
+<li ><a href="./Resource.html">
+                <code>&lt;Resource&gt;</code>
+        </a></li>
+<li ><a href="./List.html"><code>&lt;List&gt;</code>
+                View</a></li>
+<li ><a
+                href="./CreateEdit.html"><code>&lt;Create&gt;</code>
+                and <code>&lt;Edit&gt;</code> Views</a>
+</li>
+<li ><a href="./Show.html"><code>&lt;Show&gt;</code>
+    View</a></li>
+<li ><a
+    href="./Fields.html"><code>&lt;Field&gt;</code>
+    Components</a></li>
+<li ><a
+                href="./Inputs.html"><code>&lt;Input&gt;</code>
+                Components</a></li>
+<li ><a
+                href="./Authentication.html">Authentication</a></li>
+<li ><a
+                href="./Authorization.html">Authorization</a></li>
+<li ><a href="./Actions.html">Querying the
+                API</a></li>
+<li ><a href="./Theming.html">Theming</a></li>
+<li ><a href="./Translation.html">Translation</a>
+</li>
+<li ><a href="./Caching.html">Caching</a>
+</li>
+<li ><a href="./CustomApp.html">Including in
+                Another App</a>
+</li>
+<li  class="active" ><a href="./Reference.html">Reference</a>
+</li>
+<li ><a href="./Ecosystem.html">Ecosystem</a>
+</li>
+<li ><a href="./UnitTesting.html">Unit
+    Testing</a></li>
+<li ><a
+        href="./AdvancedTutorials.html">Advanced
+        tutorials</a></li>
+<li ><a href="./FAQ.html">FAQ</a></li>
+
+        </ul>
+
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m8 offset-m1 xl7 offset-xl1 markdown-section DocSearch-content">
+                    <h1 id="reference">Reference</h1>
+
+<div style="column-count:3">
+
+  <ul>
+    <li><code class="language-plaintext highlighter-rouge">&lt;Actions&gt;</code></li>
+    <li><a href="./Admin.md"><code class="language-plaintext highlighter-rouge">&lt;Admin&gt;</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;AdminRoutes&gt;</code></li>
+    <li><a href="./Theming.md#customizing-the-appbar-content"><code class="language-plaintext highlighter-rouge">&lt;AppBar&gt;</code></a></li>
+    <li><a href="./Fields.md#arrayfield"><code class="language-plaintext highlighter-rouge">&lt;ArrayField&gt;</code></a></li>
+    <li><a href="./Inputs.md#arrayinput"><code class="language-plaintext highlighter-rouge">&lt;ArrayInput&gt;</code></a></li>
+    <li><a href="./Authentication.md#useauthenticated-hook"><code class="language-plaintext highlighter-rouge">&lt;Authenticated&gt;</code></a></li>
+    <li><a href="./Inputs.md#autocompletearrayinput"><code class="language-plaintext highlighter-rouge">&lt;AutocompleteArrayInput&gt;</code></a></li>
+    <li><a href="./Inputs.md#autocompleteinput"><code class="language-plaintext highlighter-rouge">&lt;AutocompleteInput&gt;</code></a></li>
+    <li><a href="./Fields.md#booleanfield"><code class="language-plaintext highlighter-rouge">&lt;BooleanField&gt;</code></a></li>
+    <li><a href="./Inputs.md#booleaninput-and-nullablebooleaninput"><code class="language-plaintext highlighter-rouge">&lt;BooleanInput&gt;</code></a></li>
+    <li><a href="./List.md#bulk-action-buttons"><code class="language-plaintext highlighter-rouge">&lt;BulkDeleteButton&gt;</code></a></li>
+    <li><a href="./List.md#bulk-action-buttons"><code class="language-plaintext highlighter-rouge">&lt;BulkExportButton&gt;</code></a></li>
+    <li><a href="./Inputs.md#checkboxgroupinput"><code class="language-plaintext highlighter-rouge">&lt;CheckboxGroupInput&gt;</code></a></li>
+    <li><a href="./Fields.md#chipfield"><code class="language-plaintext highlighter-rouge">&lt;ChipField&gt;</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;CloneButton&gt;</code></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;Confirm&gt;</code></li>
+    <li><a href="./CreateEdit.md#the-create-and-edit-components"><code class="language-plaintext highlighter-rouge">&lt;Create&gt;</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;CreateActions&gt;</code></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;CreateButton&gt;</code></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;DashboardMenuItem&gt;</code></li>
+    <li><a href="./List.md#the-datagrid-component"><code class="language-plaintext highlighter-rouge">&lt;Datagrid&gt;</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;DatagridBody&gt;</code></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;DatagridCell&gt;</code></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;DatagridHeaderCell&gt;</code></li>
+    <li><a href="./Fields.md#datefield"><code class="language-plaintext highlighter-rouge">&lt;DateField&gt;</code></a></li>
+    <li><a href="./Inputs.md#dateinput"><code class="language-plaintext highlighter-rouge">&lt;DateInput&gt;</code></a></li>
+    <li><a href="./Inputs.md#datetimeinput"><code class="language-plaintext highlighter-rouge">&lt;DateTimeInput&gt;</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;DeleteButton&gt;</code></li>
+    <li><a href="./CreateEdit.md#the-create-and-edit-components"><code class="language-plaintext highlighter-rouge">&lt;Edit&gt;</code></a></li>
+    <li><a href="./CreateEdit.md#the-editguesser-component"><code class="language-plaintext highlighter-rouge">&lt;EditGuesser&gt;</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;EditActions&gt;</code></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;EditButton&gt;</code></li>
+    <li><a href="./Fields.md#emailfield"><code class="language-plaintext highlighter-rouge">&lt;EmailField&gt;</code></a></li>
+    <li><a href="./Fields.md#filefield"><code class="language-plaintext highlighter-rouge">&lt;FileField&gt;</code></a></li>
+    <li><a href="./Inputs.md#fileinput"><code class="language-plaintext highlighter-rouge">&lt;FileInput&gt;</code></a></li>
+    <li><a href="./List.md#filters"><code class="language-plaintext highlighter-rouge">&lt;Filter&gt;</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;FilterButton&gt;</code></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;FilterForm&gt;</code></li>
+    <li><a href="./List.md#the-filterlist-sidebar"><code class="language-plaintext highlighter-rouge">&lt;FilterList&gt;</code></a></li>
+    <li><a href="./List.md#the-filterlist-sidebar"><code class="language-plaintext highlighter-rouge">&lt;FilterListItem&gt;</code></a></li>
+    <li><a href="./List.md#live-search"><code class="language-plaintext highlighter-rouge">&lt;FilterLiveSearch&gt;</code></a></li>
+    <li><a href="./Inputs.md#linking-two-inputs"><code class="language-plaintext highlighter-rouge">&lt;FormDataConsumer&gt;</code></a></li>
+    <li><a href="./CreateEdit.md#the-tabbedform-component"><code class="language-plaintext highlighter-rouge">&lt;FormTab&gt;</code></a></li>
+    <li><a href="./Fields.md#functionfield"><code class="language-plaintext highlighter-rouge">&lt;FunctionField&gt;</code></a></li>
+    <li><a href="./Fields.md#imagefield"><code class="language-plaintext highlighter-rouge">&lt;ImageField&gt;</code></a></li>
+    <li><a href="./Inputs.md#imageinput"><code class="language-plaintext highlighter-rouge">&lt;ImageInput&gt;</code></a></li>
+    <li><a href="./Inputs.md#imageinput"><code class="language-plaintext highlighter-rouge">&lt;ImageInputPreview&gt;</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;Labeled&gt;</code></li>
+    <li><a href="./Theming.md#using-a-custom-layout"><code class="language-plaintext highlighter-rouge">&lt;Layout&gt;</code></a></li>
+    <li><a href="./Theming.md#Loading"><code class="language-plaintext highlighter-rouge">&lt;Loading&gt;</code></a></li>
+    <li><a href="./Theming.md#using-a-custom-logout-button"><code class="language-plaintext highlighter-rouge">&lt;Logout&gt;</code></a></li>
+    <li><a href="./List.md#the-list-component"><code class="language-plaintext highlighter-rouge">&lt;List&gt;</code></a></li>
+    <li><a href="./List.md#the-listguesser-component"><code class="language-plaintext highlighter-rouge">&lt;ListGuesser&gt;</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;ListButton&gt;</code></li>
+    <li><a href="./Theming.md#using-a-custom-menu"><code class="language-plaintext highlighter-rouge">&lt;Menu&gt;</code></a></li>
+    <li><a href="./Actions.md#legacy-components-query-mutation-and-withdataprovider"><code class="language-plaintext highlighter-rouge">&lt;Mutation&gt;</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;Notification&gt;</code></li>
+    <li><a href="./Inputs.md#booleaninput-and-nullablebooleaninput"><code class="language-plaintext highlighter-rouge">&lt;NullableBooleanInput&gt;</code></a></li>
+    <li><a href="./Fields.md#numberfield"><code class="language-plaintext highlighter-rouge">&lt;NumberField&gt;</code></a></li>
+    <li><a href="./Inputs.md#numberinput"><code class="language-plaintext highlighter-rouge">&lt;NumberInput&gt;</code></a></li>
+    <li><a href="./List.md#the-pagination-component"><code class="language-plaintext highlighter-rouge">&lt;Pagination&gt;</code></a></li>
+    <li><a href="./Inputs.md#passwordinput"><code class="language-plaintext highlighter-rouge">&lt;PasswordInput&gt;</code></a></li>
+    <li><a href="./Actions.md#legacy-components-query-mutation-and-withdataprovider"><code class="language-plaintext highlighter-rouge">&lt;Query&gt;</code></a></li>
+    <li><a href="./Inputs.md#radiobuttongroupinput"><code class="language-plaintext highlighter-rouge">&lt;RadioButtonGroupInput&gt;</code></a></li>
+    <li><a href="./Fields.md#referencearrayfield"><code class="language-plaintext highlighter-rouge">&lt;ReferenceArrayField&gt;</code></a></li>
+    <li><a href="./Inputs.md#referencearrayinput"><code class="language-plaintext highlighter-rouge">&lt;ReferenceArrayInput&gt;</code></a></li>
+    <li><a href="./Fields.md#referencefield"><code class="language-plaintext highlighter-rouge">&lt;ReferenceField&gt;</code></a></li>
+    <li><a href="./Inputs.md#referenceinput"><code class="language-plaintext highlighter-rouge">&lt;ReferenceInput&gt;</code></a></li>
+    <li><a href="./Fields.md#referencemanyfield"><code class="language-plaintext highlighter-rouge">&lt;ReferenceManyField&gt;</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;RefreshButton&gt;</code></li>
+    <li><a href="./Resource.md#the-resource-component"><code class="language-plaintext highlighter-rouge">&lt;Resource&gt;</code></a></li>
+    <li><a href="./Fields.md#richtextfield"><code class="language-plaintext highlighter-rouge">&lt;RichTextField&gt;</code></a></li>
+    <li><a href="./Inputs.md#richtextinput"><code class="language-plaintext highlighter-rouge">&lt;RichTextInput&gt;</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;SaveButton&gt;</code></li>
+    <li><a href="./Fields.md#selectfield"><code class="language-plaintext highlighter-rouge">&lt;SelectField&gt;</code></a></li>
+    <li><a href="./Inputs.md#selectinput"><code class="language-plaintext highlighter-rouge">&lt;SelectInput&gt;</code></a></li>
+    <li><a href="./Show.md#the-show-component"><code class="language-plaintext highlighter-rouge">&lt;Show&gt;</code></a></li>
+    <li><a href="./Show.md#the-showguesser-component"><code class="language-plaintext highlighter-rouge">&lt;ShowGuesser</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;ShowButton&gt;</code></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;Sidebar&gt;</code></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;SimpleList&gt;</code></li>
+    <li><a href="./CreateEdit.md#the-simpleform-component"><code class="language-plaintext highlighter-rouge">&lt;SimpleForm&gt;</code></a></li>
+    <li><a href="./Inputs.md#arrayinput"><code class="language-plaintext highlighter-rouge">&lt;SimpleFormIterator&gt;</code></a></li>
+    <li><a href="./List.md#the-simplelist-component"><code class="language-plaintext highlighter-rouge">&lt;SimpleList&gt;</code></a></li>
+    <li><a href="./Show.md#the-simpleshowlayout-component"><code class="language-plaintext highlighter-rouge">&lt;SimpleShowLayout&gt;</code></a></li>
+    <li><a href="./List.md#the-singlefieldlist-component"><code class="language-plaintext highlighter-rouge">&lt;SingleFieldList&gt;</code></a></li>
+    <li><a href="./List.md#the-sortbutton-component"><code class="language-plaintext highlighter-rouge">&lt;SortButton&gt;</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;Tab&gt;</code></li>
+    <li><a href="./CreateEdit.md#the-tabbedform-component"><code class="language-plaintext highlighter-rouge">&lt;TabbedForm&gt;</code></a></li>
+    <li><a href="./Show.md#the-tabbedshowlayout-component"><code class="language-plaintext highlighter-rouge">&lt;TabbedShowLayout&gt;</code></a></li>
+    <li><a href="./UnitTesting.md#testing-custom-views"><code class="language-plaintext highlighter-rouge">&lt;TestContext&gt;</code></a></li>
+    <li><a href="./Fields.md#textfield"><code class="language-plaintext highlighter-rouge">&lt;TextField&gt;</code></a></li>
+    <li><a href="./Inputs.md#textinput"><code class="language-plaintext highlighter-rouge">&lt;TextInput&gt;</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;Title&gt;</code></li>
+    <li><a href="./Translation.md#withtranslate-hoc"><code class="language-plaintext highlighter-rouge">translate</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;Toolbar&gt;</code></li>
+    <li><code class="language-plaintext highlighter-rouge">&lt;TopToolbar&gt;</code></li>
+    <li><a href="./Fields.md#urlfield"><code class="language-plaintext highlighter-rouge">&lt;UrlField&gt;</code></a></li>
+    <li><a href="./Authentication.md#useauthenticated-hook"><code class="language-plaintext highlighter-rouge">useAuthenticated</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">useAuthProvider</code></li>
+    <li><a href="./Authentication.md#useauthstate-hook"><code class="language-plaintext highlighter-rouge">useAuthState</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">useCheckAuth</code></li>
+    <li><code class="language-plaintext highlighter-rouge">useChoices</code></li>
+    <li><a href="./Actions.md#specialized-hooks"><code class="language-plaintext highlighter-rouge">useCreate</code></a></li>
+    <li><a href="./CreateEdit.md#usecreatecontroller"><code class="language-plaintext highlighter-rouge">useCreateController</code></a></li>
+    <li><a href="./Actions.md#usedataprovider-hook"><code class="language-plaintext highlighter-rouge">useDataProvider</code></a></li>
+    <li><a href="./Actions.md#specialized-hooks"><code class="language-plaintext highlighter-rouge">useDelete</code></a></li>
+    <li><a href="./Actions.md#specialized-hooks"><code class="language-plaintext highlighter-rouge">useDeleteMany</code></a></li>
+    <li><a href="./CreateEdit.md#useeditcontroller"><code class="language-plaintext highlighter-rouge">useEditController</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">useFilterState</code></li>
+    <li><a href="./Actions.md#specialized-hooks"><code class="language-plaintext highlighter-rouge">useGetList</code></a></li>
+    <li><a href="./Actions.md#specialized-hooks"><code class="language-plaintext highlighter-rouge">useGetMany</code></a></li>
+    <li><a href="./Actions.md#specialized-hooks"><code class="language-plaintext highlighter-rouge">useGetManyReference</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">useGetMatching</code></li>
+    <li><code class="language-plaintext highlighter-rouge">useGetMatchingReferences</code></li>
+    <li><a href="./Actions.md#specialized-hooks"><code class="language-plaintext highlighter-rouge">useGetOne</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">useGetPermissions</code></li>
+    <li><code class="language-plaintext highlighter-rouge">useInput</code></li>
+    <li><a href="./List.md#uselistcontroller"><code class="language-plaintext highlighter-rouge">useListController</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">useListParams</code></li>
+    <li><code class="language-plaintext highlighter-rouge">useLoading</code></li>
+    <li><a href="./Translation.md#uselocale-getting-the-current-locale"><code class="language-plaintext highlighter-rouge">useLocale</code></a></li>
+    <li><a href="./Authentication.md#customizing-the-login-and-logout-components"><code class="language-plaintext highlighter-rouge">useLogin</code></a></li>
+    <li><a href="./Authentication.md#customizing-the-login-and-logout-components"><code class="language-plaintext highlighter-rouge">useLogout</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">useLogoutIfAccessDenied</code></li>
+    <li><a href="./Theming.md#usemediaquery-hook"><code class="language-plaintext highlighter-rouge">useMediaQuery</code></a></li>
+    <li><a href="./Actions.md#usemutation-hook"><code class="language-plaintext highlighter-rouge">useMutation</code></a></li>
+    <li><a href="./Actions.md#handling-side-effects-in-usedataprovider"><code class="language-plaintext highlighter-rouge">useNotify</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">usePaginationState</code></li>
+    <li><a href="./Authorization.md#usepermissions-hook"><code class="language-plaintext highlighter-rouge">usePermissions</code></a></li>
+    <li><a href="./Actions.md#usequery-hook"><code class="language-plaintext highlighter-rouge">useQuery</code></a></li>
+    <li><a href="./Actions.md#usequerywithstore-hook"><code class="language-plaintext highlighter-rouge">useQueryWithStore</code></a></li>
+    <li><a href="./Actions.md#handling-side-effects-in-usedataprovider"><code class="language-plaintext highlighter-rouge">useRedirect</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">useReference</code></li>
+    <li><code class="language-plaintext highlighter-rouge">useReferenceArrayFieldController</code></li>
+    <li><code class="language-plaintext highlighter-rouge">useReferenceArrayInputController</code></li>
+    <li><code class="language-plaintext highlighter-rouge">useReferenceInputController</code></li>
+    <li><code class="language-plaintext highlighter-rouge">useReferenceManyFieldController</code></li>
+    <li><a href="./Actions.md#handling-side-effects-in-usedataprovider"><code class="language-plaintext highlighter-rouge">useRefresh</code></a></li>
+    <li><a href="./Translation.md#usesetlocale-changing-locale-at-runtime"><code class="language-plaintext highlighter-rouge">useSetLocale</code></a></li>
+    <li><a href="./Show.md#useshowcontroller"><code class="language-plaintext highlighter-rouge">useShowController</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">useSortState</code></li>
+    <li><a href="./Theming.md#overriding-a-component-style"><code class="language-plaintext highlighter-rouge">useStyles</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">useSuggestions</code></li>
+    <li><a href="./Translation.md#usetranslate-hook"><code class="language-plaintext highlighter-rouge">useTranslate</code></a></li>
+    <li><a href="./Actions.md#specialized-hooks"><code class="language-plaintext highlighter-rouge">useUpdate</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">useUpdateLoading</code></li>
+    <li><a href="./Actions.md#specialized-hooks"><code class="language-plaintext highlighter-rouge">useUpdateMany</code></a></li>
+    <li><a href="./Actions.md#handling-side-effects-in-usedataprovider"><code class="language-plaintext highlighter-rouge">useUnselectAll</code></a></li>
+    <li><a href="./CreateEdit.md#warning-about-unsaved-changes"><code class="language-plaintext highlighter-rouge">useWarnWhenUnsavedChanges</code></a></li>
+    <li><code class="language-plaintext highlighter-rouge">useVersion</code></li>
+    <li><a href="./Actions.md#legacy-components-query-mutation-and-withdataprovider"><code class="language-plaintext highlighter-rouge">withDataProvider</code></a></li>
+    <li><a href="./Translation.md#withtranslate-hoc"><code class="language-plaintext highlighter-rouge">withTranslate</code></a></li>
+    <li><a href="./Authorization.md#usepermissions-hook"><code class="language-plaintext highlighter-rouge">&lt;WithPermissions&gt;</code></a></li>
+  </ul>
+
+</div>
+
+                </div>
+                <div class="col hide-on-small-only m3 xl3 offset-xl1">
+                    <div class="toc-wrapper">
+                        <div style="height: 1px;">
+                            <ul class="section table-of-contents pushpin">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/materialize.min.js"></script>
+    <script src="/js/prism.js"></script>
+    <script>
+        function slugify(text) {
+            return text.toString().toLowerCase()
+                .replace(/\s+/g, '-')           // Replace spaces with -
+                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+                .replace(/^-+/, '')             // Trim - from start of text
+                .replace(/-+$/, '');            // Trim - from end of text
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            /* Generate table of contents */
+            document.querySelectorAll('.markdown-section h2').forEach(element => {
+                element.classList.add('scrollspy');
+                var a = document.createElement('a');
+                a.href = "#" + slugify(element.innerText);
+                a.innerText = element.innerText;
+                var li = document.createElement('li');
+                li.appendChild(a);
+                document.querySelector('.table-of-contents').appendChild(li)
+            })
+            M.Sidenav.init(document.querySelectorAll('.sidenav'));
+            M.Pushpin.init(document.querySelector('.pushpin'), { offset: 75, top: 75 });
+            M.ScrollSpy.init(document.querySelectorAll('.scrollspy'));
+            M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+        });
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    <script type="text/javascript">
+        docsearch({
+            apiKey: '32f254b1de6a25a96665d1229b6eb8f7',
+            indexName: 'marmelab-react-admin',
+            inputSelector: '#query',
+            debug: false, // Set debug to true if you want to inspect the dropdown 
+            autocompleteOptions: {
+                appendTo: '#search',
+                hint: false,
+            }
+        }); 
+    </script>
+</body>
+
+</html>

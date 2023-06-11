@@ -1,0 +1,568 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<head>
+    <title>React-admin - Authentication</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link rel="stylesheet" href="/css/style-v6.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+    <!-- You won't find analytics tags in this page. React-admin protects your privacy! -->
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <div class="nav-wrapper" style="background: linear-gradient(145deg,#027be3 11%,#1a237e 75%)">
+                <div class="left">
+                    <form action="#" onsubmit="return false;">
+                        <div class="input-field" style="position:absolute">
+                            <input type="search" name="q" id="query" size="31" maxlength="255" value=""
+                                style="vertical-align:inherit!important" />
+                            <label class="label-icon" for="test"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                        <span id="search"></span>
+                    </form>
+                </div>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li class="active"><a href="https://marmelab.com/react-admin/Readme.html">Documentation</a></li>
+                    <li><a href="https://marmelab.com/react-admin-demo">Demo</a></li>
+                    <li><a href="https://marmelab.com/en/blog/#react-admin">Blog</a></li>
+                    <li><a href="https://github.com/marmelab/react-admin">GitHub</a></li>
+                </ul>
+            </div>
+        </nav>
+        <ul id="slide-out" class="sidenav sidenav-fixed">
+            <li class="logo">
+                <a href="http://localhost:4000"><img src="http://localhost:4000/assets/logo_white.png" /></a>
+            </li>
+            <li class="version">
+                
+            </li>
+            <li ><a href="./Readme.html">Read Me</a></li>
+<li ><a href="./Tutorial.html">Tutorial</a>
+</li>
+<li ><a href="./DataProviders.html">Data
+                Providers</a></li>
+<li ><a
+                href="./Admin.html"><code>&lt;Admin&gt;</code></a>
+</li>
+<li ><a href="./Resource.html">
+                <code>&lt;Resource&gt;</code>
+        </a></li>
+<li ><a href="./List.html"><code>&lt;List&gt;</code>
+                View</a></li>
+<li ><a
+                href="./CreateEdit.html"><code>&lt;Create&gt;</code>
+                and <code>&lt;Edit&gt;</code> Views</a>
+</li>
+<li ><a href="./Show.html"><code>&lt;Show&gt;</code>
+    View</a></li>
+<li ><a
+    href="./Fields.html"><code>&lt;Field&gt;</code>
+    Components</a></li>
+<li ><a
+                href="./Inputs.html"><code>&lt;Input&gt;</code>
+                Components</a></li>
+<li  class="active" ><a
+                href="./Authentication.html">Authentication</a></li>
+<li ><a
+                href="./Authorization.html">Authorization</a></li>
+<li ><a href="./Actions.html">Querying the
+                API</a></li>
+<li ><a href="./Theming.html">Theming</a></li>
+<li ><a href="./Translation.html">Translation</a>
+</li>
+<li ><a href="./Caching.html">Caching</a>
+</li>
+<li ><a href="./CustomApp.html">Including in
+                Another App</a>
+</li>
+<li ><a href="./Reference.html">Reference</a>
+</li>
+<li ><a href="./Ecosystem.html">Ecosystem</a>
+</li>
+<li ><a href="./UnitTesting.html">Unit
+    Testing</a></li>
+<li ><a
+        href="./AdvancedTutorials.html">Advanced
+        tutorials</a></li>
+<li ><a href="./FAQ.html">FAQ</a></li>
+
+        </ul>
+
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m8 offset-m1 xl7 offset-xl1 markdown-section DocSearch-content">
+                    <h1 id="authentication">Authentication</h1>
+
+<p><img src="./img/login.gif" alt="Login" /></p>
+
+<p>React-admin lets you secure your admin app with the authentication strategy of your choice. Since there are many possible strategies (Basic Auth, JWT, OAuth, etc.), react-admin delegates authentication logic to your <code class="language-plaintext highlighter-rouge">authProvider</code>, and provides hooks to execute your authentication code.</p>
+
+<h2 id="the-authprovider">The <code class="language-plaintext highlighter-rouge">authProvider</code></h2>
+
+<p>By default, react-admin apps don’t require authentication. To restrict access to the admin, pass an <code class="language-plaintext highlighter-rouge">authProvider</code> to the <code class="language-plaintext highlighter-rouge">&lt;Admin&gt;</code> component.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/App.js</span>
+<span class="k">import</span> <span class="nx">authProvider</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./authProvider</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Admin</span> <span class="na">authProvider</span><span class="p">=</span><span class="si">{</span><span class="nx">authProvider</span><span class="si">}</span><span class="p">&gt;</span>
+        ...
+    <span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>What’s an <code class="language-plaintext highlighter-rouge">authProvider</code>? Just like a <code class="language-plaintext highlighter-rouge">dataProvider</code>, an <code class="language-plaintext highlighter-rouge">authProvider</code> is an object that handles authentication logic. It exposes methods that react-admin calls when needed, and that return a Promise. The simplest <code class="language-plaintext highlighter-rouge">authProvider</code> is:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">authProvider</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">login</span><span class="p">:</span> <span class="nx">params</span> <span class="o">=&gt;</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(),</span>
+    <span class="na">logout</span><span class="p">:</span> <span class="nx">params</span> <span class="o">=&gt;</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(),</span>
+    <span class="na">checkAuth</span><span class="p">:</span> <span class="nx">params</span> <span class="o">=&gt;</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(),</span>
+    <span class="na">checkError</span><span class="p">:</span> <span class="nx">error</span> <span class="o">=&gt;</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(),</span>
+    <span class="na">getPermissions</span><span class="p">:</span> <span class="nx">params</span> <span class="o">=&gt;</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(),</span>
+    <span class="na">getIdentity</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(),</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p><strong>Tip</strong>: In react-admin version 2.0, the <code class="language-plaintext highlighter-rouge">authProvider</code> used to be a function instead of an object. React-admin 3.0 accepts both object and (legacy) function authProviders.</p>
+
+<p>Let’s see when react-admin calls the <code class="language-plaintext highlighter-rouge">authProvider</code>, and how to write one for your own authentication provider.</p>
+
+<h2 id="login-configuration">Login Configuration</h2>
+
+<p>Once an admin has an <code class="language-plaintext highlighter-rouge">authProvider</code>, react-admin enables a new page on the <code class="language-plaintext highlighter-rouge">/login</code> route, which displays a login form asking for a username and password.</p>
+
+<p><img src="./img/login-form.png" alt="Default Login Form" /></p>
+
+<p>Upon submission, this form calls the <code class="language-plaintext highlighter-rouge">authProvider.login({ login, password })</code> method. It’s the ideal place to authenticate the user, and store their credentials.</p>
+
+<p>For instance, to query an authentication route via HTTPS and store the credentials (a token) in local storage, configure <code class="language-plaintext highlighter-rouge">authProvider</code> as follows:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/authProvider.js</span>
+<span class="kd">const</span> <span class="nx">authProvider</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">login</span><span class="p">:</span> <span class="p">({</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span> <span class="p">})</span> <span class="o">=&gt;</span>  <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">request</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Request</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://mydomain.com/authenticate</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+            <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nf">stringify</span><span class="p">({</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span> <span class="p">}),</span>
+            <span class="na">headers</span><span class="p">:</span> <span class="k">new</span> <span class="nc">Headers</span><span class="p">({</span> <span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span> <span class="p">}),</span>
+        <span class="p">});</span>
+        <span class="k">return</span> <span class="nf">fetch</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">then</span><span class="p">(</span><span class="nx">response</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="k">if </span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">status</span> <span class="o">&lt;</span> <span class="mi">200</span> <span class="o">||</span> <span class="nx">response</span><span class="p">.</span><span class="nx">status</span> <span class="o">&gt;=</span> <span class="mi">300</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">throw</span> <span class="k">new</span> <span class="nc">Error</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">statusText</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nf">json</span><span class="p">();</span>
+            <span class="p">})</span>
+            <span class="p">.</span><span class="nf">then</span><span class="p">(</span><span class="nx">auth</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="nx">localStorage</span><span class="p">.</span><span class="nf">setItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">auth</span><span class="dl">'</span><span class="p">,</span> <span class="nx">JSON</span><span class="p">.</span><span class="nf">stringify</span><span class="p">(</span><span class="nx">auth</span><span class="p">));</span>
+            <span class="p">});</span>
+    <span class="p">},</span>
+    <span class="c1">// ...</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">authProvider</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Once the promise resolves, the login form redirects to the previous page, or to the admin index if the user just arrived.</p>
+
+<p><strong>Tip</strong>: It’s a good idea to store credentials in <code class="language-plaintext highlighter-rouge">localStorage</code>, as in this example, to avoid reconnection when opening a new browser tab. But this makes your application <a href="https://www.redotheweb.com/2015/11/09/api-security.html">open to XSS attacks</a>, so you’d better double down on security, and add an <code class="language-plaintext highlighter-rouge">httpOnly</code> cookie on the server side, too.</p>
+
+<h2 id="sending-credentials-to-the-api">Sending Credentials to the API</h2>
+
+<p>Now the user has logged in, you can use their credentials to communicate with the <code class="language-plaintext highlighter-rouge">dataProvider</code>. For that, you have to tweak, this time, the <code class="language-plaintext highlighter-rouge">dataProvider</code> function. As explained in the <a href="DataProviders.md#adding-custom-headers">Data providers documentation</a>, <code class="language-plaintext highlighter-rouge">simpleRestProvider</code> and <code class="language-plaintext highlighter-rouge">jsonServerProvider</code> take an <code class="language-plaintext highlighter-rouge">httpClient</code> as second parameter. That’s the place where you can change request headers, cookies, etc.</p>
+
+<p>For instance, to pass the token obtained during login as an <code class="language-plaintext highlighter-rouge">Authorization</code> header, configure the Data Provider as follows:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">fetchUtils</span><span class="p">,</span> <span class="nx">Admin</span><span class="p">,</span> <span class="nx">Resource</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">simpleRestProvider</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">ra-data-simple-rest</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">httpClient</span> <span class="o">=</span> <span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if </span><span class="p">(</span><span class="o">!</span><span class="nx">options</span><span class="p">.</span><span class="nx">headers</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">options</span><span class="p">.</span><span class="nx">headers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Headers</span><span class="p">({</span> <span class="na">Accept</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span> <span class="p">});</span>
+    <span class="p">}</span>
+    <span class="kd">const</span> <span class="p">{</span> <span class="nx">token</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="nx">localStorage</span><span class="p">.</span><span class="nf">getItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">auth</span><span class="dl">'</span><span class="p">));</span>
+    <span class="nx">options</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nf">set</span><span class="p">(</span><span class="dl">'</span><span class="s1">Authorization</span><span class="dl">'</span><span class="p">,</span> <span class="s2">`Bearer </span><span class="p">${</span><span class="nx">token</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">fetchUtils</span><span class="p">.</span><span class="nf">fetchJson</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+<span class="p">};</span>
+<span class="kd">const</span> <span class="nx">dataProvider</span> <span class="o">=</span> <span class="nf">simpleRestProvider</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://localhost:3000</span><span class="dl">'</span><span class="p">,</span> <span class="nx">httpClient</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Admin</span> <span class="na">dataProvider</span><span class="p">=</span><span class="si">{</span><span class="nx">dataProvider</span><span class="si">}</span> <span class="na">authProvider</span><span class="p">=</span><span class="si">{</span><span class="nx">authProvider</span><span class="si">}</span><span class="p">&gt;</span>
+        ...
+    <span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>Now the admin is secured: The user can be authenticated and use their credentials to communicate with a secure API.</p>
+
+<p>If you have a custom REST client, don’t forget to add credentials yourself.</p>
+
+<h2 id="user-identity">User Identity</h2>
+
+<p>React-admin displays the current user name and avatar on the top right side of the screen. To enable this feature, implement the <code class="language-plaintext highlighter-rouge">getIdentity</code> method in the <code class="language-plaintext highlighter-rouge">authProvider</code>:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/authProvider.js</span>
+<span class="kd">const</span> <span class="nx">authProvider</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">login</span><span class="p">:</span> <span class="p">({</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+    <span class="na">getIdentity</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="p">{</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">fullName</span><span class="p">,</span> <span class="nx">avatar</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="nx">localStorage</span><span class="p">.</span><span class="nf">getItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">auth</span><span class="dl">'</span><span class="p">));</span>
+        <span class="k">return</span> <span class="p">{</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">fullName</span><span class="p">,</span> <span class="nx">avatar</span> <span class="p">};</span>
+    <span class="p">}</span>
+    <span class="c1">// ...</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">authProvider</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>React-admin uses the <code class="language-plaintext highlighter-rouge">fullName</code> and the <code class="language-plaintext highlighter-rouge">avatar</code> (an image source, or a data-uri) in the App Bar:</p>
+
+<p><img src="./img/identity.png" alt="User identity" /></p>
+
+<p><strong>Tip</strong>: You can use the <code class="language-plaintext highlighter-rouge">id</code> field to identify the current user in your code, by calling the <code class="language-plaintext highlighter-rouge">useGetIdentity</code> hook:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">useGetIdentity</span><span class="p">,</span> <span class="nx">useGetOne</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">PostDetail</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">id</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="p">{</span> <span class="na">data</span><span class="p">:</span> <span class="nx">post</span><span class="p">,</span> <span class="na">loading</span><span class="p">:</span> <span class="nx">postLoading</span> <span class="p">}</span> <span class="o">=</span> <span class="nf">useGetOne</span><span class="p">(</span><span class="dl">'</span><span class="s1">posts</span><span class="dl">'</span><span class="p">,</span> <span class="nx">id</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="p">{</span> <span class="nx">identity</span><span class="p">,</span> <span class="na">loading</span><span class="p">:</span> <span class="nx">identityLoading</span> <span class="p">}</span> <span class="o">=</span> <span class="nf">useGetIdentity</span><span class="p">();</span>
+    <span class="k">if </span><span class="p">(</span><span class="nx">postLoading</span> <span class="o">||</span> <span class="nx">identityLoading</span><span class="p">)</span> <span class="k">return</span> <span class="p">&lt;&gt;</span>Loading...<span class="p">&lt;/&gt;;</span>
+    <span class="k">if </span><span class="p">(</span><span class="o">!</span><span class="nx">post</span><span class="p">.</span><span class="nx">lockedBy</span> <span class="o">||</span> <span class="nx">post</span><span class="p">.</span><span class="nx">lockedBy</span> <span class="o">===</span> <span class="nx">identity</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// post isn't locked, or is locked by me</span>
+        <span class="k">return</span> <span class="p">&lt;</span><span class="nc">PostEdit</span> <span class="na">post</span><span class="p">=</span><span class="si">{</span><span class="nx">post</span><span class="si">}</span> <span class="p">/&gt;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">// post is locked by someone else and cannot be edited</span>
+        <span class="k">return</span> <span class="p">&lt;</span><span class="nc">PostShow</span> <span class="na">post</span><span class="p">=</span><span class="si">{</span><span class="nx">post</span><span class="si">}</span> <span class="p">/&gt;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="logout-configuration">Logout Configuration</h2>
+
+<p>As soon as you provide an <code class="language-plaintext highlighter-rouge">authProvider</code> prop to <code class="language-plaintext highlighter-rouge">&lt;Admin&gt;</code>, react-admin displays a logout button in the top bar (or in the menu on mobile). When the user clicks on the logout button, this calls the <code class="language-plaintext highlighter-rouge">authProvider.logout()</code> method, and removes potentially sensitive data from the Redux store. Then the user gets redirected to the login page.</p>
+
+<p>So it’s the responsibility of the <code class="language-plaintext highlighter-rouge">authProvider</code> to clean up the current authentication data. For instance, if the authentication was a token stored in local storage, here the code to remove it:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/authProvider.js</span>
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+    <span class="na">login</span><span class="p">:</span> <span class="p">({</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+    <span class="na">getIdentity</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+    <span class="na">logout</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">localStorage</span><span class="p">.</span><span class="nf">removeItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">auth</span><span class="dl">'</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">resolve</span><span class="p">();</span>
+    <span class="p">},</span>
+    <span class="c1">// ...</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p><img src="./img/logout.gif" alt="Logout button" /></p>
+
+<p>The <code class="language-plaintext highlighter-rouge">authProvider</code> is also a good place to notify the authentication API that the user credentials are no longer valid after logout.</p>
+
+<p>Note that the <code class="language-plaintext highlighter-rouge">authProvider.logout()</code> method can return the url to which the user will be redirected once logged out. By default, this is the <code class="language-plaintext highlighter-rouge">/login</code> route.</p>
+
+<h2 id="catching-authentication-errors-on-the-api">Catching Authentication Errors On The API</h2>
+
+<p>If the API requires authentication, and the user credentials are missing in the request or invalid, the API usually answers with an HTTP error code 401 or 403.</p>
+
+<p>Fortunately, each time the API returns an error, react-admin calls the <code class="language-plaintext highlighter-rouge">authProvider.checkError()</code> method. Once again, it’s up to you to decide which HTTP status codes should let the user continue (by returning a resolved promise) or log them out (by returning a rejected promise).</p>
+
+<p>For instance, to redirect the user to the login page for both 401 and 403 codes:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/authProvider.js</span>
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+    <span class="na">login</span><span class="p">:</span> <span class="p">({</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+    <span class="na">getIdentity</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+    <span class="na">logout</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+    <span class="na">checkError</span><span class="p">:</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">status</span> <span class="o">=</span> <span class="nx">error</span><span class="p">.</span><span class="nx">status</span><span class="p">;</span>
+        <span class="k">if </span><span class="p">(</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">401</span> <span class="o">||</span> <span class="nx">status</span> <span class="o">===</span> <span class="mi">403</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">localStorage</span><span class="p">.</span><span class="nf">removeItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">auth</span><span class="dl">'</span><span class="p">);</span>
+            <span class="k">return</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">reject</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">resolve</span><span class="p">();</span>
+    <span class="p">},</span>
+    <span class="c1">// ...</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Note that when <code class="language-plaintext highlighter-rouge">checkError()</code> returns a rejected promise, react-admin calls the <code class="language-plaintext highlighter-rouge">authProvider.logout()</code> method before redirecting, and uses the url which may have been returned by the call to <code class="language-plaintext highlighter-rouge">logout()</code>.</p>
+
+<h2 id="checking-credentials-during-navigation">Checking Credentials During Navigation</h2>
+
+<p>Redirecting to the login page whenever a REST response uses a 401 status code is usually not enough, because react-admin keeps data on the client side, and could display stale data while contacting the server - even after the credentials are no longer valid.</p>
+
+<p>Fortunately, each time the user navigates, react-admin calls the <code class="language-plaintext highlighter-rouge">authProvider.checkAuth()</code> method, so it’s the ideal place to validate the credentials.</p>
+
+<p>For instance, to check for the existence of the authentication data in local storage:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/authProvider.js</span>
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+    <span class="na">login</span><span class="p">:</span> <span class="p">({</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+    <span class="na">getIdentity</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+    <span class="na">logout</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+    <span class="na">checkError</span><span class="p">:</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+    <span class="na">checkAuth</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">localStorage</span><span class="p">.</span><span class="nf">getItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">auth</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">?</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">resolve</span><span class="p">()</span>
+        <span class="p">:</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">reject</span><span class="p">(),</span>
+    <span class="c1">// ...</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>If the promise is rejected, react-admin redirects by default to the <code class="language-plaintext highlighter-rouge">/login</code> page. You can override where to redirect the user in <code class="language-plaintext highlighter-rouge">checkAuth()</code>, by rejecting an object with a <code class="language-plaintext highlighter-rouge">redirectTo</code> property:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/authProvider.js</span>
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+    <span class="na">login</span><span class="p">:</span> <span class="p">({</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+    <span class="na">getIdentity</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+    <span class="na">logout</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+    <span class="na">checkError</span><span class="p">:</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+    <span class="na">checkAuth</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">localStorage</span><span class="p">.</span><span class="nf">getItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">auth</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">?</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">resolve</span><span class="p">()</span>
+        <span class="p">:</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">reject</span><span class="p">({</span> <span class="na">redirectTo</span><span class="p">:</span> <span class="dl">'</span><span class="s1">/no-access</span><span class="dl">'</span> <span class="p">}),</span>
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Note that react-admin will call the <code class="language-plaintext highlighter-rouge">authProvider.logout()</code> method before redirecting. If you specify the <code class="language-plaintext highlighter-rouge">redirectTo</code> here, it will override the url which may have been returned by the call to <code class="language-plaintext highlighter-rouge">logout()</code>.</p>
+
+<p><strong>Tip</strong>: In addition to <code class="language-plaintext highlighter-rouge">login()</code>, <code class="language-plaintext highlighter-rouge">logout()</code>, <code class="language-plaintext highlighter-rouge">checkError()</code>, and <code class="language-plaintext highlighter-rouge">checkAuth()</code>, react-admin calls the <code class="language-plaintext highlighter-rouge">authProvider.getPermissions()</code> method to check user permissions. It’s useful to enable or disable features on a per user basis. Read the <a href="./Authorization.md">Authorization Documentation</a> to learn how to implement that type.</p>
+
+<h2 id="customizing-the-login-and-logout-components">Customizing The Login and Logout Components</h2>
+
+<p>Using <code class="language-plaintext highlighter-rouge">authProvider</code> is enough to implement a full-featured authorization system if the authentication relies on a username and password.</p>
+
+<p>But what if you want to use an email instead of a username? What if you want to use a Single-Sign-On (SSO) with a third-party authentication service? What if you want to use two-factor authentication?</p>
+
+<p>For all these cases, it’s up to you to implement your own <code class="language-plaintext highlighter-rouge">LoginPage</code> component, which will be displayed under the <code class="language-plaintext highlighter-rouge">/login</code> route instead of the default username/password form, and your own <code class="language-plaintext highlighter-rouge">LogoutButton</code> component, which will be displayed in the sidebar. Pass both these components to the <code class="language-plaintext highlighter-rouge">&lt;Admin&gt;</code> component:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/App.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Admin</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="nx">MyLoginPage</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./MyLoginPage</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">MyLogoutButton</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./MyLogoutButton</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Admin</span> <span class="na">loginPage</span><span class="p">=</span><span class="si">{</span><span class="nx">MyLoginPage</span><span class="si">}</span> <span class="na">logoutButton</span><span class="p">=</span><span class="si">{</span><span class="nx">MyLogoutButton</span><span class="si">}</span> <span class="na">authProvider</span><span class="p">=</span><span class="si">{</span><span class="nx">authProvider</span><span class="si">}</span><span class="p">&gt;</span>
+    ...
+    <span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>Use the <code class="language-plaintext highlighter-rouge">useLogin</code> and <code class="language-plaintext highlighter-rouge">useLogout</code> hooks in your custom <code class="language-plaintext highlighter-rouge">LoginPage</code> and <code class="language-plaintext highlighter-rouge">LogoutButton</code> components.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/MyLoginPage.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useState</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useLogin</span><span class="p">,</span> <span class="nx">useNotify</span><span class="p">,</span> <span class="nx">Notification</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ThemeProvider</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/styles</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">MyLoginPage</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">theme</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="p">[</span><span class="nx">email</span><span class="p">,</span> <span class="nx">setEmail</span><span class="p">]</span> <span class="o">=</span> <span class="nf">useState</span><span class="p">(</span><span class="dl">''</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="p">[</span><span class="nx">password</span><span class="p">,</span> <span class="nx">setPassword</span><span class="p">]</span> <span class="o">=</span> <span class="nf">useState</span><span class="p">(</span><span class="dl">''</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">login</span> <span class="o">=</span> <span class="nf">useLogin</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">notify</span> <span class="o">=</span> <span class="nf">useNotify</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">submit</span> <span class="o">=</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nf">preventDefault</span><span class="p">();</span>
+        <span class="nf">login</span><span class="p">({</span> <span class="nx">email</span><span class="p">,</span> <span class="nx">password</span> <span class="p">})</span>
+            <span class="p">.</span><span class="k">catch</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nf">notify</span><span class="p">(</span><span class="dl">'</span><span class="s1">Invalid email or password</span><span class="dl">'</span><span class="p">));</span>
+    <span class="p">};</span>
+
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">ThemeProvider</span> <span class="na">theme</span><span class="p">=</span><span class="si">{</span><span class="nx">theme</span><span class="si">}</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">form</span> <span class="na">onSubmit</span><span class="p">=</span><span class="si">{</span><span class="nx">submit</span><span class="si">}</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="p">=</span><span class="s">"email"</span> <span class="na">type</span><span class="p">=</span><span class="s">"email"</span> <span class="na">value</span><span class="p">=</span><span class="si">{</span><span class="nx">email</span><span class="si">}</span> <span class="na">onChange</span><span class="p">=</span><span class="si">{</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="nf">setEmail</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span><span class="si">}</span> <span class="p">/&gt;</span> 
+                <span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="p">=</span><span class="s">"password"</span> <span class="na">type</span><span class="p">=</span><span class="s">"password"</span> <span class="na">value</span><span class="p">=</span><span class="si">{</span><span class="nx">password</span><span class="si">}</span> <span class="na">onChange</span><span class="p">=</span><span class="si">{</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="nf">setPassword</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span><span class="si">}</span> <span class="p">/&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">Notification</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;/</span><span class="nc">ThemeProvider</span><span class="p">&gt;</span>
+    <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">MyLoginPage</span><span class="p">;</span>
+
+<span class="c1">// in src/MyLogoutButton.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">forwardRef</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useLogout</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">MenuItem</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/core/MenuItem</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">ExitIcon</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@material-ui/icons/PowerSettingsNew</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">MyLogoutButton</span> <span class="o">=</span> <span class="nf">forwardRef</span><span class="p">((</span><span class="nx">props</span><span class="p">,</span> <span class="nx">ref</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">logout</span> <span class="o">=</span> <span class="nf">useLogout</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">handleClick</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nf">logout</span><span class="p">();</span>
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">MenuItem</span>
+            <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">handleClick</span><span class="si">}</span>
+            <span class="na">ref</span><span class="p">=</span><span class="si">{</span><span class="nx">ref</span><span class="si">}</span>
+        <span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">ExitIcon</span> <span class="p">/&gt;</span> Logout
+        <span class="p">&lt;/</span><span class="nc">MenuItem</span><span class="p">&gt;</span>
+    <span class="p">);</span>
+<span class="p">});</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">MyLogoutButton</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><strong>Tip</strong>: By default, react-admin redirects the user to ‘/login’ after they log out. This can be changed by passing the url to redirect to as parameter to the <code class="language-plaintext highlighter-rouge">logout()</code> function:</p>
+
+<div class="language-diff highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// in src/MyLogoutButton.js
+// ...
+<span class="gd">-   const handleClick = () =&gt; logout();
+</span><span class="gi">+   const handleClick = () =&gt; logout('/custom-login');
+</span></code></pre></div></div>
+
+<h2 id="useauthenticated-hook"><code class="language-plaintext highlighter-rouge">useAuthenticated()</code> Hook</h2>
+
+<p>If you add <a href="./Actions.md">custom pages</a>, or if you <a href="./CustomApp.md">create an admin app from scratch</a>, you may need to secure access to pages manually. That’s the purpose of the <code class="language-plaintext highlighter-rouge">useAuthenticated()</code> hook, which calls the <code class="language-plaintext highlighter-rouge">authProvider.checkAuth()</code> method on mount, and redirects to login if it returns a rejected Promise.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// in src/MyPage.js</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useAuthenticated</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">MyPage</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nf">useAuthenticated</span><span class="p">();</span> <span class="c1">// redirects to login if not authenticated</span>
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+            ...
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">)</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">MyPage</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>If you call <code class="language-plaintext highlighter-rouge">useAuthenticated()</code> with a parameter, this parameter is passed to the <code class="language-plaintext highlighter-rouge">authProvider</code> call as second parameter. that allows you to add authentication logic depending on the context of the call:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">MyPage</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nf">useAuthenticated</span><span class="p">({</span> <span class="na">foo</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bar</span><span class="dl">'</span> <span class="p">});</span> <span class="c1">// calls authProvider.checkAuth({ foo: 'bar' })</span>
+    <span class="k">return </span><span class="p">(</span>
+        <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+            ...
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">)</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">useAuthenticated</code> hook is optimistic: it doesn’t block rendering during the <code class="language-plaintext highlighter-rouge">authProvider</code> call. In the above example, the <code class="language-plaintext highlighter-rouge">MyPage</code> component renders even before getting the response from the <code class="language-plaintext highlighter-rouge">authProvider</code>. If the call returns a rejected promise, the hook redirects to the login page, but the user may have seen the content of the <code class="language-plaintext highlighter-rouge">MyPage</code> component for a brief moment.</p>
+
+<h2 id="authenticated-component"><code class="language-plaintext highlighter-rouge">&lt;Authenticated&gt;</code> Component</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">&lt;Authenticated&gt;</code> component uses the <code class="language-plaintext highlighter-rouge">useAuthenticated()</code> hook, and renders its child component - unless the authentication check fails. Use it as an alternative to the <code class="language-plaintext highlighter-rouge">useAuthenticated()</code> hook when you can’t use a hook, e.g. inside a <code class="language-plaintext highlighter-rouge">Route</code> <code class="language-plaintext highlighter-rouge">render</code> function:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Authenticated</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">CustomRoutes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">&lt;</span><span class="nc">Route</span> <span class="na">path</span><span class="p">=</span><span class="s">"/foo"</span> <span class="na">render</span><span class="p">=</span><span class="si">{</span><span class="p">()</span> <span class="o">=&gt;</span>
+        <span class="p">&lt;</span><span class="nc">Authenticated</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">Foo</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;/</span><span class="nc">Authenticated</span><span class="p">&gt;</span>
+    <span class="si">}</span> <span class="p">/&gt;</span>
+<span class="p">];</span>
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">Admin</span> <span class="na">customRoutes</span><span class="p">=</span><span class="si">{</span><span class="nx">customRoutes</span><span class="si">}</span><span class="p">&gt;</span>
+        ...
+    <span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="useauthstate-hook"><code class="language-plaintext highlighter-rouge">useAuthState()</code> Hook</h2>
+
+<p>To avoid rendering a component and force waiting for the <code class="language-plaintext highlighter-rouge">authProvider</code> response, use the <code class="language-plaintext highlighter-rouge">useAuthState()</code> hook instead of the <code class="language-plaintext highlighter-rouge">useAuthenticated()</code> hook. It returns an object with 3 properties:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">loading</code>: <code class="language-plaintext highlighter-rouge">true</code> just after mount, while the <code class="language-plaintext highlighter-rouge">authProvider</code> is being called. <code class="language-plaintext highlighter-rouge">false</code> once the <code class="language-plaintext highlighter-rouge">authProvider</code> has answered.</li>
+  <li><code class="language-plaintext highlighter-rouge">loaded</code>: the opposite of <code class="language-plaintext highlighter-rouge">loading</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">authenticated</code>: <code class="language-plaintext highlighter-rouge">undefined</code> while loading. then <code class="language-plaintext highlighter-rouge">true</code> or <code class="language-plaintext highlighter-rouge">false</code> depending on the <code class="language-plaintext highlighter-rouge">authProvider</code> response.</li>
+</ul>
+
+<p>You can render different content depending on the authenticated status.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">useAuthState</span><span class="p">,</span> <span class="nx">Loading</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">MyPage</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="p">{</span> <span class="nx">loading</span><span class="p">,</span> <span class="nx">authenticated</span> <span class="p">}</span> <span class="o">=</span> <span class="nf">useAuthState</span><span class="p">();</span>
+    <span class="k">if </span><span class="p">(</span><span class="nx">loading</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">&lt;</span><span class="nc">Loading</span> <span class="p">/&gt;;</span>
+    <span class="p">}</span>
+    <span class="k">if </span><span class="p">(</span><span class="nx">authenticated</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">&lt;</span><span class="nc">AuthenticatedContent</span> <span class="p">/&gt;;</span>
+    <span class="p">}</span> 
+    <span class="k">return</span> <span class="p">&lt;</span><span class="nc">AnonymousContent</span> <span class="p">/&gt;;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+                </div>
+                <div class="col hide-on-small-only m3 xl3 offset-xl1">
+                    <div class="toc-wrapper">
+                        <div style="height: 1px;">
+                            <ul class="section table-of-contents pushpin">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/materialize.min.js"></script>
+    <script src="/js/prism.js"></script>
+    <script>
+        function slugify(text) {
+            return text.toString().toLowerCase()
+                .replace(/\s+/g, '-')           // Replace spaces with -
+                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+                .replace(/^-+/, '')             // Trim - from start of text
+                .replace(/-+$/, '');            // Trim - from end of text
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            /* Generate table of contents */
+            document.querySelectorAll('.markdown-section h2').forEach(element => {
+                element.classList.add('scrollspy');
+                var a = document.createElement('a');
+                a.href = "#" + slugify(element.innerText);
+                a.innerText = element.innerText;
+                var li = document.createElement('li');
+                li.appendChild(a);
+                document.querySelector('.table-of-contents').appendChild(li)
+            })
+            M.Sidenav.init(document.querySelectorAll('.sidenav'));
+            M.Pushpin.init(document.querySelector('.pushpin'), { offset: 75, top: 75 });
+            M.ScrollSpy.init(document.querySelectorAll('.scrollspy'));
+            M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+        });
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    <script type="text/javascript">
+        docsearch({
+            apiKey: '32f254b1de6a25a96665d1229b6eb8f7',
+            indexName: 'marmelab-react-admin',
+            inputSelector: '#query',
+            debug: false, // Set debug to true if you want to inspect the dropdown 
+            autocompleteOptions: {
+                appendTo: '#search',
+                hint: false,
+            }
+        }); 
+    </script>
+</body>
+
+</html>

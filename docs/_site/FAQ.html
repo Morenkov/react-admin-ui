@@ -1,0 +1,339 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<head>
+    <title>React-admin - FAQ</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link rel="stylesheet" href="/css/style-v6.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+    <!-- You won't find analytics tags in this page. React-admin protects your privacy! -->
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <div class="nav-wrapper" style="background: linear-gradient(145deg,#027be3 11%,#1a237e 75%)">
+                <div class="left">
+                    <form action="#" onsubmit="return false;">
+                        <div class="input-field" style="position:absolute">
+                            <input type="search" name="q" id="query" size="31" maxlength="255" value=""
+                                style="vertical-align:inherit!important" />
+                            <label class="label-icon" for="test"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                        <span id="search"></span>
+                    </form>
+                </div>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li class="active"><a href="https://marmelab.com/react-admin/Readme.html">Documentation</a></li>
+                    <li><a href="https://marmelab.com/react-admin-demo">Demo</a></li>
+                    <li><a href="https://marmelab.com/en/blog/#react-admin">Blog</a></li>
+                    <li><a href="https://github.com/marmelab/react-admin">GitHub</a></li>
+                </ul>
+            </div>
+        </nav>
+        <ul id="slide-out" class="sidenav sidenav-fixed">
+            <li class="logo">
+                <a href="http://localhost:4000"><img src="http://localhost:4000/assets/logo_white.png" /></a>
+            </li>
+            <li class="version">
+                
+            </li>
+            <li ><a href="./Readme.html">Read Me</a></li>
+<li ><a href="./Tutorial.html">Tutorial</a>
+</li>
+<li ><a href="./DataProviders.html">Data
+                Providers</a></li>
+<li ><a
+                href="./Admin.html"><code>&lt;Admin&gt;</code></a>
+</li>
+<li ><a href="./Resource.html">
+                <code>&lt;Resource&gt;</code>
+        </a></li>
+<li ><a href="./List.html"><code>&lt;List&gt;</code>
+                View</a></li>
+<li ><a
+                href="./CreateEdit.html"><code>&lt;Create&gt;</code>
+                and <code>&lt;Edit&gt;</code> Views</a>
+</li>
+<li ><a href="./Show.html"><code>&lt;Show&gt;</code>
+    View</a></li>
+<li ><a
+    href="./Fields.html"><code>&lt;Field&gt;</code>
+    Components</a></li>
+<li ><a
+                href="./Inputs.html"><code>&lt;Input&gt;</code>
+                Components</a></li>
+<li ><a
+                href="./Authentication.html">Authentication</a></li>
+<li ><a
+                href="./Authorization.html">Authorization</a></li>
+<li ><a href="./Actions.html">Querying the
+                API</a></li>
+<li ><a href="./Theming.html">Theming</a></li>
+<li ><a href="./Translation.html">Translation</a>
+</li>
+<li ><a href="./Caching.html">Caching</a>
+</li>
+<li ><a href="./CustomApp.html">Including in
+                Another App</a>
+</li>
+<li ><a href="./Reference.html">Reference</a>
+</li>
+<li ><a href="./Ecosystem.html">Ecosystem</a>
+</li>
+<li ><a href="./UnitTesting.html">Unit
+    Testing</a></li>
+<li ><a
+        href="./AdvancedTutorials.html">Advanced
+        tutorials</a></li>
+<li  class="active" ><a href="./FAQ.html">FAQ</a></li>
+
+        </ul>
+
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m8 offset-m1 xl7 offset-xl1 markdown-section DocSearch-content">
+                    <h1 id="faq">FAQ</h1>
+
+<ul>
+  <li><a href="#can-i-have-custom-identifiersprimary-keys-for-my-resources">Can I have custom identifiers/primary keys for my resources?</a></li>
+  <li><a href="#i-get-warning-about-unique-key-for-child-in-array">I get warning about unique key for child in array</a></li>
+  <li><a href="#how-can-i-customize-forms-depending-on-its-inputs-values">How can I customize forms depending on its inputs values?</a></li>
+  <li><a href="#ui-in-production-build-is-empty-or-broke">UI in production build is empty or broke</a></li>
+  <li><a href="#my-resource-is-defined-but-not-displayed-on-the-menu">My Resource is defined but not displayed on the Menu</a></li>
+</ul>
+
+<h2 id="can-i-have-custom-identifiersprimary-keys-for-my-resources">Can I have custom identifiers/primary keys for my resources?</h2>
+
+<p>React-admin requires that each resource has an <code class="language-plaintext highlighter-rouge">id</code> field to identify it. If your API uses a different name for the primary key, you have to map that name to <code class="language-plaintext highlighter-rouge">id</code> in your <a href="./DataProviders.md">dataProvider</a>. For instance, to use a field named <code class="language-plaintext highlighter-rouge">_id</code> as identifier:</p>
+
+<div class="language-diff highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">const dataProvider = {
+</span>    getList: (resource, params) =&gt; {
+        const { page, perPage } = params.pagination;
+        const { field, order } = params.sort;
+        const query = {
+            sort: JSON.stringify([field, order]),
+            range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+            filter: JSON.stringify(params.filter),
+        };
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+<span class="err">
+</span>        return httpClient(url).then(({ headers, json }) =&gt; ({
+<span class="gd">-           data: json,
+</span><span class="gi">+           data: json.map(resource =&gt; ({ ...resource, id: resource._id }) ),
+</span>            total: parseInt(headers.get('content-range').split('/').pop(), 10),
+        }));
+    },
+    getOne: (resource, params) =&gt;
+        httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) =&gt; ({
+<span class="gd">-           data: json,
+</span><span class="gi">+           { ...json, id: json._id },
+</span>        })),
+<span class="err">
+</span>    getMany: (resource, params) =&gt; {
+        const query = {
+            filter: JSON.stringify({ id: params.ids }),
+        };
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        return httpClient(url).then(({ json }) =&gt; ({ 
+<span class="gd">-           data: json,
+</span><span class="gi">+           data: json.map(resource =&gt; ({ ...resource, id: resource._id }) ),
+</span>        }));
+    },
+<span class="err">
+</span>    getManyReference: (resource, params) =&gt; {
+        const { page, perPage } = params.pagination;
+        const { field, order } = params.sort;
+        const query = {
+            sort: JSON.stringify([field, order]),
+            range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+            filter: JSON.stringify({
+                ...params.filter,
+                [params.target]: params.id,
+            }),
+        };
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+<span class="err">
+</span>        return httpClient(url).then(({ headers, json }) =&gt; ({
+<span class="gd">-           data: json,
+</span><span class="gi">+           data: json.map(resource =&gt; ({ ...resource, id: resource._id }) ),
+</span>            total: parseInt(headers.get('content-range').split('/').pop(), 10),
+        }));
+    },
+<span class="err">
+</span>    update: (resource, params) =&gt;
+        httpClient(`${apiUrl}/${resource}/${params.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) =&gt; ({ 
+<span class="gd">-           data: json,
+</span><span class="gi">+           { ...json, id: json._id },
+</span>        })),
+<span class="err">
+</span>    updateMany: (resource, params) =&gt; {
+        const query = {
+            filter: JSON.stringify({ id: params.ids}),
+        };
+        return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
+            method: 'PUT',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) =&gt; ({ data: json }));
+    }
+<span class="err">
+</span>    create: (resource, params) =&gt;
+        httpClient(`${apiUrl}/${resource}`, {
+            method: 'POST',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) =&gt; ({
+<span class="gd">-           data: { ...params.data, id: json.id },
+</span><span class="gi">+           data: { ...params.data, id: json._id },
+</span>        })),
+<span class="err">
+</span>    delete: (resource, params) =&gt;
+        httpClient(`${apiUrl}/${resource}/${params.id}`, {
+            method: 'DELETE',
+        }).then(({ json }) =&gt; ({ 
+<span class="gd">-           data: json,
+</span><span class="gi">+           { ...json, id: json._id },
+</span>        })),
+<span class="err">
+</span>    deleteMany: (resource, params) =&gt; {
+        const query = {
+            filter: JSON.stringify({ id: params.ids}),
+        };
+        return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
+            method: 'DELETE',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) =&gt; ({ data: json }));
+    }
+};
+</code></pre></div></div>
+
+<h2 id="i-get-warning-about-unique-key-for-child-in-array">I get warning about unique key for child in array</h2>
+
+<p>When displaying a <code class="language-plaintext highlighter-rouge">Datagrid</code> component, you get the following warning:</p>
+
+<blockquote>
+  <p>Warning: Each child in an array or iterator should have a unique “key” prop.
+Check the render method of <code class="language-plaintext highlighter-rouge">DatagridBody</code>.</p>
+</blockquote>
+
+<p>This is most probably because the resource does not have an <code class="language-plaintext highlighter-rouge">id</code> property as expected by react-admin. See the previous FAQ to see how to resolve this: <a href="#can-i-have-custom-identifiersprimary-keys-for-my-resources">Can I have custom identifiers/primary keys for my resources?</a></p>
+
+<h2 id="how-can-i-customize-forms-depending-on-its-inputs-values">How can I customize forms depending on its inputs values?</h2>
+
+<p>Some use cases:</p>
+
+<ul>
+  <li>Show/hide some inputs if another input has a value</li>
+  <li>Show/hide some inputs if another input has a specific value</li>
+  <li>Show/hide some inputs if the current form value matches specific constraints</li>
+</ul>
+
+<p>For all those cases, you can use the <a href="https://marmelab.com/react-admin/Inputs.html#linking-two-inputs"><code class="language-plaintext highlighter-rouge">&lt;FormDataConsumer&gt;</code></a> component.</p>
+
+<h2 id="ui-in-production-build-is-empty-or-broke">UI in production build is empty or broke</h2>
+
+<p>You have probably specified a version requirement for <code class="language-plaintext highlighter-rouge">@material-ui/core</code> that is incompatible with the one required by <code class="language-plaintext highlighter-rouge">react-admin</code>. As a consequence, npm bundled two copies of <code class="language-plaintext highlighter-rouge">material-ui</code> in your application, and <code class="language-plaintext highlighter-rouge">material-ui</code> doesn’t work in that case.</p>
+
+<p>Please align your version requirement with the one of the <code class="language-plaintext highlighter-rouge">ra-ui-materialui</code> package.</p>
+
+<p>See this <a href="https://github.com/marmelab/react-admin/issues/1782">issue for more information</a>.</p>
+
+<h2 id="my-resource-is-defined-but-not-displayed-on-the-menu">My Resource is defined but not displayed on the Menu</h2>
+
+<p>You can declare a resource without <code class="language-plaintext highlighter-rouge">list</code> prop, to manage reference for example:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">&lt;</span><span class="nc">Admin</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nc">Resource</span> <span class="na">name</span><span class="p">=</span><span class="s">"reference"</span> <span class="na">create</span><span class="p">=</span><span class="si">{</span><span class="nx">PostReference</span><span class="si">}</span> <span class="na">edit</span><span class="p">=</span><span class="si">{</span><span class="nx">EditReference</span><span class="si">}</span> <span class="p">/&gt;</span>
+<span class="p">&lt;/</span><span class="nc">Admin</span><span class="p">&gt;</span>
+</code></pre></div></div>
+
+<p>But with the default menu, resources without <code class="language-plaintext highlighter-rouge">list</code> prop aren’t shown.</p>
+
+<p>In order to have a specific resource without <code class="language-plaintext highlighter-rouge">list</code> prop listed on the menu, you have to <a href="./Theming.md#using-a-custom-menu">write your own custom menu</a>.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kd">const</span> <span class="nx">MyMenu</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">resources</span><span class="p">,</span> <span class="nx">onMenuClick</span><span class="p">,</span> <span class="nx">logout</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="si">{</span><span class="nx">resources</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">resource</span> <span class="o">=&gt;</span> <span class="p">(</span>
+            <span class="p">&lt;</span><span class="nc">MenuItemLink</span> <span class="na">to</span><span class="p">=</span><span class="si">{</span><span class="s2">`/</span><span class="p">${</span><span class="nx">resource</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="si">}</span> <span class="na">primaryText</span><span class="p">=</span><span class="si">{</span><span class="nx">resource</span><span class="p">.</span><span class="nx">name</span><span class="si">}</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">onMenuClick</span><span class="si">}</span> <span class="p">/&gt;</span>
+        <span class="p">))</span><span class="si">}</span>
+        <span class="p">&lt;</span><span class="nc">MenuItemLink</span> <span class="na">to</span><span class="p">=</span><span class="s">"/reference/create"</span> <span class="na">primaryText</span><span class="p">=</span><span class="s">"New Reference"</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">onMenuClick</span><span class="si">}</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+                </div>
+                <div class="col hide-on-small-only m3 xl3 offset-xl1">
+                    <div class="toc-wrapper">
+                        <div style="height: 1px;">
+                            <ul class="section table-of-contents pushpin">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/materialize.min.js"></script>
+    <script src="/js/prism.js"></script>
+    <script>
+        function slugify(text) {
+            return text.toString().toLowerCase()
+                .replace(/\s+/g, '-')           // Replace spaces with -
+                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+                .replace(/^-+/, '')             // Trim - from start of text
+                .replace(/-+$/, '');            // Trim - from end of text
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            /* Generate table of contents */
+            document.querySelectorAll('.markdown-section h2').forEach(element => {
+                element.classList.add('scrollspy');
+                var a = document.createElement('a');
+                a.href = "#" + slugify(element.innerText);
+                a.innerText = element.innerText;
+                var li = document.createElement('li');
+                li.appendChild(a);
+                document.querySelector('.table-of-contents').appendChild(li)
+            })
+            M.Sidenav.init(document.querySelectorAll('.sidenav'));
+            M.Pushpin.init(document.querySelector('.pushpin'), { offset: 75, top: 75 });
+            M.ScrollSpy.init(document.querySelectorAll('.scrollspy'));
+            M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+        });
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    <script type="text/javascript">
+        docsearch({
+            apiKey: '32f254b1de6a25a96665d1229b6eb8f7',
+            indexName: 'marmelab-react-admin',
+            inputSelector: '#query',
+            debug: false, // Set debug to true if you want to inspect the dropdown 
+            autocompleteOptions: {
+                appendTo: '#search',
+                hint: false,
+            }
+        }); 
+    </script>
+</body>
+
+</html>

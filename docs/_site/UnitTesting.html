@@ -1,0 +1,315 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<head>
+    <title>React-admin - Unit Testing</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link rel="stylesheet" href="/css/style-v6.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+    <!-- You won't find analytics tags in this page. React-admin protects your privacy! -->
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <div class="nav-wrapper" style="background: linear-gradient(145deg,#027be3 11%,#1a237e 75%)">
+                <div class="left">
+                    <form action="#" onsubmit="return false;">
+                        <div class="input-field" style="position:absolute">
+                            <input type="search" name="q" id="query" size="31" maxlength="255" value=""
+                                style="vertical-align:inherit!important" />
+                            <label class="label-icon" for="test"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                        <span id="search"></span>
+                    </form>
+                </div>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li class="active"><a href="https://marmelab.com/react-admin/Readme.html">Documentation</a></li>
+                    <li><a href="https://marmelab.com/react-admin-demo">Demo</a></li>
+                    <li><a href="https://marmelab.com/en/blog/#react-admin">Blog</a></li>
+                    <li><a href="https://github.com/marmelab/react-admin">GitHub</a></li>
+                </ul>
+            </div>
+        </nav>
+        <ul id="slide-out" class="sidenav sidenav-fixed">
+            <li class="logo">
+                <a href="http://localhost:4000"><img src="http://localhost:4000/assets/logo_white.png" /></a>
+            </li>
+            <li class="version">
+                
+            </li>
+            <li ><a href="./Readme.html">Read Me</a></li>
+<li ><a href="./Tutorial.html">Tutorial</a>
+</li>
+<li ><a href="./DataProviders.html">Data
+                Providers</a></li>
+<li ><a
+                href="./Admin.html"><code>&lt;Admin&gt;</code></a>
+</li>
+<li ><a href="./Resource.html">
+                <code>&lt;Resource&gt;</code>
+        </a></li>
+<li ><a href="./List.html"><code>&lt;List&gt;</code>
+                View</a></li>
+<li ><a
+                href="./CreateEdit.html"><code>&lt;Create&gt;</code>
+                and <code>&lt;Edit&gt;</code> Views</a>
+</li>
+<li ><a href="./Show.html"><code>&lt;Show&gt;</code>
+    View</a></li>
+<li ><a
+    href="./Fields.html"><code>&lt;Field&gt;</code>
+    Components</a></li>
+<li ><a
+                href="./Inputs.html"><code>&lt;Input&gt;</code>
+                Components</a></li>
+<li ><a
+                href="./Authentication.html">Authentication</a></li>
+<li ><a
+                href="./Authorization.html">Authorization</a></li>
+<li ><a href="./Actions.html">Querying the
+                API</a></li>
+<li ><a href="./Theming.html">Theming</a></li>
+<li ><a href="./Translation.html">Translation</a>
+</li>
+<li ><a href="./Caching.html">Caching</a>
+</li>
+<li ><a href="./CustomApp.html">Including in
+                Another App</a>
+</li>
+<li ><a href="./Reference.html">Reference</a>
+</li>
+<li ><a href="./Ecosystem.html">Ecosystem</a>
+</li>
+<li  class="active" ><a href="./UnitTesting.html">Unit
+    Testing</a></li>
+<li ><a
+        href="./AdvancedTutorials.html">Advanced
+        tutorials</a></li>
+<li ><a href="./FAQ.html">FAQ</a></li>
+
+        </ul>
+
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m8 offset-m1 xl7 offset-xl1 markdown-section DocSearch-content">
+                    <h1 id="unit-testing">Unit Testing</h1>
+
+<p>By default, react-admin acts as a declarative admin configuration: list some resources, define their controllers and, plug some built-in components or your own to define their fields or inputs.</p>
+
+<p>Thus, unit testing isn’t really needed nor recommended at first, because the internal API of the framework is already tested by its maintainers and each custom component can be tested by its own by mocking react-admin. (<a href="https://jestjs.io/docs/en/manual-mocks#mocking-node-modules">see how to do so with Jest</a>)</p>
+
+<p>On the contrary, it is recommended to write end-to-end tests to secure your most common scenario at least.</p>
+
+<p>That being said, there are still some cases, listed below, where a unit test can be useful.</p>
+
+<h2 id="testing-custom-views">Testing Custom Views</h2>
+
+<p>One issue you may run into when attempting to render custom <code class="language-plaintext highlighter-rouge">Create</code> or <code class="language-plaintext highlighter-rouge">Edit</code> views is that you need to provide the component with the expected props contained within the react-admin redux store.</p>
+
+<p>Luckily, react-admin provides access to a <code class="language-plaintext highlighter-rouge">TestContext</code> wrapper component that can be used to initialise your component with many of the expected react-admin props:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">TestContext</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">mount</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">enzyme</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">MyCustomEditView</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./my-custom-edit-view</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nf">describe</span><span class="p">(</span><span class="dl">'</span><span class="s1">MyCustomEditView</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">myCustomEditView</span><span class="p">;</span>
+
+    <span class="nf">beforeEach</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">defaultEditProps</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="na">basePath</span><span class="p">:</span> <span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">123</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">resource</span><span class="p">:</span> <span class="dl">'</span><span class="s1">foo</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">location</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="na">match</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="p">};</span>
+
+        <span class="nx">myCustomEditView</span> <span class="o">=</span> <span class="nf">mount</span><span class="p">(</span>
+            <span class="p">&lt;</span><span class="nc">TestContext</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nc">MyCustomEditView</span> <span class="si">{</span><span class="p">...</span><span class="nx">defaultEditProps</span><span class="si">}</span> <span class="p">/&gt;</span>
+            <span class="p">&lt;/</span><span class="nc">TestContext</span><span class="p">&gt;</span>
+        <span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="c1">// Tests</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>You can then provide additional props, as needed, to your component (such as the <code class="language-plaintext highlighter-rouge">defaultEditProps</code> provided above).</p>
+
+<p>At this point, your component should <code class="language-plaintext highlighter-rouge">mount</code> without errors and you can unit test your component.</p>
+
+<h2 id="enabling-reducers-to-ensure-actions-are-dispatched">Enabling reducers to ensure actions are dispatched</h2>
+
+<p>If your component relies on a reducer, you can enable reducers using the <code class="language-plaintext highlighter-rouge">enableReducers</code> prop:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">myCustomEditView</span> <span class="o">=</span> <span class="nf">mount</span><span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">TestContext</span> <span class="na">enableReducers</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nc">MyCustomEditView</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;/</span><span class="nc">TestContext</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>This means that reducers will work as they will within the app.</p>
+
+<h2 id="spying-on-the-store-dispatch">Spying on the store ‘dispatch’</h2>
+
+<p>If you are using <code class="language-plaintext highlighter-rouge">useDispatch</code> within your components, it is likely you will want to test that actions have been dispatched with the correct arguments. You can return the <code class="language-plaintext highlighter-rouge">store</code> being used within the tests using a <code class="language-plaintext highlighter-rouge">renderProp</code>.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">dispatchSpy</span><span class="p">;</span>
+<span class="nx">myCustomEditView</span> <span class="o">=</span> <span class="nf">mount</span><span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">TestContext</span><span class="p">&gt;</span>
+        <span class="si">{</span><span class="p">({</span> <span class="nx">store</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">dispatchSpy</span> <span class="o">=</span> <span class="nx">jest</span><span class="p">.</span><span class="nf">spyOn</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="dl">'</span><span class="s1">dispatch</span><span class="dl">'</span><span class="p">);</span>
+            <span class="k">return</span> <span class="p">&lt;</span><span class="nc">MyCustomEditView</span> <span class="p">/&gt;</span>
+        <span class="p">}</span><span class="si">}</span>
+    <span class="p">&lt;/</span><span class="nc">TestContext</span><span class="p">&gt;,</span>
+<span class="p">);</span>
+
+<span class="nf">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">should send the user to another url</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">myCustomEditView</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="dl">'</span><span class="s1">.next-button</span><span class="dl">'</span><span class="p">).</span><span class="nf">simulate</span><span class="p">(</span><span class="dl">'</span><span class="s1">click</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nf">expect</span><span class="p">(</span><span class="nx">dispatchSpy</span><span class="p">).</span><span class="nf">toHaveBeenCalledWith</span><span class="p">(</span><span class="s2">`/next-url`</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="testing-permissions">Testing Permissions</h2>
+
+<p>As explained on the <a href="./Authorization.md">Authorization page</a>, it’s possible to manage permissions via the authentication provider in order to filter page and fields the users can see.</p>
+
+<p>In order to avoid regressions and make the design explicit to your co-workers, it’s better to unit test which fields is supposed to be displayed or hidden for each permission.</p>
+
+<p>Here is an example with Jest and Enzyme, which is testing the <a href="https://github.com/marmelab/react-admin/blob/master/examples/simple/src/users/UserShow.js">User <code class="language-plaintext highlighter-rouge">show</code> page of the simple example</a>.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// UserShow.spec.js</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">shallow</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">enzyme</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Tab</span><span class="p">,</span> <span class="nx">TextField</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-admin</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="nx">UserShow</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./UserShow</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nf">describe</span><span class="p">(</span><span class="dl">'</span><span class="s1">UserShow</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nf">describe</span><span class="p">(</span><span class="dl">'</span><span class="s1">As User</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nf">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">should display one tab</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="nx">wrapper</span> <span class="o">=</span> <span class="nf">shallow</span><span class="p">(&lt;</span><span class="nc">UserShow</span> <span class="na">permissions</span><span class="p">=</span><span class="s">"user"</span> <span class="p">/&gt;);</span>
+
+            <span class="kd">const</span> <span class="nx">tab</span> <span class="o">=</span> <span class="nx">wrapper</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="nx">Tab</span><span class="p">);</span>
+            <span class="nf">expect</span><span class="p">(</span><span class="nx">tab</span><span class="p">.</span><span class="nx">length</span><span class="p">).</span><span class="nf">toBe</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+        <span class="p">});</span>
+
+        <span class="nf">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">should show the user identity in the first tab</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="nx">wrapper</span> <span class="o">=</span> <span class="nf">shallow</span><span class="p">(&lt;</span><span class="nc">UserShow</span> <span class="na">permissions</span><span class="p">=</span><span class="s">"user"</span> <span class="p">/&gt;);</span>
+
+            <span class="kd">const</span> <span class="nx">tab</span> <span class="o">=</span> <span class="nx">wrapper</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="nx">Tab</span><span class="p">);</span>
+            <span class="kd">const</span> <span class="nx">fields</span> <span class="o">=</span> <span class="nx">tab</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="nx">TextField</span><span class="p">);</span>
+
+            <span class="nf">expect</span><span class="p">(</span><span class="nx">fields</span><span class="p">.</span><span class="nf">at</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nf">prop</span><span class="p">(</span><span class="dl">'</span><span class="s1">source</span><span class="dl">'</span><span class="p">)).</span><span class="nf">toBe</span><span class="p">(</span><span class="dl">'</span><span class="s1">id</span><span class="dl">'</span><span class="p">);</span>
+            <span class="nf">expect</span><span class="p">(</span><span class="nx">fields</span><span class="p">.</span><span class="nf">at</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nf">prop</span><span class="p">(</span><span class="dl">'</span><span class="s1">source</span><span class="dl">'</span><span class="p">)).</span><span class="nf">toBe</span><span class="p">(</span><span class="dl">'</span><span class="s1">name</span><span class="dl">'</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+
+    <span class="nf">describe</span><span class="p">(</span><span class="dl">'</span><span class="s1">As Admin</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nf">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">should display two tabs</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="nx">wrapper</span> <span class="o">=</span> <span class="nf">shallow</span><span class="p">(&lt;</span><span class="nc">UserShow</span> <span class="na">permissions</span><span class="p">=</span><span class="s">"admin"</span> <span class="p">/&gt;);</span>
+
+            <span class="kd">const</span> <span class="nx">tabs</span> <span class="o">=</span> <span class="nx">wrapper</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="nx">Tab</span><span class="p">);</span>
+            <span class="nf">expect</span><span class="p">(</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">length</span><span class="p">).</span><span class="nf">toBe</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+        <span class="p">});</span>
+
+        <span class="nf">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">should show the user identity in the first tab</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="nx">wrapper</span> <span class="o">=</span> <span class="nf">shallow</span><span class="p">(&lt;</span><span class="nc">UserShow</span> <span class="na">permissions</span><span class="p">=</span><span class="s">"admin"</span> <span class="p">/&gt;);</span>
+
+            <span class="kd">const</span> <span class="nx">tabs</span> <span class="o">=</span> <span class="nx">wrapper</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="nx">Tab</span><span class="p">);</span>
+            <span class="kd">const</span> <span class="nx">fields</span> <span class="o">=</span> <span class="nx">tabs</span><span class="p">.</span><span class="nf">at</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nf">find</span><span class="p">(</span><span class="nx">TextField</span><span class="p">);</span>
+
+            <span class="nf">expect</span><span class="p">(</span><span class="nx">fields</span><span class="p">.</span><span class="nf">at</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nf">prop</span><span class="p">(</span><span class="dl">'</span><span class="s1">source</span><span class="dl">'</span><span class="p">)).</span><span class="nf">toBe</span><span class="p">(</span><span class="dl">'</span><span class="s1">id</span><span class="dl">'</span><span class="p">);</span>
+            <span class="nf">expect</span><span class="p">(</span><span class="nx">fields</span><span class="p">.</span><span class="nf">at</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nf">prop</span><span class="p">(</span><span class="dl">'</span><span class="s1">source</span><span class="dl">'</span><span class="p">)).</span><span class="nf">toBe</span><span class="p">(</span><span class="dl">'</span><span class="s1">name</span><span class="dl">'</span><span class="p">);</span>
+        <span class="p">});</span>
+
+        <span class="nf">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">should show the user role in the second tab</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="nx">wrapper</span> <span class="o">=</span> <span class="nf">shallow</span><span class="p">(&lt;</span><span class="nc">UserShow</span> <span class="na">permissions</span><span class="p">=</span><span class="s">"admin"</span> <span class="p">/&gt;);</span>
+
+            <span class="kd">const</span> <span class="nx">tabs</span> <span class="o">=</span> <span class="nx">wrapper</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="nx">Tab</span><span class="p">);</span>
+            <span class="kd">const</span> <span class="nx">fields</span> <span class="o">=</span> <span class="nx">tabs</span><span class="p">.</span><span class="nf">at</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nf">find</span><span class="p">(</span><span class="nx">TextField</span><span class="p">);</span>
+
+            <span class="nf">expect</span><span class="p">(</span><span class="nx">fields</span><span class="p">.</span><span class="nf">at</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nf">prop</span><span class="p">(</span><span class="dl">'</span><span class="s1">source</span><span class="dl">'</span><span class="p">)).</span><span class="nf">toBe</span><span class="p">(</span><span class="dl">'</span><span class="s1">role</span><span class="dl">'</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+                </div>
+                <div class="col hide-on-small-only m3 xl3 offset-xl1">
+                    <div class="toc-wrapper">
+                        <div style="height: 1px;">
+                            <ul class="section table-of-contents pushpin">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/materialize.min.js"></script>
+    <script src="/js/prism.js"></script>
+    <script>
+        function slugify(text) {
+            return text.toString().toLowerCase()
+                .replace(/\s+/g, '-')           // Replace spaces with -
+                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+                .replace(/^-+/, '')             // Trim - from start of text
+                .replace(/-+$/, '');            // Trim - from end of text
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            /* Generate table of contents */
+            document.querySelectorAll('.markdown-section h2').forEach(element => {
+                element.classList.add('scrollspy');
+                var a = document.createElement('a');
+                a.href = "#" + slugify(element.innerText);
+                a.innerText = element.innerText;
+                var li = document.createElement('li');
+                li.appendChild(a);
+                document.querySelector('.table-of-contents').appendChild(li)
+            })
+            M.Sidenav.init(document.querySelectorAll('.sidenav'));
+            M.Pushpin.init(document.querySelector('.pushpin'), { offset: 75, top: 75 });
+            M.ScrollSpy.init(document.querySelectorAll('.scrollspy'));
+            M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+        });
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+    <script type="text/javascript">
+        docsearch({
+            apiKey: '32f254b1de6a25a96665d1229b6eb8f7',
+            indexName: 'marmelab-react-admin',
+            inputSelector: '#query',
+            debug: false, // Set debug to true if you want to inspect the dropdown 
+            autocompleteOptions: {
+                appendTo: '#search',
+                hint: false,
+            }
+        }); 
+    </script>
+</body>
+
+</html>
